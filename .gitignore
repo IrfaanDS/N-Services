@@ -19,3 +19,11 @@ build/
 .vscode/
 .idea/
 .gemini/
+
+# Virtual environment
+venv/
+
+# Runtime data (contains user credentials/state)
+backend/app/api/routes/accounts.json
+backend/app/api/routes/mailbox.json
+backend/app/api/routes/campaigns.json

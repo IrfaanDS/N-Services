@@ -23,7 +23,15 @@ ACCOUNTS_FILE = os.path.join(os.path.dirname(__file__), "accounts.json")
 def load_accounts():
     if os.path.exists(ACCOUNTS_FILE):
         with open(ACCOUNTS_FILE, "r") as f:
-            return json.load(f)
+            accounts = json.load(f)
+        for acc in accounts:
+            env_key = acc.get("env_key")
+            if env_key:
+                acc["smtp_user"] = os.environ.get(f"SMTP_USER_{env_key}", acc.get("smtp_user", ""))
+                acc["smtp_pass"] = os.environ.get(f"SMTP_PASS_{env_key}", acc.get("smtp_pass", ""))
+                acc["imap_user"] = os.environ.get(f"IMAP_USER_{env_key}", acc.get("imap_user", ""))
+                acc["imap_pass"] = os.environ.get(f"IMAP_PASS_{env_key}", acc.get("imap_pass", ""))
+        return accounts
     return []
 
 # ── Routes ──

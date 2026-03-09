@@ -1,0 +1,87 @@
+﻿Collecting fastapi==0.115.0 (from -r requirements.txt (line 2))
+  Using cached fastapi-0.115.0-py3-none-any.whl.metadata (27 kB)
+Collecting uvicorn==0.32.0 (from uvicorn[standard]==0.32.0->-r requirements.txt (line 3))
+  Using cached uvicorn-0.32.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting pydantic==2.10.0 (from -r requirements.txt (line 4))
+  Using cached pydantic-2.10.0-py3-none-any.whl.metadata (167 kB)
+Collecting pydantic-settings==2.6.0 (from -r requirements.txt (line 5))
+  Using cached pydantic_settings-2.6.0-py3-none-any.whl.metadata (3.5 kB)
+Collecting python-multipart==0.0.12 (from -r requirements.txt (line 6))
+  Using cached python_multipart-0.0.12-py3-none-any.whl.metadata (1.9 kB)
+Collecting supabase==2.10.0 (from -r requirements.txt (line 9))
+  Using cached supabase-2.10.0-py3-none-any.whl.metadata (10 kB)
+Collecting celery==5.4.0 (from -r requirements.txt (line 12))
+  Using cached celery-5.4.0-py3-none-any.whl.metadata (21 kB)
+Collecting redis==5.2.0 (from -r requirements.txt (line 13))
+  Using cached redis-5.2.0-py3-none-any.whl.metadata (9.1 kB)
+Collecting python-jose==3.3.0 (from python-jose[cryptography]==3.3.0->-r requirements.txt (line 16))
+  Using cached python_jose-3.3.0-py2.py3-none-any.whl.metadata (5.4 kB)
+Requirement already satisfied: passlib==1.7.4 in c:\users\irfaa\appdata\local\programs\python\python313\lib\site-packages (from passlib[bcrypt]==1.7.4->-r requirements.txt (line 17)) (1.7.4)
+Collecting bcrypt==4.2.0 (from -r requirements.txt (line 18))
+  Using cached bcrypt-4.2.0-cp39-abi3-win_amd64.whl.metadata (9.9 kB)
+Collecting pandas==2.2.3 (from -r requirements.txt (line 21))
+  Using cached pandas-2.2.3-cp313-cp313-win_amd64.whl.metadata (19 kB)
+Collecting httpx==0.28.0 (from -r requirements.txt (line 24))
+  Using cached httpx-0.28.0-py3-none-any.whl.metadata (7.1 kB)
+Requirement already satisfied: groq in c:\users\irfaa\appdata\local\programs\python\python313\lib\site-packages (from -r requirements.txt (line 27)) (0.37.1)
+Collecting starlette<0.39.0,>=0.37.2 (from fastapi==0.115.0->-r requirements.txt (line 2))
+  Using cached starlette-0.38.6-py3-none-any.whl.metadata (6.0 kB)
+Requirement already satisfied: typing-extensions>=4.8.0 in c:\users\irfaa\appdata\local\programs\python\python313\lib\site-packages (from fastapi==0.115.0->-r requirements.txt (line 2)) (4.14.1)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\users\irfaa\appdata\local\programs\python\python313\lib\site-packages (from pydantic==2.10.0->-r requirements.txt (line 4)) (0.7.0)
+Collecting pydantic-core==2.27.0 (from pydantic==2.10.0->-r requirements.txt (line 4))
+  Using cached pydantic_core-2.27.0-cp313-none-win_amd64.whl.metadata (6.7 kB)
+Requirement already satisfied: click>=7.0 in c:\users\irfaa\appdata\local\programs\python\python313\lib\site-packages (from uvicorn==0.32.0->uvicorn[standard]==0.32.0->-r requirements.txt (line 3)) (8.3.0)
+Requirement already satisfied: h11>=0.8 in c:\users\irfaa\appdata\local\programs\python\python313\lib\site-packages (from uvicorn==0.32.0->uvicorn[standard]==0.32.0->-r requirements.txt (line 3)) (0.16.0)
+Requirement already satisfied: python-dotenv>=0.21.0 in c:\users\irfaa\appdata\local\programs\python\python313\lib\site-packages (from pydantic-settings==2.6.0->-r requirements.txt (line 5)) (1.2.1)
+Collecting gotrue<3.0.0,>=2.10.0 (from supabase==2.10.0->-r requirements.txt (line 9))
+  Using cached gotrue-2.12.4-py3-none-any.whl.metadata (2.0 kB)
+INFO: pip is looking at multiple versions of supabase to determine which version is compatible with other requirements. This could take a while.
+pip : ERROR: Cannot 
+install -r 
+requirements.txt (line 
+9) and httpx==0.28.0 
+because these package 
+versions have 
+conflicting 
+dependencies.
+At line:1 char:1
++ pip install 
+--progress-bar off -r 
+requirements.txt 2>&1 
+| Out-File -E ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (ERROR: Cannot   
+  i...g dependencie    
+s.:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+The conflict is caused by:
+    The user requested httpx==0.28.0
+    supabase 2.10.0 depends on httpx<0.28 and >=0.26
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip to attempt to solve the dependency conflict
+
+
+[notice] A new release 
+of pip is available: 
+25.1.1 -> 26.0.1
+[notice] To update, 
+run: python.exe -m pip 
+install --upgrade pip
+ERROR: 
+ResolutionImpossible: 
+for help visit https://
+pip.pypa.io/en/latest/t
+opics/dependency-resolu
+tion/#dealing-with-depe
+ndency-conflicts

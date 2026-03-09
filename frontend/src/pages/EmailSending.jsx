@@ -51,6 +51,10 @@ export default function EmailSending() {
     })
     const [savingAccount, setSavingAccount] = useState(false)
     const [editAccountId, setEditAccountId] = useState(null)
+    const [testingAccountId, setTestingAccountId] = useState(null)
+    const [showGmailQuick, setShowGmailQuick] = useState(false)
+    const [gmailQuickForm, setGmailQuickForm] = useState({ name: '', email: '', app_password: '' })
+    const [savingGmail, setSavingGmail] = useState(false)
 
     // Campaign modal
     const [showCampaignModal, setShowCampaignModal] = useState(false)
@@ -265,6 +269,42 @@ export default function EmailSending() {
         } catch (e) {
             console.error(e)
             setError("Failed to delete account")
+        }
+    }
+
+    const handleTestAccount = async (id) => {
+        setTestingAccountId(id)
+        try {
+            const res = await sendingAPI.testAccount(id)
+            alert(res.data?.message || 'Test email sent successfully!')
+        } catch (err) {
+            alert(err.response?.data?.detail || 'Test email failed. Check your SMTP credentials.')
+        } finally {
+            setTestingAccountId(null)
+        }
+    }
+
+    const handleGmailQuickConnect = async () => {
+        if (!gmailQuickForm.email || !gmailQuickForm.app_password) {
+            setError('Gmail address and App Password are required.')
+            return
+        }
+        setSavingGmail(true)
+        try {
+            await sendingAPI.addGmailQuick({
+                name: gmailQuickForm.name || gmailQuickForm.email.split('@')[0],
+                email: gmailQuickForm.email,
+                app_password: gmailQuickForm.app_password,
+            })
+            await fetchAccounts()
+            setGmailQuickForm({ name: '', email: '', app_password: '' })
+            setShowGmailQuick(false)
+            setError(null)
+        } catch (err) {
+            console.error(err)
+            setError('Failed to add Gmail account.')
+        } finally {
+            setSavingGmail(false)
         }
     }
 
@@ -538,7 +578,41 @@ export default function EmailSending() {
                         <div className="p-6 overflow-y-auto max-h-[70vh] space-y-6">
                             {/* Existing Accounts List */}
                             <div>
-                                <h4 className="text-sm font-semibold text-gray-700 mb-3">Saved Accounts</h4>
+                                <div className="flex items-center justify-between mb-3">
+                                    <h4 className="text-sm font-semibold text-gray-700">Saved Accounts</h4>
+                                    <button
+                                        className="text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition-colors flex items-center gap-1.5"
+                                        onClick={() => setShowGmailQuick(!showGmailQuick)}
+                                    >
+                                        <Mail className="w-3.5 h-3.5" /> Gmail Quick Connect
+                                    </button>
+                                </div>
+
+                                {/* Gmail Quick Connect Form */}
+                                {showGmailQuick && (
+                                    <div className="mb-4 p-4 bg-red-50/50 border border-red-200 rounded-lg space-y-3">
+                                        <p className="text-xs text-gray-600">Auto-configures Gmail SMTP & IMAP. You only need your Gmail address and an <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noreferrer" className="text-primary-600 underline">App Password</a>.</p>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Label (optional)</label>
+                                            <input type="text" className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm"
+                                                value={gmailQuickForm.name} onChange={e => setGmailQuickForm({ ...gmailQuickForm, name: e.target.value })} placeholder="e.g. My Gmail" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">Gmail Address</label>
+                                            <input type="email" className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm"
+                                                value={gmailQuickForm.email} onChange={e => setGmailQuickForm({ ...gmailQuickForm, email: e.target.value })} placeholder="you@gmail.com" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-medium text-gray-700 mb-1">App Password</label>
+                                            <input type="password" className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm"
+                                                value={gmailQuickForm.app_password} onChange={e => setGmailQuickForm({ ...gmailQuickForm, app_password: e.target.value })} placeholder="16-character app password" />
+                                        </div>
+                                        <button className="btn btn-primary text-sm py-1.5" onClick={handleGmailQuickConnect} disabled={savingGmail}>
+                                            {savingGmail ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Add Gmail Account
+                                        </button>
+                                    </div>
+                                )}
+
                                 {accounts.length === 0 ? (
                                     <p className="text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded p-3">No domains configured yet.</p>
                                 ) : (
@@ -549,7 +623,16 @@ export default function EmailSending() {
                                                     <p className="font-medium text-sm text-gray-900">{acc.name}</p>
                                                     <p className="text-xs text-gray-500">{acc.smtp_user} (SMTP: {acc.smtp_host}:{acc.smtp_port})</p>
                                                 </div>
-                                                <div className="flex items-center gap-3">
+                                                <div className="flex items-center gap-2">
+                                                    <button
+                                                        onClick={() => handleTestAccount(acc.id)}
+                                                        disabled={testingAccountId === acc.id}
+                                                        className="text-[11px] font-medium text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-2 py-1 rounded-full border border-emerald-200 transition-colors flex items-center gap-1"
+                                                        title="Send Test Email"
+                                                    >
+                                                        {testingAccountId === acc.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
+                                                        Test
+                                                    </button>
                                                     <span className="text-[11px] font-medium text-primary-600 bg-primary-50 px-2 py-1 rounded-full border border-primary-100 hidden sm:inline-block">
                                                         Connected
                                                     </span>
