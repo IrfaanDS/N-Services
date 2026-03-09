@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Sparkles, Download, Eye, ArrowRight, Mail, Loader2, AlertCircle, X, Send, Play } from 'lucide-react'
+import { Sparkles, Download, Eye, ArrowRight, Mail, Loader2, AlertCircle, X, Send } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { emailsAPI, sendingAPI } from '../services/api'
+import { emailsAPI } from '../services/api'
 
 function getStatusBadge(status) {
     switch (status) {
@@ -19,9 +19,6 @@ export default function EmailGeneration() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [previewEmail, setPreviewEmail] = useState(null)
-    const [isMoveModalOpen, setIsMoveModalOpen] = useState(false)
-    const [campaignName, setCampaignName] = useState(`SEO Outreach - ${new Date().toLocaleDateString()}`)
-    const [isMoving, setIsMoving] = useState(false)
 
     useEffect(() => {
         const stored = sessionStorage.getItem('scored_leads')
@@ -102,28 +99,27 @@ export default function EmailGeneration() {
         }
     }
 
-    const handleMoveToSending = async () => {
+    const handleMoveToSending = () => {
         const generatedLeads = leads.filter(l => l.status === 'generated')
         if (generatedLeads.length === 0) {
             setError("No generated emails to move.")
             return
         }
 
-        setIsMoving(true)
+        // Auto-download the CSV
         try {
-            const businessIds = generatedLeads.map(l => l.business_id)
-            await sendingAPI.moveLeads({
-                campaign_name: campaignName,
-                business_ids: businessIds
+            handleExport()
+        } catch (e) { console.error("Could not export automatically", e) }
+
+        // Give the browser a moment to process the download before unmounting
+        setTimeout(() => {
+            navigate('/email-sending', {
+                state: {
+                    autoOpenCampaign: true,
+                    preselectedIds: generatedLeads.map(l => l.business_id)
+                }
             })
-            setIsMoveModalOpen(false)
-            navigate('/email-sending')
-        } catch (err) {
-            console.error('Failed to move leads', err)
-            setError(err.response?.data?.detail || "Failed to move leads to ReachInbox.")
-        } finally {
-            setIsMoving(false)
-        }
+        }, 300)
     }
 
     const handleExport = () => {
@@ -209,11 +205,11 @@ export default function EmailGeneration() {
                 <div className="px-6 py-4 border-b border-surface-200 flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-gray-700">Generated Emails (Preview)</h3>
                     <button
-                        className="text-sm text-primary-700 hover:underline font-medium disabled:opacity-50"
-                        onClick={() => setIsMoveModalOpen(true)}
+                        className="text-sm text-primary-700 hover:underline font-medium disabled:opacity-50 flex items-center gap-1"
+                        onClick={handleMoveToSending}
                         disabled={generatedCount === 0 || loading}
                     >
-                        Proceed to Sending →
+                        <Send className="w-4 h-4" /> Proceed to Sending →
                     </button>
                 </div>
 
@@ -298,44 +294,6 @@ export default function EmailGeneration() {
                 </div>
             )}
 
-            {/* ── Move to Sending Modal ── */}
-            {isMoveModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 p-4">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden flex flex-col">
-                        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                                <Send className="w-5 h-5 text-primary-700" />
-                                Create Campaign
-                            </h3>
-                            <button onClick={() => setIsMoveModalOpen(false)} className="text-gray-400 hover:text-gray-600">
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-                        <div className="p-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Campaign Name</label>
-                            <input
-                                type="text"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                                value={campaignName}
-                                onChange={(e) => setCampaignName(e.target.value)}
-                                placeholder="Enter campaign name"
-                            />
-                            <p className="text-xs text-gray-400 mt-2">
-                                This will create a new campaign in ReachInbox and add {generatedCount} leads with their personalized emails.
-                            </p>
-                        </div>
-                        <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3 bg-white">
-                            <button className="btn btn-outline" onClick={() => setIsMoveModalOpen(false)} disabled={isMoving}>
-                                Cancel
-                            </button>
-                            <button className="btn btn-primary" onClick={handleMoveToSending} disabled={isMoving || !campaignName}>
-                                {isMoving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-                                {isMoving ? 'Moving...' : 'Start Outreach'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     )
 }

@@ -26,8 +26,8 @@ class Settings(BaseSettings):
     REACHINBOX_API_KEY: str = ""
     REACHINBOX_BASE_URL: str = "https://api.reachinbox.ai/api/v1"
 
-    # ── Gemini API ──
-    GEMINI_API_KEY: str = ""
+    # ── Groq API ──
+    GROQ_API_KEY: str = ""
 
     # ── App ──
     DEBUG: bool = True
