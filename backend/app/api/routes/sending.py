@@ -26,7 +26,16 @@ MAILBOX_FILE = os.path.join(os.path.dirname(__file__), "mailbox.json")
 def load_accounts():
     if os.path.exists(ACCOUNTS_FILE):
         with open(ACCOUNTS_FILE, "r") as f:
-            return json.load(f)
+            accounts = json.load(f)
+        # Inject credentials from environment variables for accounts with env_key
+        for acc in accounts:
+            env_key = acc.get("env_key")
+            if env_key:
+                acc["smtp_user"] = os.environ.get(f"SMTP_USER_{env_key}", acc.get("smtp_user", ""))
+                acc["smtp_pass"] = os.environ.get(f"SMTP_PASS_{env_key}", acc.get("smtp_pass", ""))
+                acc["imap_user"] = os.environ.get(f"IMAP_USER_{env_key}", acc.get("imap_user", ""))
+                acc["imap_pass"] = os.environ.get(f"IMAP_PASS_{env_key}", acc.get("imap_pass", ""))
+        return accounts
     return []
 
 def save_accounts(accounts):
@@ -80,6 +89,14 @@ class AccountPayload(BaseModel):
     imap_user: str
     imap_pass: str
 
+class GmailQuickPayload(BaseModel):
+    name: str
+    email: str
+    app_password: str
+
+class TestEmailPayload(BaseModel):
+    recipient: Optional[str] = None  # defaults to the account's own smtp_user
+
 class SendCampaignRequest(BaseModel):
     campaign_name: str
     business_ids: List[str]
@@ -131,6 +148,51 @@ async def update_account(account_id: str, account: AccountPayload):
             save_accounts(accounts)
             return {"status": "success", "message": "Account updated"}
     raise HTTPException(status_code=404, detail="Account not found")
+
+# ── Gmail Quick-Connect ──
+
+@router.post("/accounts/gmail-quick")
+async def gmail_quick_connect(payload: GmailQuickPayload):
+    """One-click Gmail account setup. Auto-fills SMTP/IMAP settings."""
+    accounts = load_accounts()
+    new_acc = {
+        "id": str(len(accounts) + 1),
+        "name": payload.name,
+        "smtp_host": "smtp.gmail.com",
+        "smtp_port": 587,
+        "smtp_user": payload.email,
+        "smtp_pass": payload.app_password,
+        "imap_host": "imap.gmail.com",
+        "imap_port": 993,
+        "imap_user": payload.email,
+        "imap_pass": payload.app_password,
+    }
+    accounts.append(new_acc)
+    save_accounts(accounts)
+    return {"status": "success", "message": "Gmail account added", "id": new_acc["id"]}
+
+# ── Test Email ──
+
+@router.post("/accounts/{account_id}/test")
+async def test_account(account_id: str, payload: TestEmailPayload = TestEmailPayload()):
+    """Send a test email to verify SMTP credentials work."""
+    accounts = load_accounts()
+    account = next((a for a in accounts if a["id"] == account_id), None)
+    if not account:
+        raise HTTPException(status_code=404, detail="Account not found")
+
+    recipient = payload.recipient or account["smtp_user"]
+    msg = EmailMessage()
+    msg.set_content("This is a test email from LeadFlow SEO to verify your sending domain is working correctly.\n\nIf you see this, your SMTP credentials are set up properly!")
+    msg["Subject"] = "✅ LeadFlow SEO - Test Email"
+    msg["From"] = f"{account['name']} <{account['smtp_user']}>"
+    msg["To"] = recipient
+
+    try:
+        send_smtp(msg, account)
+        return {"status": "success", "message": f"Test email sent to {recipient}"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"SMTP test failed: {str(e)}")
 
 # ── Mailbox (local data from mailbox.json) ──
 

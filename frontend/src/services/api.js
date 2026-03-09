@@ -68,6 +68,8 @@ export const sendingAPI = {
     updateAccount: (id, data) => api.put(`/campaigns/accounts/${id}`, data),
     deleteAccount: (id) => api.delete(`/campaigns/accounts/${id}`),
     getCampaigns: () => api.get('/campaigns/list'),
+    testAccount: (id) => api.post(`/campaigns/accounts/${id}/test`),
+    addGmailQuick: (data) => api.post('/campaigns/accounts/gmail-quick', data),
 }
 
 // ─── Onebox (Email Threads) ───
