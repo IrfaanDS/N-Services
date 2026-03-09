@@ -87,6 +87,13 @@ export const oneboxAPI = {
     getMessages: (email, params) => api.get(`/onebox/messages/${email}`, { params }),
 }
 
+// ─── SEO Assistant (RAG Agent) ───
+export const seoAssistantAPI = {
+    ask: (data) => api.post('/assistant/ask', data),
+    clear: (sessionId) => api.post('/assistant/clear', { session_id: sessionId }),
+    health: () => api.get('/assistant/health'),
+}
+
 // ─── Dashboard ───
 export const dashboardAPI = {
     getStats: () => api.get('/dashboard/stats'),
