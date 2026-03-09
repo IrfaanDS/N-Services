@@ -6,6 +6,7 @@ import LeadAcquisition from './pages/LeadAcquisition'
 import LeadEvaluation from './pages/LeadEvaluation'
 import EmailGeneration from './pages/EmailGeneration'
 import EmailSending from './pages/EmailSending'
+import Onebox from './pages/Onebox'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 
@@ -35,6 +36,7 @@ function AppLayout() {
                         <Route path="/evaluation" element={<LeadEvaluation />} />
                         <Route path="/email-generation" element={<EmailGeneration />} />
                         <Route path="/email-sending" element={<EmailSending />} />
+                        <Route path="/onebox" element={<Onebox />} />
                         <Route path="*" element={<Navigate to="/leads" replace />} />
                     </Routes>
                 </main>

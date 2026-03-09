@@ -3,11 +3,12 @@ import {
     LayoutDashboard,
     Search,
     BarChart3,
-    Mail,
+    MessageSquare,
     Send,
     FileText,
     Settings,
-    Zap
+    Zap,
+    Mail
 } from 'lucide-react'
 
 const navItems = [
@@ -16,6 +17,7 @@ const navItems = [
     { to: '/evaluation', label: 'Lead Evaluation', icon: BarChart3 },
     { to: '/email-generation', label: 'Email Generation', icon: Mail },
     { to: '/email-sending', label: 'Email Sending', icon: Send },
+    { to: '/onebox', label: 'Onebox (Inbox)', icon: MessageSquare },
 ]
 
 const bottomItems = [

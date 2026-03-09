@@ -57,11 +57,32 @@ export const emailsAPI = {
     generate: (data) => api.post('/emails/generate', data),
 }
 
-// ─── Email Sending (ReachInbox) ───
+// ─── Email Sending (Local Mailbox + ReachInbox) ───
 export const sendingAPI = {
-    listCampaigns: () => api.get('/campaigns'),
-    moveLeads: (data) => api.post('/campaigns/move', data),
+    getMailbox: (status) => api.get('/campaigns/mailbox', { params: { status } }),
+    receiveEmails: (data) => api.post('/campaigns/receive', data),
+    sendCampaign: (data) => api.post('/campaigns/send', data),
     toggleCampaign: (id, action) => api.post(`/campaigns/${id}/toggle`, null, { params: { action } }),
+    getAccounts: () => api.get('/campaigns/accounts'),
+    addAccount: (data) => api.post('/campaigns/accounts', data),
+    updateAccount: (id, data) => api.put(`/campaigns/accounts/${id}`, data),
+    deleteAccount: (id) => api.delete(`/campaigns/accounts/${id}`),
+    getCampaigns: () => api.get('/campaigns/list'),
+}
+
+// ─── Onebox (Email Threads) ───
+export const oneboxAPI = {
+    // Corrected to use GET with query params consistent with backend update
+    list: (params) => api.get('/onebox/list', { params }),
+    // Corrected to use GET with path param
+    getThread: (id) => api.get(`/onebox/thread/${id}`),
+    // Corrected to use POST with path param
+    sendReply: (threadId, formData) => api.post(`/onebox/reply/${threadId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    }),
+    getMessages: (email, params) => api.get(`/onebox/messages/${email}`, { params }),
 }
 
 // ─── Dashboard ───

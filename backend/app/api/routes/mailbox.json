@@ -1,0 +1,29 @@
+[
+    {
+        "business_id": "test-id-1234",
+        "business_url": "example.com",
+        "target_email": "test@example.com",
+        "subject": "Optimizing Your New York Dentist Practice Online Visibility",
+        "body": "Hi Dr./Owner's Name,\n\nI visited your dental practice's website at example.com and noticed it scored 90 out of 100 in our technical audit. That's impressive! However, I couldn't help but see a few missed opportunities that could further amplify your online presence in New York. Your website is missing crucial meta tags, which could hinder its discoverability on search engines. I'd love to discuss how we can optimize your site's SEO to attract more patients. Would a quick call to explore these opportunities be suitable for you?\n\nBest regards,\n[Your Name]",
+        "status": "draft",
+        "created_at": "2026-03-10T00:36:56.017714"
+    },
+    {
+        "business_id": "a9182633-c747-43f0-be57-8d7719473f9b",
+        "business_url": "https://www.legacycommunityhealth.org",
+        "target_email": "emailjohnsmith@example.com",
+        "subject": "A Closer Look at Your Online Presence - Legacy Community Health",
+        "body": "Dear [Receiver's Name],\n\n       I came across Legacy Community Health, a trusted dentist serving Downtown Houston. My team conducted an SEO audit for your website, and we found some missed opportunities worth exploring.\n\n       As a locally based dentist, it's essential to have a solid online presence. With a score of 20/100, there's significant room for improvement. We noticed no proper H1 structure on your website, which could be holding you back from higher search engine rankings.\n\n       I'd love to schedule a call to walk you through our findings and provide actionable recommendations tailored to your specific dental practice.\n\n       Best regards,\n       [Your Name]",
+        "status": "draft",
+        "created_at": "2026-03-10T00:38:48.470214"
+    },
+    {
+        "business_id": "161bde20-7c3b-4fa4-acef-d9f1cba3fba1",
+        "business_url": "https://github.com/IrfaanDS/N-Services",
+        "target_email": "irfaanexe@gmail.com",
+        "subject": "Website Accessibility and Performance Enhancement Opportunity for N-Services",
+        "body": "Dear Irfaan,\n\nI came across your global software services company, N-Services (https://github.com/IrfaanDS/N-Services), and was impressed with the work. However, based on a review of your website, I noticed some 'missed opportunities' that could enhance user experience, search engine rankings, and ultimately drive more conversions.\n\nKey areas for improvement include securing your website with HTTPS (addressing a security risk), adding a clear title tag and meta description to boost CTR, implementing proper H1 structure, and including local schema markup and complete contact information to establish credibility. I'd be happy to schedule a call to discuss these opportunities in more detail and help you prioritize improvements.\n\nBest, [Your Name]",
+        "status": "bounced",
+        "created_at": "2026-03-10T00:54:33.881873"
+    }
+]

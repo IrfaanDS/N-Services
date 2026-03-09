@@ -1,0 +1,26 @@
+[
+    {
+        "name": "org",
+        "smtp_host": "smtp.gmail.com",
+        "smtp_port": 587,
+        "smtp_user": "hifsashafique04@gmail.com",
+        "smtp_pass": "dqxoifuzsoccfani",
+        "imap_host": "imap.gmail.com",
+        "imap_port": 993,
+        "imap_user": "hifsashafique04@gmail.com",
+        "imap_pass": "dqxoifuzsoccfani",
+        "id": "2"
+    },
+    {
+        "name": "Mason Scott",
+        "smtp_host": "mail.go.salesnimbus.com",
+        "smtp_port": 587,
+        "smtp_user": "mason.scott@go.salesnimbus.com",
+        "smtp_pass": "4X49e]8mkS",
+        "imap_host": "mail.go.salesnimbus.com",
+        "imap_port": 993,
+        "imap_user": "mason.scott@go.salesnimbus.com",
+        "imap_pass": "4X49e]8mkS",
+        "id": "2"
+    }
+]
