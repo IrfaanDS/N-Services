@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import leads, evaluation, emails, sending, dashboard, auth, onebox
+from app.api.routes import leads, evaluation, emails, sending, dashboard, auth, onebox, seo_assistant
 
 app = FastAPI(
     title="LeadFlow SEO API",
@@ -24,7 +24,8 @@ app.include_router(evaluation.router, prefix="/api/evaluate",   tags=["Lead Eval
 app.include_router(emails.router,     prefix="/api/emails",     tags=["Email Generation"])
 app.include_router(sending.router,    prefix="/api/campaigns",  tags=["Email Sending"])
 app.include_router(onebox.router,     prefix="/api/onebox",     tags=["Onebox"])
-app.include_router(dashboard.router,  prefix="/api/dashboard",  tags=["Dashboard"])
+app.include_router(dashboard.router,       prefix="/api/dashboard",    tags=["Dashboard"])
+app.include_router(seo_assistant.router,   prefix="/api/assistant",    tags=["SEO Assistant"])
 
 
 @app.get("/api/health")

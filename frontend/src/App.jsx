@@ -9,6 +9,7 @@ import EmailSending from './pages/EmailSending'
 import Onebox from './pages/Onebox'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
+import FloatingAssistant from './components/FloatingAssistant'
 
 function AppLayout() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 1024)
@@ -41,6 +42,7 @@ function AppLayout() {
                     </Routes>
                 </main>
             </div>
+            <FloatingAssistant />
         </div>
     )
 }
