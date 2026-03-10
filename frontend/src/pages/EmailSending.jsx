@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import {
     Send, Mail, Calendar, Clock, Filter, Upload, Plus,
     CheckCircle, XCircle, Loader2, RefreshCcw, Eye, X,
-    Play, AlertCircle, Inbox, Settings, Server, Edit2, Trash2
+    Play, AlertCircle, Inbox, Settings, Server, Edit2, Trash2,
+    Pause, MoreVertical
 } from 'lucide-react'
 import { sendingAPI } from '../services/api'
 import { useLocation } from 'react-router-dom'
@@ -32,6 +33,16 @@ function getStatusBadge(status) {
 export default function EmailSending() {
     const location = useLocation()
     const [activeTab, setActiveTab] = useState('mailbox')
+
+    // Lead editing state
+    const [editingLead, setEditingLead] = useState(null)
+    const [editLeadForm, setEditLeadForm] = useState({ target_email: '', subject: '', body: '', business_url: '' })
+    const [savingLead, setSavingLead] = useState(false)
+    
+    // Campaign editing state
+    const [editingCampaign, setEditingCampaign] = useState(null)
+    const [editCampaignForm, setEditCampaignForm] = useState({ name: '' })
+    const [savingCampaign, setSavingCampaign] = useState(false)
     const [campaignsList, setCampaignsList] = useState([])
 
     const [emails, setEmails] = useState([])
@@ -326,7 +337,7 @@ export default function EmailSending() {
                     <button className="btn btn-outline" onClick={() => setShowAccountsModal(true)}>
                         <Settings className="w-4 h-4" /> Sending Domains
                     </button>
-                    <button className="btn btn-outline p-2" onClick={fetchMailbox} disabled={loading}>
+                    <button className="btn btn-outline p-2" onClick={() => { fetchMailbox(); fetchCampaigns(); }} disabled={loading}>
                         <RefreshCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                     </button>
                     <input type="file" ref={fileInputRef} accept=".csv" className="hidden" onChange={handleImportCSV} />
@@ -378,7 +389,7 @@ export default function EmailSending() {
                     className={`pb-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'mailbox' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
                     onClick={() => setActiveTab('mailbox')}
                 >
-                    Mailbox / Leads
+                    Leads
                 </button>
                 <button
                     className={`pb-3 text-sm font-medium border-b-2 transition-colors ${activeTab === 'campaigns' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
@@ -394,7 +405,7 @@ export default function EmailSending() {
                     <div className="px-6 py-4 border-b border-surface-200 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <Inbox className="w-5 h-5 text-gray-500" />
-                            <h3 className="text-sm font-semibold text-gray-700">Mailbox</h3>
+                            <h3 className="text-sm font-semibold text-gray-700">Leads</h3>
                             {selected.size > 0 && (
                                 <span className="text-xs text-primary-700 font-medium bg-primary-50 px-2 py-0.5 rounded-full">
                                     {selected.size} selected
@@ -462,12 +473,45 @@ export default function EmailSending() {
                                             <td className="text-gray-700 truncate max-w-[250px]">{email.subject || '—'}</td>
                                             <td>{getStatusBadge(email.status)}</td>
                                             <td>
-                                                <button
-                                                    onClick={() => setPreviewEmail(email)}
-                                                    className="text-sm text-primary-700 hover:underline font-medium flex items-center gap-1"
-                                                >
-                                                    <Eye className="w-4 h-4" /> View
-                                                </button>
+                                                <div className="flex items-center gap-1">
+                                                    <button
+                                                        onClick={() => setPreviewEmail(email)}
+                                                        className="text-sm text-primary-700 hover:underline font-medium flex items-center gap-1"
+                                                    >
+                                                        <Eye className="w-4 h-4" /> View
+                                                    </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setEditingLead(email)
+                                                            setEditLeadForm({
+                                                                target_email: email.target_email || '',
+                                                                subject: email.subject || '',
+                                                                body: email.body || '',
+                                                                business_url: email.business_url || '',
+                                                            })
+                                                        }}
+                                                        className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                                                        title="Edit Lead"
+                                                    >
+                                                        <Edit2 className="w-3.5 h-3.5" />
+                                                    </button>
+                                                    <button
+                                                        onClick={async () => {
+                                                            if (!window.confirm('Are you sure you want to delete this lead?')) return
+                                                            try {
+                                                                await sendingAPI.deleteLead(email.business_id)
+                                                                await fetchMailbox()
+                                                            } catch (e) {
+                                                                console.error(e)
+                                                                setError('Failed to delete lead')
+                                                            }
+                                                        }}
+                                                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                                        title="Delete Lead"
+                                                    >
+                                                        <Trash2 className="w-3.5 h-3.5" />
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -499,21 +543,100 @@ export default function EmailSending() {
                                     <tr>
                                         <th>Name</th>
                                         <th>High-Level Status</th>
-                                        <th>Total Targets</th>
+                                        <th>Progress</th>
                                         <th>Sending Domain</th>
                                         <th>Created/Scheduled</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {campaignsList.map((c) => (
+                                    {campaignsList.map((c) => {
+                                        const statusStyle = c.status === 'Completed'
+                                            ? 'text-emerald-600 bg-emerald-50'
+                                            : c.status === 'Paused'
+                                            ? 'text-amber-600 bg-amber-50'
+                                            : 'text-blue-600 bg-blue-50'
+                                        return (
                                         <tr key={c.id}>
                                             <td className="font-medium text-gray-900">{c.name}</td>
-                                            <td><span className="badge font-medium text-blue-600 bg-blue-50">Running</span></td>
-                                            <td className="text-gray-500">{c.total_leads}</td>
+                                            <td>
+                                                <span className={`badge font-medium ${statusStyle}`}>
+                                                    {c.status === 'Completed' && <CheckCircle className="w-3.5 h-3.5" />}
+                                                    {c.status === 'Paused' && <Pause className="w-3.5 h-3.5" />}
+                                                    {c.status === 'Running' && <Play className="w-3.5 h-3.5" />}
+                                                    {c.status || 'Running'}
+                                                </span>
+                                            </td>
+                                            <td className="text-gray-500">{c.sent_count || 0} / {c.total_leads}</td>
                                             <td className="text-gray-500 truncate max-w-[150px]">{accounts.find(a => a.id === c.account_id)?.name || c.account_id}</td>
                                             <td className="text-gray-500">{new Date(c.created_at).toLocaleString()}</td>
+                                            <td>
+                                                <div className="flex items-center gap-1">
+                                                    {c.status === 'Running' && (
+                                                        <button
+                                                            onClick={async () => {
+                                                                try {
+                                                                    await sendingAPI.toggleCampaign(c.id, 'pause')
+                                                                    await fetchCampaigns()
+                                                                } catch (e) {
+                                                                    console.error(e)
+                                                                    setError('Failed to pause campaign')
+                                                                }
+                                                            }}
+                                                            className="p-1.5 text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded-md transition-colors"
+                                                            title="Pause Campaign"
+                                                        >
+                                                            <Pause className="w-4 h-4" />
+                                                        </button>
+                                                    )}
+                                                    {c.status === 'Paused' && (
+                                                        <button
+                                                            onClick={async () => {
+                                                                try {
+                                                                    await sendingAPI.toggleCampaign(c.id, 'resume')
+                                                                    await fetchCampaigns()
+                                                                } catch (e) {
+                                                                    console.error(e)
+                                                                    setError('Failed to resume campaign')
+                                                                }
+                                                            }}
+                                                            className="p-1.5 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors"
+                                                            title="Resume Campaign"
+                                                        >
+                                                            <Play className="w-4 h-4" />
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        onClick={() => {
+                                                            setEditingCampaign(c)
+                                                            setEditCampaignForm({ name: c.name })
+                                                        }}
+                                                        className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                                                        title="Edit Campaign"
+                                                    >
+                                                        <Edit2 className="w-4 h-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={async () => {
+                                                            if (!window.confirm('Are you sure you want to delete this campaign?')) return
+                                                            try {
+                                                                await sendingAPI.deleteCampaign(c.id)
+                                                                await fetchCampaigns()
+                                                            } catch (e) {
+                                                                console.error(e)
+                                                                setError('Failed to delete campaign')
+                                                            }
+                                                        }}
+                                                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                                        title="Delete Campaign"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            </td>
                                         </tr>
-                                    ))}
+                                    )})
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -528,11 +651,46 @@ export default function EmailSending() {
                         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                             <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                                 <Mail className="w-5 h-5 text-primary-700" />
-                                Email Preview
+                                Lead Preview
                             </h3>
-                            <button onClick={() => setPreviewEmail(null)} className="text-gray-400 hover:text-gray-600 transition-colors">
-                                <X className="w-5 h-5" />
-                            </button>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => {
+                                        setEditingLead(previewEmail)
+                                        setEditLeadForm({
+                                            target_email: previewEmail.target_email || '',
+                                            subject: previewEmail.subject || '',
+                                            body: previewEmail.body || '',
+                                            business_url: previewEmail.business_url || '',
+                                        })
+                                        setPreviewEmail(null)
+                                    }}
+                                    className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                                    title="Edit Lead"
+                                >
+                                    <Edit2 className="w-4 h-4" />
+                                </button>
+                                <button
+                                    onClick={async () => {
+                                        if (!window.confirm('Are you sure you want to delete this lead?')) return
+                                        try {
+                                            await sendingAPI.deleteLead(previewEmail.business_id)
+                                            setPreviewEmail(null)
+                                            await fetchMailbox()
+                                        } catch (e) {
+                                            console.error(e)
+                                            setError('Failed to delete lead')
+                                        }
+                                    }}
+                                    className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                                    title="Delete Lead"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => setPreviewEmail(null)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
                         </div>
                         <div className="p-6 overflow-y-auto bg-gray-50/50">
                             <div className="mb-4">
@@ -553,6 +711,105 @@ export default function EmailSending() {
                         <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3 bg-white">
                             <button className="btn btn-outline" onClick={() => setPreviewEmail(null)}>
                                 Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ── Edit Lead Modal ── */}
+            {editingLead && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 p-4">
+                    <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden flex flex-col">
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                                <Edit2 className="w-5 h-5 text-primary-700" />
+                                Edit Lead
+                            </h3>
+                            <button onClick={() => setEditingLead(null)} className="text-gray-400 hover:text-gray-600">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Business URL</label>
+                                <input type="text" className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
+                                    value={editLeadForm.business_url} onChange={e => setEditLeadForm({ ...editLeadForm, business_url: e.target.value })} />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
+                                    value={editLeadForm.target_email} onChange={e => setEditLeadForm({ ...editLeadForm, target_email: e.target.value })} />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                                <input type="text" className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
+                                    value={editLeadForm.subject} onChange={e => setEditLeadForm({ ...editLeadForm, subject: e.target.value })} />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Body</label>
+                                <textarea className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm min-h-[120px]"
+                                    value={editLeadForm.body} onChange={e => setEditLeadForm({ ...editLeadForm, body: e.target.value })} />
+                            </div>
+                        </div>
+                        <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3 bg-white">
+                            <button className="btn btn-outline" onClick={() => setEditingLead(null)}>Cancel</button>
+                            <button className="btn btn-primary" disabled={savingLead} onClick={async () => {
+                                setSavingLead(true)
+                                try {
+                                    await sendingAPI.updateLead(editingLead.business_id, editLeadForm)
+                                    setEditingLead(null)
+                                    await fetchMailbox()
+                                } catch (e) {
+                                    console.error(e)
+                                    setError('Failed to update lead')
+                                } finally {
+                                    setSavingLead(false)
+                                }
+                            }}>
+                                {savingLead ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />} Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ── Edit Campaign Modal ── */}
+            {editingCampaign && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 p-4">
+                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden flex flex-col">
+                        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                                <Edit2 className="w-5 h-5 text-primary-700" />
+                                Edit Campaign
+                            </h3>
+                            <button onClick={() => setEditingCampaign(null)} className="text-gray-400 hover:text-gray-600">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Campaign Name</label>
+                                <input type="text" className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
+                                    value={editCampaignForm.name} onChange={e => setEditCampaignForm({ ...editCampaignForm, name: e.target.value })} />
+                            </div>
+                        </div>
+                        <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3 bg-white">
+                            <button className="btn btn-outline" onClick={() => setEditingCampaign(null)}>Cancel</button>
+                            <button className="btn btn-primary" disabled={savingCampaign} onClick={async () => {
+                                setSavingCampaign(true)
+                                try {
+                                    await sendingAPI.updateCampaign(editingCampaign.id, editCampaignForm)
+                                    setEditingCampaign(null)
+                                    await fetchCampaigns()
+                                } catch (e) {
+                                    console.error(e)
+                                    setError('Failed to update campaign')
+                                } finally {
+                                    setSavingCampaign(false)
+                                }
+                            }}>
+                                {savingCampaign ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />} Save Changes
                             </button>
                         </div>
                     </div>
