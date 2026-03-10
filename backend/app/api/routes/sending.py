@@ -104,6 +104,16 @@ class SendCampaignRequest(BaseModel):
     scheduled_at: Optional[str] = None
     send_rate: int = 5
 
+class UpdateCampaignRequest(BaseModel):
+    name: Optional[str] = None
+    send_rate: Optional[int] = None
+
+class UpdateLeadRequest(BaseModel):
+    target_email: Optional[str] = None
+    subject: Optional[str] = None
+    body: Optional[str] = None
+    business_url: Optional[str] = None
+
 # ── Accounts Management ──
 
 @router.get("/accounts")
@@ -267,9 +277,6 @@ async def send_campaign(request: SendCampaignRequest, background_tasks: Backgrou
             m["status"] = "scheduled"
     save_mailbox(mailbox)
 
-    # Process in background task
-    background_tasks.add_task(process_sending, emails, account, request.send_rate)
-    
     # Save campaign trace
     campaigns = load_campaigns()
     new_campaign = {
@@ -277,12 +284,17 @@ async def send_campaign(request: SendCampaignRequest, background_tasks: Backgrou
         "name": request.campaign_name,
         "account_id": request.account_id,
         "total_leads": len(emails),
+        "sent_count": 0,
+        "business_ids": request.business_ids,
         "scheduled_at": request.scheduled_at,
         "created_at": datetime.now().isoformat(),
         "status": "Running"
     }
     campaigns.append(new_campaign)
     save_campaigns(campaigns)
+
+    # Process in background task
+    background_tasks.add_task(process_sending, emails, account, request.send_rate, new_campaign["id"])
 
     return {
         "status": "success",
@@ -291,10 +303,19 @@ async def send_campaign(request: SendCampaignRequest, background_tasks: Backgrou
         "campaign_id": new_campaign["id"]
     }
 
-async def process_sending(emails, account, rate):
+async def process_sending(emails, account, rate, campaign_id=None):
     delay = 1.0 / rate if rate > 0 else 1.0
+    sent_count = 0
     
     for email in emails:
+        # Check if campaign was paused or deleted
+        if campaign_id:
+            campaigns = load_campaigns()
+            campaign = next((c for c in campaigns if c["id"] == campaign_id), None)
+            if not campaign or campaign.get("status") == "Paused":
+                logger.info(f"Campaign {campaign_id} paused/deleted, stopping sending.")
+                return
+        
         b_id = email.get("business_id")
         try:
             msg = EmailMessage()
@@ -313,11 +334,21 @@ async def process_sending(emails, account, rate):
                 if m.get("business_id") == b_id:
                     m["status"] = "sent"
             save_mailbox(mailbox)
+            sent_count += 1
+            
+            # Update campaign sent_count
+            if campaign_id:
+                campaigns = load_campaigns()
+                for c in campaigns:
+                    if c["id"] == campaign_id:
+                        c["sent_count"] = sent_count
+                save_campaigns(campaigns)
             
             # Wait for rate limiting
             await asyncio.sleep(delay)
         except Exception as e:
             logger.error(f"Failed to send email to {email['target_email']}: {e}")
+            sent_count += 1  # Still counts as processed
             try:
                 mailbox = load_mailbox()
                 for m in mailbox:
@@ -326,6 +357,17 @@ async def process_sending(emails, account, rate):
                 save_mailbox(mailbox)
             except:
                 pass
+    
+    # Mark campaign as completed when all emails are processed
+    if campaign_id:
+        campaigns = load_campaigns()
+        for c in campaigns:
+            if c["id"] == campaign_id:
+                c["status"] = "Completed"
+                c["sent_count"] = sent_count
+                c["completed_at"] = datetime.now().isoformat()
+        save_campaigns(campaigns)
+        logger.info(f"Campaign {campaign_id} completed. Sent {sent_count} emails.")
 
 def send_smtp(msg, account):
     try:
@@ -342,11 +384,68 @@ def send_smtp(msg, account):
         logger.error(f"SMTP error: {e}")
         raise e
 
-@router.post("/{campaign_id}/toggle")
-async def toggle_campaign(campaign_id: int, action: str = Query(...)):
-    # Custom toggle logic if needed in the future
-    return {"status": "success", "action": action}
-
 @router.get("/list")
 async def list_campaigns():
     return load_campaigns()
+
+# ── Lead Management ──
+
+@router.put("/leads/{business_id}")
+async def update_lead(business_id: str, request: UpdateLeadRequest):
+    mailbox = load_mailbox()
+    for m in mailbox:
+        if m.get("business_id") == business_id:
+            if request.target_email is not None:
+                m["target_email"] = request.target_email
+            if request.subject is not None:
+                m["subject"] = request.subject
+            if request.body is not None:
+                m["body"] = request.body
+            if request.business_url is not None:
+                m["business_url"] = request.business_url
+            save_mailbox(mailbox)
+            return {"status": "success", "message": "Lead updated"}
+    raise HTTPException(status_code=404, detail="Lead not found")
+
+@router.delete("/leads/{business_id}")
+async def delete_lead(business_id: str):
+    mailbox = load_mailbox()
+    mailbox = [m for m in mailbox if m.get("business_id") != business_id]
+    save_mailbox(mailbox)
+    return {"status": "success", "message": "Lead deleted"}
+
+# ── Campaign actions (dynamic routes must come AFTER static ones) ──
+
+@router.post("/{campaign_id}/toggle")
+async def toggle_campaign(campaign_id: str, action: str = Query(...)):
+    campaigns = load_campaigns()
+    for c in campaigns:
+        if c["id"] == campaign_id:
+            if action == "pause":
+                c["status"] = "Paused"
+            elif action == "resume":
+                c["status"] = "Running"
+            save_campaigns(campaigns)
+            return {"status": "success", "action": action, "campaign_status": c["status"]}
+    raise HTTPException(status_code=404, detail="Campaign not found")
+
+@router.put("/{campaign_id}")
+async def update_campaign(campaign_id: str, request: UpdateCampaignRequest):
+    campaigns = load_campaigns()
+    for c in campaigns:
+        if c["id"] == campaign_id:
+            if request.name is not None:
+                c["name"] = request.name
+            if request.send_rate is not None:
+                c["send_rate"] = request.send_rate
+            save_campaigns(campaigns)
+            return {"status": "success", "message": "Campaign updated"}
+    raise HTTPException(status_code=404, detail="Campaign not found")
+
+@router.delete("/{campaign_id}")
+async def delete_campaign(campaign_id: str):
+    campaigns = load_campaigns()
+    campaigns = [c for c in campaigns if c["id"] != campaign_id]
+    save_campaigns(campaigns)
+    return {"status": "success", "message": "Campaign deleted"}
+
