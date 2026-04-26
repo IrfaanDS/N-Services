@@ -162,23 +162,46 @@ export default function B2BEmailGeneration() {
 
     // ── Export results ──
     const handleExport = () => {
-        if (!results?.data) return
-        const rows = [['Persona', 'Sequence #', 'Subject', 'Body'].join(',')]
-        for (const group of results.data) {
-            for (const email of (group.emails || [])) {
-                rows.push([
-                    `"${(group.persona_title || '').replace(/"/g, '""')}"`,
-                    email.sequence_number || '',
-                    `"${(email.subject || '').replace(/"/g, '""')}"`,
-                    `"${(email.body || '').replace(/"/g, '""')}"`,
-                ].join(','))
-            }
+        if (!results?.data || leads.length === 0) return
+
+        // Create Header: Lead Info + Sequences
+        const header = ['First Name', 'Last Name', 'Email', 'Job Title', 'Persona Role']
+        for (let i = 1; i <= numSequences; i++) {
+            header.push(`Seq ${i} Subject`, `Seq ${i} Body`)
         }
+        const rows = [header.join(',')]
+
+        // For each lead, find their persona's sequence
+        for (const lead of leads) {
+            const persona = results.data.find(p => p.persona_title === (lead.title || 'Business Professional'))
+            if (!persona) continue
+
+            const row = [
+                `"${(lead.first_name || '').replace(/"/g, '""')}"`,
+                `"${(lead.last_name || '').replace(/"/g, '""')}"`,
+                `"${(lead.email || '').replace(/"/g, '""')}"`,
+                `"${(lead.title || '').replace(/"/g, '""')}"`,
+                `"${(persona.persona_title || '').replace(/"/g, '""')}"`,
+            ]
+
+            // Add each sequence step
+            for (let i = 0; i < numSequences; i++) {
+                const email = persona.emails?.[i]
+                if (email) {
+                    row.push(`"${(email.subject || '').replace(/"/g, '""')}"`)
+                    row.push(`"${(email.body || '').replace(/"/g, '""')}"`)
+                } else {
+                    row.push('""', '""')
+                }
+            }
+            rows.push(row.join(','))
+        }
+
         const blob = new Blob([rows.join('\n')], { type: 'text/csv' })
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = 'b2b_email_sequences.csv'
+        a.download = `b2b_outreach_${new Date().toISOString().split('T')[0]}.csv`
         a.click()
         window.URL.revokeObjectURL(url)
     }

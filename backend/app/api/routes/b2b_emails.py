@@ -248,100 +248,72 @@ def normalize_smythos_output(data: Any) -> List[Dict[str, Any]]:
     return final_output
 
 
+import asyncio
+from app.services.b2b_email_generator import generate_b2b_sequence
+
 @router.post("/generate")
 async def generate_email_sequences(request: GenerateSequencesRequest):
     """
-    Generate personalized email sequences using the Smythos API.
-    Proxies the request with optimized prompt parameters.
+    Generate personalized email sequences using the internal Groq-powered B2B service.
+    Uses parallel processing to speed up generation for multiple personas.
     """
-    settings = get_settings()
-    smythos_url = settings.SMYTHOS_API_URL
-
-    if not smythos_url:
-        raise HTTPException(
-            status_code=500,
-            detail="SMYTHOS_API_URL is not configured. Add it to your .env file.",
-        )
-
-    # Build the payload for Smythos
-    payload = {
-        "company": request.company.model_dump(),
-        "buyer_personas": [p.model_dump() for p in request.buyer_personas],
-        "num_sequences": request.num_sequences,
-        "tone": request.tone,
-    }
-
-    if request.business_profile:
-        payload["business_profile"] = request.business_profile.model_dump()
-
     logger.info(
-        f"Calling Smythos API with {len(request.buyer_personas)} persona(s), "
-        f"{request.num_sequences} sequence(s), tone={request.tone}"
+        f"Generating sequences for {len(request.buyer_personas)} persona(s), "
+        f"{request.num_sequences} step(s), tone={request.tone}"
     )
 
     start = time.time()
+    
     try:
-        async with httpx.AsyncClient(timeout=300.0) as client:
-            response = await client.post(
-                smythos_url,
-                json=payload,
-                headers={"Content-Type": "application/json"},
+        # Create a list of async tasks for each persona
+        tasks = []
+        for persona in request.buyer_personas:
+            tasks.append(
+                generate_b2b_sequence(
+                    company_profile=request.company.model_dump(),
+                    persona=persona.model_dump(),
+                    num_sequences=request.num_sequences,
+                    tone=request.tone
+                )
             )
+
+        # Run all tasks in parallel
+        all_sequences = await asyncio.gather(*tasks)
+
+        generated_data = []
+        for i, sequences in enumerate(all_sequences):
+            persona = request.buyer_personas[i]
+            
+            emails_with_meta = []
+            for j, email in enumerate(sequences):
+                emails_with_meta.append({
+                    "subject": email.get("subject", "(No Subject)"),
+                    "body": email.get("body", "(No Body)"),
+                    "sequence_number": j + 1
+                })
+
+            generated_data.append({
+                "persona_title": persona.title,
+                "emails": emails_with_meta
+            })
 
         elapsed = time.time() - start
-        logger.info(f"Smythos response: {response.status_code} ({elapsed:.1f}s)")
-
-        if response.status_code != 200:
-            logger.error(f"Smythos error: {response.text[:1000]}")
-            # If we got a 4xx or 5xx but there is some text, maybe we can still show it?
-            # For now, stick to error if not 200, but log more.
-            raise HTTPException(
-                status_code=502,
-                detail=f"Smythos API returned {response.status_code}: {response.text[:200]}",
-            )
-
-        # Robust JSON parsing of the response itself
-        try:
-            data = response.json()
-        except json.JSONDecodeError:
-            logger.warning("Smythos response is not valid JSON. Treating as raw text.")
-            data = response.text
-
-        logger.info(f"DEBUG: Smythos RAW response type: {type(data)}")
-        
-        # Normalize the output
-        output = normalize_smythos_output(data)
-
-        if not output:
-            logger.error(f"Could not extract any valid output from Smythos response: {str(data)[:500]}")
-            return {
-                "data": [],
-                "total_groups": 0,
-                "total_emails": 0,
-                "elapsed_seconds": round(elapsed, 1),
-                "message": "Smythos API returned no recognized sequences. Try adjusting your personas or company profile.",
-                "raw_debug": str(data)[:1000] if settings.DEBUG else None
-            }
-
-        # Compute summary
-        total_emails = sum(len(g.get("emails", [])) for g in output)
+        total_emails = sum(len(g["emails"]) for g in generated_data)
 
         return {
-            "data": output,
-            "total_groups": len(output),
+            "data": generated_data,
+            "total_groups": len(generated_data),
             "total_emails": total_emails,
             "elapsed_seconds": round(elapsed, 1),
-            "message": f"Generated {total_emails} emails across {len(output)} persona group(s)",
-            "raw_debug": str(data)[:1000] if settings.DEBUG else None
+            "message": f"Successfully generated {total_emails} emails across {len(generated_data)} persona(s)"
         }
 
-
-    except httpx.RequestError as e:
+    except Exception as e:
         elapsed = time.time() - start
-        logger.error(f"Smythos request failed ({elapsed:.1f}s): {e}")
+        logger.error(f"B2B Email generation failed after {elapsed:.1f}s: {str(e)}")
         raise HTTPException(
-            status_code=502,
-            detail=f"Failed to connect to Smythos API: {str(e)}",
+            status_code=500,
+            detail=f"Failed to generate email sequences: {str(e)}"
         )
 
 
