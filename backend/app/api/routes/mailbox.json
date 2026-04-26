@@ -113,5 +113,77 @@
         "created_at": "2026-04-27T01:43:41.980322",
         "business_name": null,
         "lead_score": 30
+    },
+    {
+        "business_id": "3fe649fc-7f26-44bb-8367-516a60bafca0",
+        "business_name": "Modulo Security Solutions",
+        "business_url": "modulo.com.br",
+        "target_email": "abastos@modulo.com.br",
+        "subject": "Boost Operational Efficiency and Revenue with Our Proven Solutions",
+        "body": "As a seasoned CEO & CTO, you understand the importance of streamlining processes to drive business outcomes. Our cutting-edge solutions at [Company Name] have helped numerous organizations like yours increase efficiency and revenue. Let's schedule a call to discuss how we can tailor our services to meet your specific needs.",
+        "status": "sent",
+        "created_at": "2026-04-27T02:29:27.809539",
+        "type": "b2b",
+        "persona": "CEO & CTO",
+        "sequences": [
+            {
+                "subject": "Boost Operational Efficiency and Revenue with Our Proven Solutions",
+                "body": "As a seasoned CEO & CTO, you understand the importance of streamlining processes to drive business outcomes. Our cutting-edge solutions at [Company Name] have helped numerous organizations like yours increase efficiency and revenue. Let's schedule a call to discuss how we can tailor our services to meet your specific needs."
+            }
+        ]
+    },
+    {
+        "business_id": "51ea3896-a7ff-4b45-92b9-0b97a294bc3a",
+        "business_name": "CodeArrest Softwares Private Limited",
+        "business_url": "codearrest.com",
+        "target_email": "abhishek.sharma@codearrest.com",
+        "subject": "Streamline Your Software Development with Our Automated Solutions",
+        "body": "Dear [Director's Name],\n\nAs the Director of Software Development at [Company Name], you understand the significance of efficient operations in driving business success. Our company offers innovative solutions that enable automated workflows, freeing up valuable time and resources for strategic growth. I'd be happy to discuss how our technology can benefit your organization.\n\nBest regards,\n[Your Name]",
+        "status": "sent",
+        "created_at": "2026-04-27T02:29:27.811106",
+        "type": "b2b",
+        "persona": "Director of Software Development",
+        "sequences": [
+            {
+                "subject": "Streamline Your Software Development with Our Automated Solutions",
+                "body": "Dear [Director's Name],\n\nAs the Director of Software Development at [Company Name], you understand the significance of efficient operations in driving business success. Our company offers innovative solutions that enable automated workflows, freeing up valuable time and resources for strategic growth. I'd be happy to discuss how our technology can benefit your organization.\n\nBest regards,\n[Your Name]"
+            }
+        ]
+    },
+    {
+        "business_id": "22c0a43d-2b90-4edc-826c-d2e020baa8cc",
+        "business_name": "H2O.ai",
+        "business_url": "h2o.ai",
+        "target_email": "agus.sudjianto@h2o.ai",
+        "subject": "Expert Insights on Transforming Risk Management",
+        "body": "Hello [Name],\n\nAs a seasoned risk leader, you understand the importance of operational efficiency in driving business results. I'd like to share how a leading organization, similar to yours, eliminated manual processes and improved their risk management capabilities.\n\nWould you be open to a strategic discussion on how to achieve similar outcomes?\n\nBest regards,\n[Your Name]",
+        "status": "sent",
+        "created_at": "2026-04-27T02:29:27.811106",
+        "type": "b2b",
+        "persona": "Senior Vice President Risk & Technology",
+        "sequences": [
+            {
+                "subject": "Expert Insights on Transforming Risk Management",
+                "body": "Hello [Name],\n\nAs a seasoned risk leader, you understand the importance of operational efficiency in driving business results. I'd like to share how a leading organization, similar to yours, eliminated manual processes and improved their risk management capabilities.\n\nWould you be open to a strategic discussion on how to achieve similar outcomes?\n\nBest regards,\n[Your Name]"
+            }
+        ]
+    },
+    {
+        "business_id": "134647d8-64b7-4e89-b097-69bf8ac0b260",
+        "business_name": "The Missing Link",
+        "business_url": "themissinglink.com.au",
+        "target_email": "abailey@themissinglink.com.au",
+        "subject": "Streamlining Cybersecurity Operations for Enhanced Efficiency",
+        "body": "Dear Chief Information Security Officer,\n\nAs a seasoned security leader, you understand the challenges of manual processes weighing down your teams. I'd like to explore how our automation solutions can alleviate these burdens, leading to improved operational efficiency and revenue growth.\n\nBest regards,\n[Your Name]",
+        "status": "sent",
+        "created_at": "2026-04-27T02:29:27.811106",
+        "type": "b2b",
+        "persona": "Chief Information Security Officer",
+        "sequences": [
+            {
+                "subject": "Streamlining Cybersecurity Operations for Enhanced Efficiency",
+                "body": "Dear Chief Information Security Officer,\n\nAs a seasoned security leader, you understand the challenges of manual processes weighing down your teams. I'd like to explore how our automation solutions can alleviate these burdens, leading to improved operational efficiency and revenue growth.\n\nBest regards,\n[Your Name]"
+            }
+        ]
     }
 ]

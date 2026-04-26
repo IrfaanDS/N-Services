@@ -35,5 +35,22 @@
         "created_at": "2026-03-10T06:06:58.919973",
         "status": "Completed",
         "completed_at": "2026-03-10T06:07:03.157117"
+    },
+    {
+        "id": "4",
+        "name": "B2B Campaign - 27/04/2026",
+        "account_id": "4",
+        "total_leads": 4,
+        "sent_count": 4,
+        "business_ids": [
+            "134647d8-64b7-4e89-b097-69bf8ac0b260",
+            "22c0a43d-2b90-4edc-826c-d2e020baa8cc",
+            "51ea3896-a7ff-4b45-92b9-0b97a294bc3a",
+            "3fe649fc-7f26-44bb-8367-516a60bafca0"
+        ],
+        "scheduled_at": null,
+        "created_at": "2026-04-27T02:38:18.769923",
+        "status": "Completed",
+        "completed_at": "2026-04-27T02:38:35.621636"
     }
 ]
