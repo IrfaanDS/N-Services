@@ -78,11 +78,8 @@ export const sendingAPI = {
 
 // ─── Onebox (Email Threads) ───
 export const oneboxAPI = {
-    // Corrected to use GET with query params consistent with backend update
     list: (params) => api.get('/onebox/list', { params }),
-    // Corrected to use GET with path param
     getThread: (id) => api.get(`/onebox/thread/${id}`),
-    // Corrected to use POST with path param
     sendReply: (threadId, formData) => api.post(`/onebox/reply/${threadId}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -107,6 +104,26 @@ export const dashboardAPI = {
 export const authAPI = {
     login: (credentials) => api.post('/auth/login', credentials),
     register: (data) => api.post('/auth/register', data),
+}
+
+// ─── B2B Leads ───
+export const b2bLeadsAPI = {
+    uploadCSV: (file) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        return api.post('/b2b/leads/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        })
+    },
+    evaluate: (data) => api.post('/b2b/leads/evaluate', data),
+    generateAudience: (data) => api.post('/b2b/leads/generate-audience', data),
+    exportCSV: (leads) => api.post('/b2b/leads/export', { leads }),
+}
+
+// ─── B2B Email Generation ───
+export const b2bEmailsAPI = {
+    generate: (data) => api.post('/b2b/emails/generate', data),
+    buildPersonas: (leads) => api.post('/b2b/emails/build-personas', leads),
 }
 
 export default api

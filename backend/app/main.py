@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import leads, evaluation, emails, sending, dashboard, auth, onebox, seo_assistant
+from app.api.routes import b2b_leads, b2b_emails
 
 app = FastAPI(
-    title="LeadFlow SEO API",
-    description="Lead acquisition, evaluation, email generation & sending platform for SEO services",
-    version="1.0.0",
+    title="LeadFlow Platform API",
+    description="Lead acquisition, evaluation, email generation & sending platform for SEO and B2B services",
+    version="2.0.0",
 )
 
 # ── CORS (allow React dev server) ──
@@ -17,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ── Register route modules ──
+# ── Register SEO route modules ──
 app.include_router(auth.router,       prefix="/api/auth",       tags=["Auth"])
 app.include_router(leads.router,      prefix="/api/leads",      tags=["Lead Acquisition"])
 app.include_router(evaluation.router, prefix="/api/evaluate",   tags=["Lead Evaluation"])
@@ -27,7 +28,11 @@ app.include_router(onebox.router,     prefix="/api/onebox",     tags=["Onebox"])
 app.include_router(dashboard.router,       prefix="/api/dashboard",    tags=["Dashboard"])
 app.include_router(seo_assistant.router,   prefix="/api/assistant",    tags=["SEO Assistant"])
 
+# ── Register B2B route modules ──
+app.include_router(b2b_leads.router,  prefix="/api/b2b/leads",  tags=["B2B Lead Acquisition"])
+app.include_router(b2b_emails.router, prefix="/api/b2b/emails", tags=["B2B Email Generation"])
+
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "ok", "service": "leadflow-seo"}
+    return {"status": "ok", "service": "leadflow-platform", "version": "2.0.0"}

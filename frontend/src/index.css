@@ -94,12 +94,20 @@ body {
   }
 }
 
-/* ─── Sidebar active gradient (matches Aerten reference) ─── */
+/* ─── Sidebar active gradient (SEO — warm maroon) ─── */
 .sidebar-active {
   background: linear-gradient(135deg, #E8734A 0%, #7C2D42 100%);
   color: white;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(124, 45, 66, 0.3);
+}
+
+/* ─── Sidebar active gradient (B2B — cool blue) ─── */
+.sidebar-active-b2b {
+  background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #4f46e5 100%);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 /* ─── Status badges ─── */
@@ -186,6 +194,16 @@ body {
   box-shadow: 0 4px 16px rgba(232, 115, 74, 0.4);
 }
 
+/* ─── B2B button variant ─── */
+.btn-b2b {
+  background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #4f46e5 100%);
+  color: white;
+}
+
+.btn-b2b:hover {
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+}
+
 /* ─── Table styling ─── */
 .data-table {
   width: 100%;
@@ -231,4 +249,99 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ════════════════════════════════════════════════════════════
+   SERVICE SELECTOR LANDING PAGE
+   ════════════════════════════════════════════════════════════ */
+
+.service-selector-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #1e293b 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Floating background orbs ── */
+.selector-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  animation: float 20s ease-in-out infinite;
+}
+
+.selector-bg-orb--1 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, #E8734A, #7C2D42);
+  top: -100px;
+  right: -100px;
+  animation-delay: 0s;
+}
+
+.selector-bg-orb--2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #38bdf8, #4f46e5);
+  bottom: -80px;
+  left: -80px;
+  animation-delay: -7s;
+}
+
+.selector-bg-orb--3 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -14s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -30px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+  75% {
+    transform: translate(20px, 10px) scale(1.02);
+  }
+}
+
+/* ── Service cards ── */
+.service-card {
+  cursor: pointer;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Animations ── */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

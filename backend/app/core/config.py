@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     # ── Groq API ──
     GROQ_API_KEY: str = ""
 
+    # ── Smythos B2B Email Agent ──
+    SMYTHOS_API_URL: str = "https://cmlzhionm4k7g7uvzbjzk4yft.agent.a.smyth.ai/api/generate_sequences"
+
     # ── App ──
     DEBUG: bool = True
 

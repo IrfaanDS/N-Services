@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import {
     LayoutDashboard,
     Search,
@@ -8,16 +8,26 @@ import {
     FileText,
     Settings,
     Zap,
-    Mail
+    Mail,
+    Users,
+    Sparkles,
+    ArrowLeft,
+    Upload,
 } from 'lucide-react'
 
-const navItems = [
-    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/leads', label: 'Lead Acquisition', icon: Search },
-    { to: '/evaluation', label: 'Lead Evaluation', icon: BarChart3 },
-    { to: '/email-generation', label: 'Email Generation', icon: Mail },
-    { to: '/email-sending', label: 'Email Sending', icon: Send },
-    { to: '/onebox', label: 'Onebox (Inbox)', icon: MessageSquare },
+const seoNavItems = [
+    { to: '/seo/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/seo/leads', label: 'Lead Acquisition', icon: Search },
+    { to: '/seo/evaluation', label: 'Lead Evaluation', icon: BarChart3 },
+    { to: '/seo/email-generation', label: 'Email Generation', icon: Mail },
+    { to: '/seo/email-sending', label: 'Email Sending', icon: Send },
+    { to: '/seo/onebox', label: 'Onebox (Inbox)', icon: MessageSquare },
+]
+
+const b2bNavItems = [
+    { to: '/b2b/leads', label: 'B2B Leads', icon: Upload },
+    { to: '/b2b/evaluation', label: 'Lead Evaluation', icon: BarChart3 },
+    { to: '/b2b/email-generation', label: 'Email Generation', icon: Sparkles },
 ]
 
 const bottomItems = [
@@ -25,8 +35,12 @@ const bottomItems = [
     { to: '/settings', label: 'Settings', icon: Settings },
 ]
 
-export default function Sidebar({ collapsed, onToggle }) {
+export default function Sidebar({ collapsed, onToggle, mode }) {
     const location = useLocation()
+    const navigate = useNavigate()
+
+    const navItems = mode === 'b2b' ? b2bNavItems : seoNavItems
+    const isB2B = mode === 'b2b'
 
     return (
         <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
@@ -36,10 +50,45 @@ export default function Sidebar({ collapsed, onToggle }) {
                 onClick={onToggle}
                 title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-                <div className="w-9 h-9 min-w-[36px] rounded-lg bg-gradient-to-br from-accent-400 to-primary-700 flex items-center justify-center">
+                <div className={`w-9 h-9 min-w-[36px] rounded-lg flex items-center justify-center ${
+                    isB2B
+                        ? 'bg-gradient-to-br from-sky-500 to-indigo-600'
+                        : 'bg-gradient-to-br from-accent-400 to-primary-700'
+                }`}>
                     <Zap className="w-5 h-5 text-white" />
                 </div>
-                {!collapsed && <span className="text-xl font-bold text-primary-700 whitespace-nowrap">LeadFlow</span>}
+                {!collapsed && (
+                    <span className={`text-xl font-bold whitespace-nowrap ${
+                        isB2B ? 'text-sky-700' : 'text-primary-700'
+                    }`}>
+                        LeadFlow
+                    </span>
+                )}
+            </div>
+
+            {/* ── Back to Services ── */}
+            <div className="px-3 mb-2">
+                <button
+                    onClick={() => navigate('/')}
+                    className={`flex items-center gap-2 w-full px-3 py-2 rounded-xl text-sm font-medium 
+                        text-gray-500 hover:text-gray-700 hover:bg-surface-50 transition-all duration-200
+                        ${collapsed ? 'justify-center' : ''}`}
+                    title="Back to Services"
+                >
+                    <ArrowLeft className="w-4 h-4 min-w-[16px]" />
+                    {!collapsed && <span className="whitespace-nowrap text-xs">All Services</span>}
+                </button>
+
+                {/* Mode badge */}
+                {!collapsed && (
+                    <div className={`mx-3 mt-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-center ${
+                        isB2B
+                            ? 'bg-sky-50 text-sky-700 border border-sky-200'
+                            : 'bg-primary-50 text-primary-700 border border-primary-200'
+                    }`}>
+                        {isB2B ? '🚀 B2B Services' : '🔍 SEO Services'}
+                    </div>
+                )}
             </div>
 
             {/* ── Main nav ── */}
@@ -47,7 +96,8 @@ export default function Sidebar({ collapsed, onToggle }) {
                 <ul className="space-y-1">
                     {navItems.map(({ to, label, icon: Icon }) => {
                         const isActive = location.pathname === to ||
-                            (to === '/leads' && location.pathname === '/')
+                            (to === '/seo/leads' && location.pathname === '/seo') ||
+                            (to === '/b2b/leads' && location.pathname === '/b2b')
                         return (
                             <li key={to}>
                                 <NavLink
@@ -58,7 +108,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                                         transition-all duration-200
                                         ${collapsed ? 'justify-center' : ''}
                                         ${isActive
-                                            ? 'sidebar-active'
+                                            ? (isB2B ? 'sidebar-active-b2b' : 'sidebar-active')
                                             : 'text-gray-600 hover:bg-surface-50 hover:text-gray-900'
                                         }
                                     `}
@@ -87,7 +137,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                                         transition-all duration-200
                                         ${collapsed ? 'justify-center' : ''}
                                         ${isActive
-                                            ? 'sidebar-active'
+                                            ? (isB2B ? 'sidebar-active-b2b' : 'sidebar-active')
                                             : 'text-gray-600 hover:bg-surface-50 hover:text-gray-900'
                                         }
                                     `}
