@@ -8,13 +8,14 @@ import LeadEvaluation from './pages/LeadEvaluation'
 import EmailGeneration from './pages/EmailGeneration'
 import EmailSending from './pages/EmailSending'
 import Onebox from './pages/Onebox'
-import Dashboard from './pages/Dashboard'
+import SEODashboard from './pages/SEODashboard'
 import Login from './pages/Login'
 import FloatingAssistant from './components/FloatingAssistant'
 import B2BLeadAcquisition from './pages/b2b/B2BLeadAcquisition'
 import B2BLeadEvaluation from './pages/b2b/B2BLeadEvaluation'
 import B2BEmailGeneration from './pages/b2b/B2BEmailGeneration'
 import B2BOutreach from './pages/b2b/B2BOutreach'
+import B2BDashboard from './pages/b2b/B2BDashboard'
 
 import ShopifyHomeSelection from './pages/shopify/HomeSelection'
 import ShopifyStoreLanding from './pages/shopify/StoreLanding'
@@ -22,6 +23,7 @@ import ShopifyStoreChat from './pages/shopify/StoreChat'
 import ShopifyAdminDashboard from './pages/shopify/AdminDashboard'
 import ShopifyAdminLogin from './pages/shopify/AdminLogin'
 import ShopifyLeads from './pages/shopify/Leads'
+import ShopifyDashboard from './pages/shopify/ShopifyDashboard'
 import ShopifyProtectedRoute from './components/shopify/ProtectedRoute'
 
 function AppLayout({ mode }) {
@@ -47,7 +49,7 @@ function AppLayout({ mode }) {
                 <main className="p-6 lg:p-8">
                     {mode === 'seo' ? (
                         <Routes>
-                            <Route path="dashboard" element={<Dashboard />} />
+                            <Route path="dashboard" element={<SEODashboard />} />
                             <Route path="leads" element={<LeadAcquisition />} />
                             <Route path="evaluation" element={<LeadEvaluation />} />
                             <Route path="email-generation" element={<EmailGeneration />} />
@@ -57,6 +59,7 @@ function AppLayout({ mode }) {
                         </Routes>
                     ) : (
                         <Routes>
+                            <Route path="dashboard" element={<B2BDashboard />} />
                             <Route path="leads" element={<B2BLeadAcquisition />} />
                             <Route path="evaluation" element={<B2BLeadEvaluation />} />
                             <Route path="email-generation" element={<B2BEmailGeneration />} />
@@ -92,6 +95,7 @@ export default function App() {
             <Route path="/shopify/onboard" element={<ShopifyStoreLanding initialMode="onboard" />} />
             <Route path="/shopify/launch" element={<ShopifyStoreLanding initialMode="lookup" />} />
             <Route path="/shopify/leads" element={<ShopifyLeads />} />
+            <Route path="/shopify/dashboard" element={<ShopifyDashboard />} />
             <Route path="/shopify/admin/login" element={<ShopifyAdminLogin />} />
             <Route path="/shopify/admin" element={<ShopifyProtectedRoute><ShopifyAdminDashboard /></ShopifyProtectedRoute>} />
             <Route path="/shopify/chat/:storeId" element={<ShopifyStoreChat />} />

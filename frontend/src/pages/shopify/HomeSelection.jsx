@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bot, Rocket } from 'lucide-react';
+import { Bot, Rocket, Mail, BarChart3 } from 'lucide-react';
 import './HomeSelection.css';
 
 export default function HomeSelection() {
@@ -17,6 +17,17 @@ export default function HomeSelection() {
       </div>
       
       <div className="home-cards">
+        <div className="home-card" onClick={() => navigate('/shopify/dashboard')}>
+          <div className="card-icon text-black"><BarChart3 className="w-10 h-10 mx-auto" /></div>
+          <div className="card-content">
+            <h2>Dashboard</h2>
+            <p>Analytics, lead tiers, AI adoption rates, and niche insights.</p>
+          </div>
+          <div className="card-action">
+            <span>View Analytics</span> &rarr;
+          </div>
+        </div>
+
         <div className="home-card">
           <div className="card-icon text-black"><Bot className="w-10 h-10 mx-auto" /></div>
           <div className="card-content">
@@ -38,6 +49,17 @@ export default function HomeSelection() {
           </div>
           <div className="card-action">
             <span>Enter Module</span> &rarr;
+          </div>
+        </div>
+
+        <div className="home-card mail-engine" onClick={() => navigate('/seo/email-generation')}>
+          <div className="card-icon text-black"><Mail className="w-10 h-10 mx-auto" /></div>
+          <div className="card-content">
+            <h2>Email Campaigns</h2>
+            <p>Generate high-converting sequences and manage outreach.</p>
+          </div>
+          <div className="card-action">
+            <span>Go to Mail</span> &rarr;
           </div>
         </div>
       </div>

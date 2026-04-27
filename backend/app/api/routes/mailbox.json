@@ -701,5 +701,27 @@
             }
         ],
         "persona_id": "e958cbc0-4c44-4edc-93a7-ed5d8565778a"
+    },
+    {
+        "business_id": "2d11e7ee-f19b-4f24-b6af-64cf3921dd3e",
+        "business_name": null,
+        "business_url": "https://www.humble-dental.com",
+        "target_email": "smiles@humble-dental.com",
+        "subject": "Optimizing Your Online Presence: Growing Humble Dental in Kingwood Houston",
+        "body": "Hi [Business Owner's Name],\n\nAs a dentist serving Kingwood Houston, it's essential to maintain a strong online presence to attract new patients and grow your practice. After reviewing your website at https://www.humble-dental.com, I noticed a few missed opportunities to improve your search engine rankings and drive more organic traffic.\n\nWith a current audit score of 10/100, there's significant room for improvement. Given your optimized site, I believe a targeted SEO strategy can help Humble Dental attract more patients and establish itself as a leading dental practice in Kingwood Houston.\n\nI'd be happy to discuss a customized plan to help your practice grow through search engine optimization. Let me know if you're interested in a complimentary consultation.\n\nBest regards,\n[Your Name]",
+        "status": "draft",
+        "lead_score": 10,
+        "created_at": "2026-04-28T01:39:43.060558"
+    },
+    {
+        "business_id": "b84aa612-6257-43d9-94c1-e838b2967849",
+        "business_name": null,
+        "business_url": "https://www.uniserveac.com",
+        "target_email": "281-360-9898info@uniserveac.comLicense",
+        "subject": "Optimizing Your HVAC Business in Kingwood, Houston for Local Success",
+        "body": "Dear [Owner's Name],\n\nI came across your excellent HVAC business, Uniserve AC, in Kingwood, Houston (https://www.uniserveac.com), and I'm impressed with the quality services you offer to your community. However, our technical audit revealed that there are some missed opportunities for growth, specifically a potential speed issue caused by a significant number of scripts on your website (67).\n\nAddressing these issues could improve user experience, increase conversions, and boost your online visibility. I'd be happy to help you unlock your full potential and reach more customers in Kingwood. Would you be open to a brief consultation to explore how we can improve your online presence?\n\nLooking forward to hearing from you.\n\nBest regards,",
+        "status": "draft",
+        "lead_score": 20,
+        "created_at": "2026-04-28T01:39:44.806955"
     }
 ]

@@ -13,6 +13,7 @@ import {
     Sparkles,
     ArrowLeft,
     Upload,
+    ShoppingBag
 } from 'lucide-react'
 
 const seoNavItems = [
@@ -22,14 +23,17 @@ const seoNavItems = [
     { to: '/seo/email-generation', label: 'Email Generation', icon: Mail },
     { to: '/seo/email-sending', label: 'Email Sending', icon: Send },
     { to: '/seo/onebox', label: 'Onebox (Inbox)', icon: MessageSquare },
+    { to: '/shopify', label: 'Shopify AI', icon: ShoppingBag },
 ]
 
 const b2bNavItems = [
+    { to: '/b2b/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/b2b/leads', label: 'B2B Leads', icon: Upload },
     { to: '/b2b/evaluation', label: 'Lead Evaluation', icon: BarChart3 },
     { to: '/b2b/email-generation', label: 'Email Generation', icon: Sparkles },
     { to: '/b2b/outreach', label: 'Outreach', icon: Send },
     { to: '/b2b/onebox', label: 'Onebox (Inbox)', icon: MessageSquare },
+    { to: '/shopify', label: 'Shopify AI', icon: ShoppingBag },
 ]
 
 const bottomItems = [

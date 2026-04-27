@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Instagram, Facebook } from 'lucide-react';
+import { Mail, Instagram, Facebook, ArrowLeft } from 'lucide-react';
 const API_BASE = 'http://localhost:8000/api/shopify';
 import './Leads.css';
 
@@ -59,6 +59,10 @@ export default function Leads() {
   return (
     <div className="leads-container">
       <div className="leads-header">
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          <ArrowLeft size={20} />
+          <span>Back</span>
+        </button>
         <h1>Ecommerce Lead Engine</h1>
         <p>Discover and engage with high-potential prospects</p>
       </div>

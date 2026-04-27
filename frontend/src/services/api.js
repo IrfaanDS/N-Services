@@ -100,6 +100,9 @@ export const seoAssistantAPI = {
 // ─── Dashboard ───
 export const dashboardAPI = {
     getStats: () => api.get('/dashboard/stats'),
+    getSEOStats: () => api.get('/dashboard/seo'),
+    getB2BStats: () => api.get('/dashboard/b2b'),
+    getShopifyStats: () => api.get('/dashboard/shopify'),
 }
 
 // ─── Auth ───

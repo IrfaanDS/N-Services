@@ -1,0 +1,517 @@
+/* ══════════════════════════════════════════════════════════════
+   Chart Components — Shared Styles
+   Monochrome minimalist aesthetic with bouncy animations
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── KPI Card ── */
+.kpi-card {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: default;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.kpi-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.kpi-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111111;
+}
+
+.kpi-trend {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+}
+
+.kpi-trend.up {
+    color: #166534;
+    background: rgba(22, 101, 52, 0.08);
+}
+
+.kpi-trend.down {
+    color: #991b1b;
+    background: rgba(153, 27, 27, 0.08);
+}
+
+.kpi-card-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111111;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.kpi-card-label {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.45);
+    margin-top: 0.4rem;
+    font-weight: 500;
+}
+
+
+/* ── Horizontal Bar Chart ── */
+.bar-chart-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.bar-label {
+    width: 70px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #111111;
+    text-align: right;
+    flex-shrink: 0;
+    text-transform: capitalize;
+}
+
+.bar-track {
+    flex: 1;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-width: 2px;
+}
+
+.bar-value {
+    width: 40px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #111111;
+    flex-shrink: 0;
+}
+
+
+/* ── Vertical Bar Chart ── */
+.bar-chart-vertical {
+    position: relative;
+    display: flex;
+}
+
+.bar-chart-grid {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+    padding-bottom: 28px;
+}
+
+.bar-grid-line {
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
+    position: relative;
+}
+
+.bar-grid-label {
+    position: absolute;
+    left: -4px;
+    bottom: 2px;
+    font-size: 0.6rem;
+    color: rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+}
+
+.bar-chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    flex: 1;
+    padding-left: 30px;
+    padding-bottom: 28px;
+}
+
+.bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.bar-col-track {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+}
+
+.bar-col-fill {
+    width: 100%;
+    border-radius: 6px 6px 2px 2px;
+    transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-height: 2px;
+}
+
+.bar-col-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60px;
+}
+
+
+/* ── Donut Chart ── */
+.donut-chart-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.donut-chart {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 1.2s ease;
+    position: relative;
+}
+
+.donut-hole {
+    border-radius: 50%;
+    background: #F4F4F5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.donut-center-label {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #111111;
+    line-height: 1;
+}
+
+.donut-center-sub {
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.4);
+    margin-top: 2px;
+    font-weight: 500;
+}
+
+.donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.donut-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.donut-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.donut-legend-label {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.6);
+    flex: 1;
+    text-transform: capitalize;
+}
+
+.donut-legend-value {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #111111;
+}
+
+
+/* ── Progress Ring ── */
+.progress-ring-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+}
+
+.progress-ring-svg {
+    transform: scaleX(1);
+}
+
+.progress-ring-circle {
+    transition: stroke-dashoffset 1.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progress-ring-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.progress-ring-value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111111;
+}
+
+.progress-ring-sub {
+    font-size: 0.65rem;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+}
+
+.progress-ring-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+
+/* ── Dashboard Page Shared Styles ── */
+.dashboard-page {
+    padding: 0;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #111111;
+    letter-spacing: -0.02em;
+}
+
+.dashboard-header p {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.45);
+    margin-top: 0.25rem;
+}
+
+.dashboard-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .dashboard-charts {
+        grid-template-columns: 1fr;
+    }
+}
+
+.chart-card {
+    background: rgba(0, 0, 0, 0.015);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.chart-card-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chart-card-title svg {
+    opacity: 0.4;
+}
+
+/* Activity Feed */
+.activity-feed {
+    background: rgba(0, 0, 0, 0.015);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.activity-feed-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.activity-text {
+    flex: 1;
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.activity-time {
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Loading state */
+.dashboard-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    gap: 1rem;
+}
+
+.dashboard-loading p {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+}
+
+.dashboard-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(0, 0, 0, 0.08);
+    border-top-color: #111111;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Funnel Chart */
+.funnel-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.funnel-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.funnel-bar-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+.funnel-bar {
+    height: 32px;
+    border-radius: 8px;
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+}
+
+.funnel-bar-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+}
+
+.funnel-step-label {
+    width: 70px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.funnel-step-value {
+    width: 36px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #111111;
+    flex-shrink: 0;
+}

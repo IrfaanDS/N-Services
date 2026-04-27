@@ -8,9 +8,11 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env from project root
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-load_dotenv(PROJECT_ROOT / ".env")
+# Load .env from workspace root or backend root
+BACKEND_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+load_dotenv(BACKEND_ROOT / ".env")
+load_dotenv(BACKEND_ROOT.parent / ".env")
+PROJECT_ROOT = BACKEND_ROOT
 
 # ── API Keys ──────────────────────────────────────────────────────────────────
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")

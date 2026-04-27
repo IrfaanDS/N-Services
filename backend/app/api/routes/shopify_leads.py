@@ -7,15 +7,24 @@ from enum import Enum
 from app.services.shopify.config import POSTGRES_URL
 from app.services.shopify.onboarding_service import onboard_new_store
 
+import logging
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/leads", tags=["Leads Dashboard"])
 
 # Configure Postgres engine
-if not POSTGRES_URL:
-    import logging
-    logging.getLogger(__name__).warning("⚠️ POSTGRES_URL is not set in .env! Leads dashboard will not work.")
-    pg_engine = None
-else:
-    pg_engine = create_engine(POSTGRES_URL)
+def get_pg_engine():
+    from app.services.shopify.config import POSTGRES_URL
+    if not POSTGRES_URL:
+        logger.error("❌ POSTGRES_URL is not set!")
+        return None
+    try:
+        return create_engine(POSTGRES_URL)
+    except Exception as e:
+        logger.error(f"❌ Failed to create engine: {e}")
+        return None
+
+pg_engine = get_pg_engine()
 
 class OutreachStatus(str, Enum):
     pending = "pending"
@@ -38,8 +47,12 @@ def get_leads(
     sort_by: str = Query("lead_score", regex="^(lead_score|created_at|niche)$")
 ):
     """Get paginated leads from the dashboard view."""
+    global pg_engine
     if not pg_engine:
-        raise HTTPException(status_code=500, detail="Database not configured")
+        pg_engine = get_pg_engine()
+        
+    if not pg_engine:
+        raise HTTPException(status_code=500, detail="Database not configured (POSTGRES_URL missing or invalid)")
 
     offset = (page - 1) * page_size
     

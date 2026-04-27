@@ -13,8 +13,11 @@ backend_dir = os.path.dirname(os.path.abspath(__file__))
 os.environ["PYTHONPATH"] = backend_dir + os.pathsep + os.environ.get("PYTHONPATH", "")
 sys.path.insert(0, backend_dir)
 
-# Load .env so SMTP/IMAP credentials are available via os.environ
-load_dotenv(os.path.join(backend_dir, ".env"))
+# Load .env from backend/ or parent workspace directory
+env_path = os.path.join(backend_dir, ".env")
+if not os.path.exists(env_path):
+    env_path = os.path.join(os.path.dirname(backend_dir), ".env")
+load_dotenv(env_path)
 
 import uvicorn
 
