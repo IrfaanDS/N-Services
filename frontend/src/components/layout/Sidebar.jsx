@@ -23,7 +23,6 @@ const seoNavItems = [
     { to: '/seo/email-generation', label: 'Email Generation', icon: Mail },
     { to: '/seo/email-sending', label: 'Email Sending', icon: Send },
     { to: '/seo/onebox', label: 'Onebox (Inbox)', icon: MessageSquare },
-    { to: '/shopify', label: 'Shopify AI', icon: ShoppingBag },
 ]
 
 const b2bNavItems = [
@@ -33,7 +32,6 @@ const b2bNavItems = [
     { to: '/b2b/email-generation', label: 'Email Generation', icon: Sparkles },
     { to: '/b2b/outreach', label: 'Outreach', icon: Send },
     { to: '/b2b/onebox', label: 'Onebox (Inbox)', icon: MessageSquare },
-    { to: '/shopify', label: 'Shopify AI', icon: ShoppingBag },
 ]
 
 const bottomItems = [

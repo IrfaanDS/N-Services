@@ -11,6 +11,10 @@ from fastapi import FastAPI, HTTPException, Request, Header, Depends
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from email.message import EmailMessage
+
+from app.api.deps import get_supabase
+from app.api.routes.sending import send_smtp
 
 from app.services.shopify.config import GROQ_API_KEY, ADMIN_PASSWORD
 from app.services.shopify.memory_manager import MemoryManager
@@ -121,6 +125,13 @@ class AdminLoginRequest(BaseModel):
     """Payload for admin authentication"""
     password: str
 
+class OutreachRequest(BaseModel):
+    """Payload for sending Shopify outreach"""
+    store_id: str
+    recipient_email: str
+    subject: str
+    body: str
+
 
 
 
@@ -182,6 +193,33 @@ async def get_store_config(store_id: str):
         raise HTTPException(status_code=404, detail=f"Store '{store_id}' not found.")
 
     return config
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  ENDPOINTS — Outreach
+# ══════════════════════════════════════════════════════════════════════════════
+
+@router.post("/outreach/send", tags=["Outreach"])
+async def send_shopify_outreach(req: OutreachRequest, supabase=Depends(get_supabase)):
+    """Send an outreach email for a Shopify store."""
+    res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").execute()
+    if not res.data:
+        raise HTTPException(status_code=500, detail="No sending accounts configured in the system.")
+    
+    account = res.data[0]
+    
+    msg = EmailMessage()
+    msg.set_content(req.body)
+    msg["Subject"] = req.subject
+    msg["From"] = f"{account['name']} <{account['smtp_user']}>"
+    msg["To"] = req.recipient_email
+    
+    try:
+        send_smtp(msg, account)
+        return {"status": "success", "message": f"Outreach email sent to {req.recipient_email}"}
+    except Exception as e:
+        logger.error(f"Outreach send error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
 
 
 # ══════════════════════════════════════════════════════════════════════════════

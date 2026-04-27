@@ -12,6 +12,15 @@ export default function Leads() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Outreach Modal State
+  const [showOutreach, setShowOutreach] = useState(false);
+  const [selectedLead, setSelectedLead] = useState(null);
+  const [outreachTo, setOutreachTo] = useState('');
+  const [outreachSubject, setOutreachSubject] = useState('');
+  const [outreachBody, setOutreachBody] = useState('');
+  const [sendingOutreach, setSendingOutreach] = useState(false);
+  const [outreachSuccess, setOutreachSuccess] = useState(false);
+
   // Filters
   const [tier, setTier] = useState('');
   const [niche, setNiche] = useState('');
@@ -54,6 +63,45 @@ export default function Leads() {
     navigate('/shopify/onboard', { 
       state: { url: lead.website_url, brandName: lead.name } 
     });
+  };
+
+  const handleOutreachClick = (lead) => {
+    setSelectedLead(lead);
+    setOutreachTo(lead.email || '');
+    setOutreachSuccess(false);
+    setOutreachSubject('Increase Your Sales by up to 40% with AI');
+    setOutreachBody(`Hi ${lead.name || 'there'},\n\nI noticed your Shopify store and wanted to show you something we built for you. We created a custom AI shopping assistant trained on your products. Having an AI assistant can get your sales higher by up to 40% and conversion rate by 3-4 times.\n\nYou can test it out right now: http://localhost:5173/shopify/chat/${lead.mongo_store_id}\n\nLet me know what you think!`);
+    setShowOutreach(true);
+  };
+
+  const handleSendOutreach = async () => {
+    if (!outreachTo) {
+      alert("Please provide an email address.");
+      return;
+    }
+    setSendingOutreach(true);
+    try {
+      const res = await fetch(`${API_BASE}/outreach/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          store_id: selectedLead.mongo_store_id,
+          recipient_email: outreachTo,
+          subject: outreachSubject,
+          body: outreachBody
+        })
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.detail || 'Failed to send outreach');
+      }
+      setOutreachSuccess(true);
+      setTimeout(() => setShowOutreach(false), 2000);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSendingOutreach(false);
+    }
   };
 
   return (
@@ -141,8 +189,9 @@ export default function Leads() {
                 
                 <button 
                   className="btn-secondary" 
-                  disabled 
-                  title="Coming soon"
+                  disabled={!lead.assistant_created}
+                  title={!lead.assistant_created ? "Create store first" : "Send Outreach"}
+                  onClick={() => handleOutreachClick(lead)}
                 >
                   Outreach
                 </button>
@@ -167,6 +216,59 @@ export default function Leads() {
           >
             Next &raquo;
           </button>
+        </div>
+      )}
+
+      {showOutreach && (
+        <div className="outreach-modal-overlay" onClick={() => setShowOutreach(false)}>
+          <div className="outreach-modal" onClick={e => e.stopPropagation()}>
+            <div className="outreach-modal-header">
+              <h2>Send Outreach</h2>
+              <button className="close-btn" onClick={() => setShowOutreach(false)}>&times;</button>
+            </div>
+            {outreachSuccess ? (
+              <div className="outreach-success">
+                <p>Email sent successfully!</p>
+              </div>
+            ) : (
+              <div className="outreach-modal-body">
+                <div className="input-group">
+                  <label>To:</label>
+                  <input 
+                    type="text" 
+                    value={outreachTo} 
+                    onChange={(e) => setOutreachTo(e.target.value)} 
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Subject:</label>
+                  <input 
+                    type="text" 
+                    value={outreachSubject} 
+                    onChange={(e) => setOutreachSubject(e.target.value)} 
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Message:</label>
+                  <textarea 
+                    rows={8}
+                    value={outreachBody} 
+                    onChange={(e) => setOutreachBody(e.target.value)} 
+                  />
+                </div>
+                <div className="outreach-modal-actions">
+                  <button className="btn-secondary" onClick={() => setShowOutreach(false)}>Cancel</button>
+                  <button 
+                    className="btn-primary" 
+                    onClick={handleSendOutreach}
+                    disabled={sendingOutreach}
+                  >
+                    {sendingOutreach ? 'Sending...' : 'Send Email'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
