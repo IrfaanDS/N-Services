@@ -28,6 +28,8 @@ const b2bNavItems = [
     { to: '/b2b/leads', label: 'B2B Leads', icon: Upload },
     { to: '/b2b/evaluation', label: 'Lead Evaluation', icon: BarChart3 },
     { to: '/b2b/email-generation', label: 'Email Generation', icon: Sparkles },
+    { to: '/b2b/outreach', label: 'Outreach', icon: Send },
+    { to: '/b2b/onebox', label: 'Onebox (Inbox)', icon: MessageSquare },
 ]
 
 const bottomItems = [

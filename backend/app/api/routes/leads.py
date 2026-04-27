@@ -29,7 +29,7 @@ def _build_lead_query(supabase, niche=None, city=None, country=None, search=None
     Returns the query builder (not yet executed).
     """
     query = supabase.table("businesses").select(
-        "id, business_name, website_url, niche, city, country, created_at, "
+        "id, name, website_url, niche, city, country, created_at, "
         "business_contacts(email, phone, linkedin, instagram, facebook)"
     )
 
@@ -41,7 +41,7 @@ def _build_lead_query(supabase, niche=None, city=None, country=None, search=None
         query = query.eq("country", country)
     if search:
         query = query.or_(
-            f"business_name.ilike.%{search}%,"
+            f"name.ilike.%{search}%,"
             f"website_url.ilike.%{search}%"
         )
 
@@ -82,7 +82,7 @@ async def get_leads(
         contact = contacts[0] if contacts else {}
         leads.append({
             "id": row.get("id"),
-            "business_name": _clean(row.get("business_name")),
+            "business_name": _clean(row.get("name")),
             "website_url": _clean(row.get("website_url")),
             "niche": _clean(row.get("niche")),
             "city": _clean(row.get("city")),
@@ -167,7 +167,7 @@ async def export_leads_csv(
         contacts = row.get("business_contacts", [])
         contact = contacts[0] if contacts else {}
         writer.writerow([
-            row.get("business_name", ""),
+            row.get("name", ""),
             row.get("website_url", ""),
             row.get("niche", ""),
             row.get("city", ""),

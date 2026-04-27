@@ -11,9 +11,10 @@ import asyncio
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.core.config import get_settings
+from app.api.deps import get_supabase
 from app.services.b2b_email_generator import generate_b2b_sequence
 
 router = APIRouter()
@@ -120,44 +121,105 @@ async def generate_email_sequences(request: GenerateSequencesRequest):
                 "emails": emails_with_meta
             })
 
-        # 3. Save to Mailbox if leads were provided
-        if request.leads:
-            mailbox = load_mailbox()
-            saved_count = 0
+        # 3. Save to Supabase if leads/personas were provided
+        mailbox = load_mailbox() # Still load for local preview/sync if needed, but primary is DB
+        saved_count = 0
+        supabase = get_supabase()
+        
+        for i, sequences in enumerate(all_sequences):
+            persona = request.buyer_personas[i]
             
-            for lead in request.leads:
-                # Find the sequence for this lead's title
-                lead_title = lead.title or "Business Professional"
-                sequences = persona_email_map.get(lead_title)
-                
-                if not sequences or len(sequences) == 0:
+            if not sequences:
+                logger.warning(f"No sequences generated for persona: {persona.title}")
+                continue
+            
+            # A. Save Persona to DB
+            persona_data = {
+                "title": persona.title,
+                "role_category": persona.role,
+                "primary_goal": persona.primary_goal,
+                "pain_points": persona.pain_points,
+                "desired_outcomes": persona.desired_outcomes,
+                "problems_we_solve": persona.problems_we_solve,
+                "responsibilities": persona.responsibilities
+            }
+            
+            p_res = supabase.schema("b2b").table("buyer_personas").select("id").eq("title", persona.title).execute()
+            if p_res.data:
+                p_id = p_res.data[0]["id"]
+                supabase.schema("b2b").table("buyer_personas").update(persona_data).eq("id", p_id).execute()
+            else:
+                p_insert = supabase.schema("b2b").table("buyer_personas").insert(persona_data).execute()
+                if not p_insert.data:
                     continue
-                
-                # We save the first sequence as the main email, and store others in a field
-                email_data = {
-                    "business_id": lead.id,
-                    "business_name": lead.company or "B2B Lead",
-                    "business_url": lead.website or "",
-                    "target_email": lead.email,
-                    "subject": sequences[0]["subject"],
-                    "body": sequences[0]["body"],
-                    "status": "draft",
-                    "created_at": datetime.now().isoformat(),
-                    "type": "b2b",
-                    "persona": lead_title,
-                    "sequences": sequences # Store follow-ups for future use
-                }
-
-                # Update or append
-                existing_idx = next((idx for idx, m in enumerate(mailbox) if m.get("business_id") == lead.id), -1)
-                if existing_idx >= 0:
-                    mailbox[existing_idx].update(email_data)
-                else:
-                    mailbox.append(email_data)
-                saved_count += 1
+                p_id = p_insert.data[0]["id"]
             
-            save_mailbox(mailbox)
-            logger.info(f"Saved {saved_count} B2B leads to mailbox")
+            # B. Save Sequences to DB
+            for j, seq in enumerate(sequences):
+                seq_data = {
+                    "persona_id": p_id,
+                    "step_number": j + 1,
+                    "subject": seq["subject"],
+                    "body": seq["body"],
+                    "tone": request.tone
+                }
+                seq_res = supabase.schema("b2b").table("email_sequences").select("id").eq("persona_id", p_id).eq("step_number", j + 1).execute()
+                if seq_res.data:
+                    supabase.schema("b2b").table("email_sequences").update(seq_data).eq("id", seq_res.data[0]["id"]).execute()
+                else:
+                    supabase.schema("b2b").table("email_sequences").insert(seq_data).execute()
+
+            # C. Link Leads to Persona and Save to Mailbox
+            if request.leads:
+                for lead in request.leads:
+                    lead_title = lead.title or "Business Professional"
+                    if lead_title != persona.title:
+                        continue
+                    
+                    # Update lead in DB to link to persona
+                    supabase.schema("b2b").table("leads").update(
+                        {"persona_id": p_id}
+                    ).eq("email", lead.email).execute()
+
+                    # Save to outreach.b2b_campaign_leads for the Outreach UI
+                    camp_lead_data = {
+                        "lead_id": lead.id,
+                        "target_email": lead.email,
+                        "subject": sequences[0]["subject"],
+                        "body": sequences[0]["body"],
+                        "status": "draft"
+                    }
+                    camp_res = supabase.schema("outreach").table("b2b_campaign_leads").select("id").eq("lead_id", lead.id).execute()
+                    if camp_res.data:
+                        supabase.schema("outreach").table("b2b_campaign_leads").update(camp_lead_data).eq("id", camp_res.data[0]["id"]).execute()
+                    else:
+                        supabase.schema("outreach").table("b2b_campaign_leads").insert(camp_lead_data).execute()
+
+                    # Also update local mailbox.json for existing UI compatibility
+                    email_data = {
+                        "business_id": lead.id,
+                        "business_name": lead.company or "B2B Lead",
+                        "business_url": lead.website or "",
+                        "target_email": lead.email,
+                        "subject": sequences[0]["subject"],
+                        "body": sequences[0]["body"],
+                        "status": "draft",
+                        "created_at": datetime.now().isoformat(),
+                        "type": "b2b",
+                        "persona": lead_title,
+                        "sequences": sequences,
+                        "persona_id": p_id
+                    }
+
+                    existing_idx = next((idx for idx, m in enumerate(mailbox) if m.get("business_id") == lead.id), -1)
+                    if existing_idx >= 0:
+                        mailbox[existing_idx].update(email_data)
+                    else:
+                        mailbox.append(email_data)
+                    saved_count += 1
+            
+        save_mailbox(mailbox)
+        logger.info(f"Saved {saved_count} B2B leads and personas to Supabase")
 
         elapsed = time.time() - start
         total_emails = sum(len(g["emails"]) for g in generated_data)

@@ -52,5 +52,41 @@
         "created_at": "2026-04-27T02:38:18.769923",
         "status": "Completed",
         "completed_at": "2026-04-27T02:38:35.621636"
+    },
+    {
+        "id": "5",
+        "name": "B2B Campaign - 27/04/2026",
+        "account_id": "4",
+        "total_leads": 5,
+        "sent_count": 5,
+        "business_ids": [
+            "c3dd81e9-9b5c-4e5b-af9e-4feded3f4ad8",
+            "00ea7a0b-1627-4ae7-a2ae-9ec1d7bcc6e4",
+            "855069bc-abac-46eb-a9bd-2d046dad2661",
+            "3e22eda8-6dbd-4000-a126-6337e567cbd7",
+            "f6b0936b-ecca-4c70-9ba6-c74117b67661"
+        ],
+        "scheduled_at": null,
+        "created_at": "2026-04-27T12:37:51.852049",
+        "status": "Completed",
+        "completed_at": "2026-04-27T12:38:11.451454"
+    },
+    {
+        "id": "6",
+        "name": "B2B Campaign - 27/04/2026",
+        "account_id": "4",
+        "total_leads": 5,
+        "sent_count": 5,
+        "business_ids": [
+            "65561fcd-e932-4abd-8cfb-95875cdd0896",
+            "898a2dd6-cc73-44b0-98e0-bcafae094616",
+            "f777df44-bd7d-4328-a6db-27dd0b7d31a4",
+            "17ffaad4-c43b-460e-9740-45eb1926ce92",
+            "9adcebb7-a3f5-44cc-b9eb-6d337e1f3c17"
+        ],
+        "scheduled_at": null,
+        "created_at": "2026-04-27T15:15:08.063364",
+        "status": "Completed",
+        "completed_at": "2026-04-27T15:15:37.171567"
     }
 ]

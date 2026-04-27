@@ -20,51 +20,6 @@ from app.api.deps import get_supabase
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-ACCOUNTS_FILE = os.path.join(os.path.dirname(__file__), "accounts.json")
-CAMPAIGNS_FILE = os.path.join(os.path.dirname(__file__), "campaigns.json")
-MAILBOX_FILE = os.path.join(os.path.dirname(__file__), "mailbox.json")
-def load_accounts():
-    if os.path.exists(ACCOUNTS_FILE):
-        with open(ACCOUNTS_FILE, "r") as f:
-            accounts = json.load(f)
-        # Inject credentials from environment variables for accounts with env_key
-        for acc in accounts:
-            env_key = acc.get("env_key")
-            if env_key:
-                acc["smtp_user"] = os.environ.get(f"SMTP_USER_{env_key}", acc.get("smtp_user", ""))
-                acc["smtp_pass"] = os.environ.get(f"SMTP_PASS_{env_key}", acc.get("smtp_pass", ""))
-                acc["imap_user"] = os.environ.get(f"IMAP_USER_{env_key}", acc.get("imap_user", ""))
-                acc["imap_pass"] = os.environ.get(f"IMAP_PASS_{env_key}", acc.get("imap_pass", ""))
-        return accounts
-    return []
-
-def save_accounts(accounts):
-    with open(ACCOUNTS_FILE, "w") as f:
-        json.dump(accounts, f, indent=4)
-
-def load_campaigns():
-    if os.path.exists(CAMPAIGNS_FILE):
-        with open(CAMPAIGNS_FILE, "r") as f:
-            return json.load(f)
-    return []
-
-def save_campaigns(campaigns):
-    with open(CAMPAIGNS_FILE, "w") as f:
-        json.dump(campaigns, f, indent=4)
-
-def load_mailbox():
-    if os.path.exists(MAILBOX_FILE):
-        try:
-            with open(MAILBOX_FILE, "r") as f:
-                return json.load(f)
-        except:
-            return []
-    return []
-
-def save_mailbox(mailbox):
-    with open(MAILBOX_FILE, "w") as f:
-        json.dump(mailbox, f, indent=4)
-
 # ── Request / Response Models ──
 
 class EmailPayload(BaseModel):
@@ -117,8 +72,9 @@ class UpdateLeadRequest(BaseModel):
 # ── Accounts Management ──
 
 @router.get("/accounts")
-async def get_accounts():
-    accounts = load_accounts()
+async def get_accounts(supabase=Depends(get_supabase)):
+    res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").execute()
+    accounts = res.data or []
     # Mask passwords
     for acc in accounts:
         acc["smtp_pass"] = "********"
@@ -126,47 +82,38 @@ async def get_accounts():
     return accounts
 
 @router.post("/accounts")
-async def add_account(account: AccountPayload):
-    accounts = load_accounts()
-    new_acc = account.dict()
-    new_acc["id"] = str(len(accounts) + 1)
-    accounts.append(new_acc)
-    save_accounts(accounts)
-    return {"status": "success", "message": "Account added", "id": new_acc["id"]}
+async def add_account(account: AccountPayload, supabase=Depends(get_supabase)):
+    data = account.dict()
+    res = supabase.schema("outreach").table("b2b_sending_accounts").insert(data).execute()
+    if not res.data:
+        raise HTTPException(400, "Failed to add account")
+    return {"status": "success", "message": "Account added", "id": res.data[0]["id"]}
 
 @router.delete("/accounts/{account_id}")
-async def delete_account(account_id: str):
-    accounts = load_accounts()
-    accounts = [a for a in accounts if a["id"] != account_id]
-    save_accounts(accounts)
+async def delete_account(account_id: str, supabase=Depends(get_supabase)):
+    supabase.schema("outreach").table("b2b_sending_accounts").delete().eq("id", account_id).execute()
     return {"status": "success", "message": "Account deleted"}
 
 @router.put("/accounts/{account_id}")
-async def update_account(account_id: str, account: AccountPayload):
-    accounts = load_accounts()
-    for acc in accounts:
-        if acc["id"] == account_id:
-            updated = account.dict()
-            # If passwords were kept masked, don't overwrite them
-            if updated["smtp_pass"] == "********":
-                updated["smtp_pass"] = acc["smtp_pass"]
-            if updated["imap_pass"] == "********":
-                updated["imap_pass"] = acc["imap_pass"]
-            
-            updated["id"] = account_id
-            acc.update(updated)
-            save_accounts(accounts)
-            return {"status": "success", "message": "Account updated"}
-    raise HTTPException(status_code=404, detail="Account not found")
+async def update_account(account_id: str, account: AccountPayload, supabase=Depends(get_supabase)):
+    data = account.dict()
+    # If passwords were kept masked, don't overwrite them
+    if data.get("smtp_pass") == "********":
+        del data["smtp_pass"]
+    if data.get("imap_pass") == "********":
+        del data["imap_pass"]
+        
+    res = supabase.schema("outreach").table("b2b_sending_accounts").update(data).eq("id", account_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Account not found")
+    return {"status": "success", "message": "Account updated"}
 
 # ── Gmail Quick-Connect ──
 
 @router.post("/accounts/gmail-quick")
-async def gmail_quick_connect(payload: GmailQuickPayload):
+async def gmail_quick_connect(payload: GmailQuickPayload, supabase=Depends(get_supabase)):
     """One-click Gmail account setup. Auto-fills SMTP/IMAP settings."""
-    accounts = load_accounts()
-    new_acc = {
-        "id": str(len(accounts) + 1),
+    data = {
         "name": payload.name,
         "smtp_host": "smtp.gmail.com",
         "smtp_port": 587,
@@ -177,19 +124,20 @@ async def gmail_quick_connect(payload: GmailQuickPayload):
         "imap_user": payload.email,
         "imap_pass": payload.app_password,
     }
-    accounts.append(new_acc)
-    save_accounts(accounts)
-    return {"status": "success", "message": "Gmail account added", "id": new_acc["id"]}
+    res = supabase.schema("outreach").table("b2b_sending_accounts").insert(data).execute()
+    if not res.data:
+        raise HTTPException(400, "Failed to connect Gmail")
+    return {"status": "success", "message": "Gmail account added", "id": res.data[0]["id"]}
 
 # ── Test Email ──
 
 @router.post("/accounts/{account_id}/test")
-async def test_account(account_id: str, payload: TestEmailPayload = TestEmailPayload()):
+async def test_account(account_id: str, payload: TestEmailPayload = TestEmailPayload(), supabase=Depends(get_supabase)):
     """Send a test email to verify SMTP credentials work."""
-    accounts = load_accounts()
-    account = next((a for a in accounts if a["id"] == account_id), None)
-    if not account:
+    res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").eq("id", account_id).execute()
+    if not res.data:
         raise HTTPException(status_code=404, detail="Account not found")
+    account = res.data[0]
 
     recipient = payload.recipient or account["smtp_user"]
     msg = EmailMessage()
@@ -204,45 +152,86 @@ async def test_account(account_id: str, payload: TestEmailPayload = TestEmailPay
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"SMTP test failed: {str(e)}")
 
+@router.post("/accounts/{account_id}/test-imap")
+async def test_imap_connection(account_id: str, supabase=Depends(get_supabase)):
+    """Verify IMAP credentials work."""
+    import imaplib
+    res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").eq("id", account_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Account not found")
+    account = res.data[0]
+
+    if not account.get("imap_host"):
+        raise HTTPException(status_code=400, detail="IMAP host not configured")
+
+    try:
+        mail = imaplib.IMAP4_SSL(account["imap_host"], account.get("imap_port", 993))
+        mail.login(account["imap_user"], account["imap_pass"])
+        mail.select("INBOX")
+        mail.logout()
+        return {"status": "success", "message": "IMAP connection successful"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"IMAP test failed: {str(e)}")
+
 # ── Mailbox (local data from mailbox.json) ──
 
 @router.get("/mailbox")
-async def get_mailbox(status: Optional[str] = Query(None)):
+async def get_mailbox(status: Optional[str] = Query(None), supabase=Depends(get_supabase)):
+    """Fetch B2B leads from outreach.b2b_campaign_leads."""
     try:
-        mailbox = load_mailbox()
+        query = supabase.schema("outreach").table("b2b_campaign_leads").select(
+            "*, lead:lead_id (full_name, email, title, company:company_id (industry))"
+        )
         if status and status != "all":
-            mailbox = [m for m in mailbox if m.get("status") == status]
-        return {"emails": mailbox[::-1], "total": len(mailbox)}
+            query = query.eq("status", status)
+        
+        res = query.execute()
+        data = res.data or []
+        
+        emails = []
+        for row in data:
+            lead = row.get("lead") or {}
+            emails.append({
+                "id": row["id"],
+                "business_id": row["lead_id"],
+                "business_name": lead.get("full_name") or "Lead",
+                "business_url": "",
+                "target_email": row.get("target_email") or lead.get("email"),
+                "subject": row["subject"],
+                "body": row["body"],
+                "status": row["status"],
+                "created_at": row["created_at"],
+                "type": "b2b",
+                "persona": lead.get("title", "Lead")
+            })
+            
+        return {"emails": emails[::-1], "total": len(emails)}
     except Exception as e:
         logger.error(f"Mailbox fetch error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/receive")
-async def receive_emails(request: ReceiveEmailsRequest):
-    mailbox = load_mailbox()
+async def receive_emails(request: ReceiveEmailsRequest, supabase=Depends(get_supabase)):
     saved = 0
+    errors = []
     for item in request.emails:
-        # Check if exists, update or append
-        existing_idx = next((i for i, m in enumerate(mailbox) if m.get("business_id") == item.business_id), -1)
-        
-        email_data = {
-            "business_id": item.business_id,
-            "business_url": item.website_url or "",
-            "target_email": item.email,
-            "subject": item.subject,
-            "body": item.body,
-            "status": "draft",
-            "created_at": datetime.now().isoformat()
-        }
-        
-        if existing_idx >= 0:
-            mailbox[existing_idx].update(email_data)
-        else:
-            mailbox.append(email_data)
-        saved += 1
-        
-    save_mailbox(mailbox)
-    return {"saved": saved, "message": f"Received {saved} emails into mailbox"}
+        try:
+            data = {
+                "lead_id": item.business_id,
+                "target_email": item.email,
+                "subject": item.subject,
+                "body": item.body,
+                "status": "draft"
+            }
+            # Note: We use lead_id as the primary key/unique identifier in campaign_leads for now
+            supabase.schema("outreach").table("b2b_campaign_leads").upsert(
+                data, on_conflict="lead_id"
+            ).execute()
+            saved += 1
+        except Exception as e:
+            errors.append(str(e))
+            
+    return {"saved": saved, "message": f"Received {saved} emails into Supabase", "errors": errors if errors else None}
 
 @router.patch("/emails/{business_id}")
 async def update_email_status(business_id: str, status: str = Query(...)):
@@ -257,106 +246,102 @@ async def update_email_status(business_id: str, status: str = Query(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/send")
-async def send_campaign(request: SendCampaignRequest, background_tasks: BackgroundTasks):
+async def send_campaign(request: SendCampaignRequest, background_tasks: BackgroundTasks, supabase=Depends(get_supabase)):
+    """
+    Start a sending campaign using Supabase.
+    """
     # 1. Verify account
-    accounts = load_accounts()
-    account = next((a for a in accounts if a["id"] == request.account_id), None)
-    if not account:
+    acc_res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").eq("id", request.account_id).execute()
+    if not acc_res.data:
         raise HTTPException(status_code=404, detail="Sending account not found")
+    account = acc_res.data[0]
 
-    # 2. Fetch selected emails from database
-    mailbox = load_mailbox()
-    emails = [m for m in mailbox if m.get("business_id") in request.business_ids]
-
-    if not emails:
-        raise HTTPException(status_code=404, detail="No emails found for the given IDs")
-
-    # Mark as scheduled
-    for m in mailbox:
-        if m.get("business_id") in request.business_ids:
-            m["status"] = "scheduled"
-    save_mailbox(mailbox)
-
-    # Save campaign trace
-    campaigns = load_campaigns()
-    new_campaign = {
-        "id": str(len(campaigns) + 1),
+    # 2. Create Campaign
+    camp_data = {
         "name": request.campaign_name,
         "account_id": request.account_id,
-        "total_leads": len(emails),
-        "sent_count": 0,
-        "business_ids": request.business_ids,
-        "scheduled_at": request.scheduled_at,
-        "created_at": datetime.now().isoformat(),
-        "status": "Running"
+        "status": "Running",
+        "total_leads": len(request.business_ids),
+        "settings": {"send_rate": request.send_rate}
     }
-    campaigns.append(new_campaign)
-    save_campaigns(campaigns)
+    camp_res = supabase.schema("outreach").table("b2b_campaigns").insert(camp_data).execute()
+    if not camp_res.data:
+        raise HTTPException(400, "Failed to create campaign")
+    campaign_id = camp_res.data[0]["id"]
 
-    # Process in background task
-    background_tasks.add_task(process_sending, emails, account, request.send_rate, new_campaign["id"])
+    # 3. Fetch and schedule leads
+    leads_res = supabase.schema("outreach").table("b2b_campaign_leads").select("*").in_("lead_id", request.business_ids).execute()
+    leads_to_send = leads_res.data or []
+    
+    if not leads_to_send:
+        raise HTTPException(400, "No leads found in mailbox for selected IDs")
+
+    for lead in leads_to_send:
+        supabase.schema("outreach").table("b2b_campaign_leads").update({
+            "campaign_id": campaign_id,
+            "status": "scheduled"
+        }).eq("id", lead["id"]).execute()
+
+    # 4. Process in background task
+    background_tasks.add_task(process_sending, leads_to_send, account, request.send_rate, campaign_id)
 
     return {
         "status": "success",
         "message": "Campaign queued for sending",
-        "total": len(emails),
-        "campaign_id": new_campaign["id"]
+        "total": len(leads_to_send),
+        "campaign_id": campaign_id
     }
 
-async def process_sending(emails, account, rate, campaign_id=None):
+async def process_sending(leads, account, rate, campaign_id):
     delay = 1.0 / rate if rate > 0 else 1.0
     sent_count = 0
+    supabase = get_supabase()
     
-    for email in emails:
+    for lead in leads:
         # Check if campaign was paused or deleted
-        if campaign_id:
-            campaigns = load_campaigns()
-            campaign = next((c for c in campaigns if c["id"] == campaign_id), None)
-            if not campaign or campaign.get("status") == "Paused":
-                logger.info(f"Campaign {campaign_id} paused/deleted, stopping sending.")
-                return
+        camp_res = supabase.schema("outreach").table("b2b_campaigns").select("status").eq("id", campaign_id).execute()
+        if not camp_res.data or camp_res.data[0]["status"] == "Paused":
+            logger.info(f"Campaign {campaign_id} paused or not found, stopping.")
+            return
         
-        b_id = email.get("business_id")
+        lead_id_in_table = lead["id"]
         try:
             msg = EmailMessage()
-            msg.set_content(email["body"])
-            msg["Subject"] = email["subject"]
+            msg.set_content(lead["body"])
+            msg["Subject"] = lead["subject"]
             msg["From"] = f"{account['name']} <{account['smtp_user']}>"
-            msg["To"] = email["target_email"]
+            msg["To"] = lead["target_email"]
             
-            # Send using SMTP synchronous in an async executor to not block server
+            # Send using SMTP
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, send_smtp, msg, account)
             
-            # Mark as sent
-            mailbox = load_mailbox()
-            for m in mailbox:
-                if m.get("business_id") == b_id:
-                    m["status"] = "sent"
-            save_mailbox(mailbox)
+            # Mark lead as sent
+            supabase.schema("outreach").table("b2b_campaign_leads").update({
+                "status": "sent",
+                "sent_at": datetime.now().isoformat()
+            }).eq("id", lead_id_in_table).execute()
+            
             sent_count += 1
             
             # Update campaign sent_count
-            if campaign_id:
-                campaigns = load_campaigns()
-                for c in campaigns:
-                    if c["id"] == campaign_id:
-                        c["sent_count"] = sent_count
-                save_campaigns(campaigns)
+            supabase.schema("outreach").table("b2b_campaigns").update({
+                "sent_count": sent_count
+            }).eq("id", campaign_id).execute()
             
-            # Wait for rate limiting
             await asyncio.sleep(delay)
         except Exception as e:
-            logger.error(f"Failed to send email to {email['target_email']}: {e}")
-            sent_count += 1  # Still counts as processed
-            try:
-                mailbox = load_mailbox()
-                for m in mailbox:
-                    if m.get("business_id") == b_id:
-                        m["status"] = "bounced"
-                save_mailbox(mailbox)
-            except:
-                pass
+            logger.error(f"Failed to send email to {lead['target_email']}: {e}")
+            supabase.schema("outreach").table("b2b_campaign_leads").update({
+                "status": "failed"
+            }).eq("id", lead_id_in_table).execute()
+            
+    # Mark campaign as completed
+    supabase.schema("outreach").table("b2b_campaigns").update({
+        "status": "Completed",
+        "completed_at": datetime.now().isoformat()
+    }).eq("id", campaign_id).execute()
+    logger.info(f"Campaign {campaign_id} finished. Sent {sent_count} emails.")
     
     # Mark campaign as completed when all emails are processed
     if campaign_id:
@@ -385,67 +370,52 @@ def send_smtp(msg, account):
         raise e
 
 @router.get("/list")
-async def list_campaigns():
-    return load_campaigns()
+async def list_campaigns(supabase=Depends(get_supabase)):
+    res = supabase.schema("outreach").table("b2b_campaigns").select("*").order("created_at", desc=True).execute()
+    return res.data or []
+
 
 # ── Lead Management ──
 
-@router.put("/leads/{business_id}")
-async def update_lead(business_id: str, request: UpdateLeadRequest):
-    mailbox = load_mailbox()
-    for m in mailbox:
-        if m.get("business_id") == business_id:
-            if request.target_email is not None:
-                m["target_email"] = request.target_email
-            if request.subject is not None:
-                m["subject"] = request.subject
-            if request.body is not None:
-                m["body"] = request.body
-            if request.business_url is not None:
-                m["business_url"] = request.business_url
-            save_mailbox(mailbox)
-            return {"status": "success", "message": "Lead updated"}
-    raise HTTPException(status_code=404, detail="Lead not found")
+@router.put("/leads/{lead_id}")
+async def update_lead(lead_id: str, request: UpdateLeadRequest, supabase=Depends(get_supabase)):
+    data = {k: v for k, v in request.dict().items() if v is not None}
+    res = supabase.schema("outreach").table("b2b_campaign_leads").update(data).eq("lead_id", lead_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    return {"status": "success", "message": "Lead updated"}
 
-@router.delete("/leads/{business_id}")
-async def delete_lead(business_id: str):
-    mailbox = load_mailbox()
-    mailbox = [m for m in mailbox if m.get("business_id") != business_id]
-    save_mailbox(mailbox)
+
+@router.delete("/leads/{lead_id}")
+async def delete_lead(lead_id: str, supabase=Depends(get_supabase)):
+    supabase.schema("outreach").table("b2b_campaign_leads").delete().eq("lead_id", lead_id).execute()
     return {"status": "success", "message": "Lead deleted"}
 
-# ── Campaign actions (dynamic routes must come AFTER static ones) ──
+
+# ── Campaign actions ──
 
 @router.post("/{campaign_id}/toggle")
-async def toggle_campaign(campaign_id: str, action: str = Query(...)):
-    campaigns = load_campaigns()
-    for c in campaigns:
-        if c["id"] == campaign_id:
-            if action == "pause":
-                c["status"] = "Paused"
-            elif action == "resume":
-                c["status"] = "Running"
-            save_campaigns(campaigns)
-            return {"status": "success", "action": action, "campaign_status": c["status"]}
-    raise HTTPException(status_code=404, detail="Campaign not found")
+async def toggle_campaign(campaign_id: str, action: str = Query(...), supabase=Depends(get_supabase)):
+    status = "Paused" if action == "pause" else "Running"
+    res = supabase.schema("outreach").table("b2b_campaigns").update({"status": status}).eq("id", campaign_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    return {"status": "success", "action": action, "campaign_status": status}
+
 
 @router.put("/{campaign_id}")
-async def update_campaign(campaign_id: str, request: UpdateCampaignRequest):
-    campaigns = load_campaigns()
-    for c in campaigns:
-        if c["id"] == campaign_id:
-            if request.name is not None:
-                c["name"] = request.name
-            if request.send_rate is not None:
-                c["send_rate"] = request.send_rate
-            save_campaigns(campaigns)
-            return {"status": "success", "message": "Campaign updated"}
-    raise HTTPException(status_code=404, detail="Campaign not found")
+async def update_campaign(campaign_id: str, request: UpdateCampaignRequest, supabase=Depends(get_supabase)):
+    data = {k: v for k, v in request.dict().items() if v is not None}
+    res = supabase.schema("outreach").table("b2b_campaigns").update(data).eq("id", campaign_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    return {"status": "success", "message": "Campaign updated"}
+
 
 @router.delete("/{campaign_id}")
-async def delete_campaign(campaign_id: str):
-    campaigns = load_campaigns()
-    campaigns = [c for c in campaigns if c["id"] != campaign_id]
-    save_campaigns(campaigns)
+async def delete_campaign(campaign_id: str, supabase=Depends(get_supabase)):
+    # Cascading delete should handle campaign_leads if foreign keys are set up, 
+    # but we'll do it manually to be safe if needed.
+    supabase.schema("outreach").table("b2b_campaigns").delete().eq("id", campaign_id).execute()
     return {"status": "success", "message": "Campaign deleted"}
 

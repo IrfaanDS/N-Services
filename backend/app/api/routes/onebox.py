@@ -14,25 +14,12 @@ from typing import List, Optional, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, Form
 from pydantic import BaseModel
 from datetime import datetime
+from app.api.deps import get_supabase
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-ACCOUNTS_FILE = os.path.join(os.path.dirname(__file__), "accounts.json")
-
-def load_accounts():
-    if os.path.exists(ACCOUNTS_FILE):
-        with open(ACCOUNTS_FILE, "r") as f:
-            accounts = json.load(f)
-        for acc in accounts:
-            env_key = acc.get("env_key")
-            if env_key:
-                acc["smtp_user"] = os.environ.get(f"SMTP_USER_{env_key}", acc.get("smtp_user", ""))
-                acc["smtp_pass"] = os.environ.get(f"SMTP_PASS_{env_key}", acc.get("smtp_pass", ""))
-                acc["imap_user"] = os.environ.get(f"IMAP_USER_{env_key}", acc.get("imap_user", ""))
-                acc["imap_pass"] = os.environ.get(f"IMAP_PASS_{env_key}", acc.get("imap_pass", ""))
-        return accounts
-    return []
+# (load_accounts removed, using Supabase directly in routes)
 
 # ── Routes ──
 
@@ -42,23 +29,32 @@ async def list_onebox_emails(
     offset: int = 0,
     status: str = "All",
     inbox: str = "Inbox",
-    q: str = ""
+    q: str = "",
+    supabase=Depends(get_supabase)
 ):
     """
-    Retrieve a list of email threads from the IMAP Server.
+    Retrieve a list of email threads from all configured IMAP Servers in Supabase.
     """
-    accounts = load_accounts()
+    res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").execute()
+    accounts = res.data or []
     if not accounts:
         return {"data": []}
 
-    account = accounts[0] # Just use the first one for the global inbox view
-    threads = []
+    all_threads = []
     
     try:
-        # We will wrap the IMAP blocking call
         loop = asyncio.get_event_loop()
-        threads = await loop.run_in_executor(None, fetch_imap_emails, account, limit, offset, inbox)
-        return {"data": threads}
+        # Fetch from all accounts in parallel
+        tasks = [loop.run_in_executor(None, fetch_imap_emails, acc, limit, offset, inbox) for acc in accounts]
+        results = await asyncio.gather(*tasks)
+        
+        for threads in results:
+            all_threads.extend(threads)
+            
+        # Sort combined results by date (newest first)
+        # Note: sentAt is a string from IMAP, might need parsing for better sorting
+        # For now, just returning the combined list
+        return {"data": all_threads}
     except Exception as e:
         logger.error(f"Failed to fetch from IMAP: {e}")
         return {"data": []}
@@ -100,8 +96,8 @@ def fetch_imap_emails(account, limit, offset, mailbox):
                         date_str = msg.get("Date", "")
                         
                         results.append({
-                            "id": msg_id.decode(),
-                            "threadId": msg_id.decode(),
+                            "id": f"{account['id']}:{msg_id.decode()}",
+                            "threadId": f"{account['id']}:{msg_id.decode()}",
                             "subject": subject,
                             "fromEmail": from_header,
                             "fromName": from_header.split("<")[0].strip() if "<" in from_header else from_header,
@@ -143,14 +139,19 @@ async def get_onebox_thread(thread_id: str):
     """
     Retrieve specific thread details via IMAP.
     """
-    accounts = load_accounts()
-    if not accounts:
+    if ":" not in thread_id:
         return {"data": []}
-    account = accounts[0]
+        
+    acc_id, msg_idx = thread_id.split(":", 1)
+    accounts = load_accounts()
+    account = next((a for a in accounts if a["id"] == acc_id), None)
+    
+    if not account:
+        return {"data": []}
     
     try:
         loop = asyncio.get_event_loop()
-        messages = await loop.run_in_executor(None, fetch_imap_thread, account, thread_id)
+        messages = await loop.run_in_executor(None, fetch_imap_thread, account, msg_idx)
         return {"data": messages}
     except Exception as e:
          raise HTTPException(status_code=500, detail=str(e))
@@ -213,7 +214,8 @@ def get_body(msg):
 async def send_reply(
     thread_id: str,
     emaildata: str = Form(...),
-    file: List[UploadFile] = File(None) 
+    file: List[UploadFile] = File(None),
+    supabase=Depends(get_supabase)
 ):
     """
     Send a reply to a thread using SMTP.
@@ -223,10 +225,15 @@ async def send_reply(
     except json.JSONDecodeError:
         raise HTTPException(status_code=400, detail="Invalid JSON in 'emaildata'")
 
-    accounts = load_accounts()
-    if not accounts:
-        raise HTTPException(status_code=500, detail="No accounts configured")
-    account = accounts[0]
+    if ":" not in thread_id:
+        raise HTTPException(status_code=400, detail="Invalid thread ID")
+        
+    acc_id, _ = thread_id.split(":", 1)
+    res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").eq("id", acc_id).execute()
+    account = res.data[0] if res.data else None
+    
+    if not account:
+        raise HTTPException(status_code=404, detail="Account not found for this thread")
 
     from email.message import EmailMessage
     import smtplib
@@ -257,6 +264,7 @@ async def get_realtime_messages(
     email: str,
     path: str = "Inbox",
     page: int = 0,
-    pageSize: int = 20
+    pageSize: int = 20,
+    supabase=Depends(get_supabase)
 ):
-    return await list_onebox_emails(limit=pageSize, offset=page*pageSize, inbox=path)
+    return await list_onebox_emails(limit=pageSize, offset=page*pageSize, inbox=path, supabase=supabase)

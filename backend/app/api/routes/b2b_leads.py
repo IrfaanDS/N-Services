@@ -10,7 +10,8 @@ import uuid
 import logging
 import json
 from typing import Optional, List
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from app.api.deps import get_supabase
+from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from pydantic import BaseModel
 from groq import Groq
 from app.core.config import get_settings
@@ -353,6 +354,104 @@ async def evaluate_b2b_leads(body: B2BEvaluateRequest):
         "avg_score": avg_score,
         "high_potential": high_count,
         "low_potential": low_count,
+    }
+
+
+@router.post("/save")
+async def save_b2b_leads(body: B2BEvaluateRequest, supabase=Depends(get_supabase)):
+    """
+    Save evaluated B2B leads to Supabase.
+    Follows write order: common.businesses -> b2b.companies -> b2b.leads.
+    """
+    saved_count = 0
+    errors = []
+    
+    for lead in body.leads:
+        website = _clean(lead.get("website"))
+        if not website:
+            continue
+            
+        try:
+            # 1. Upsert into common.businesses
+            # Using name to match schema
+            biz_data = {
+                "name": _clean(lead.get("company")),
+                "website_url": website,
+                "niche": _clean(lead.get("industry") or lead.get("niche")),
+                "city": _clean(lead.get("city")),
+                "country": _clean(lead.get("country")),
+                "source": "b2b_csv"
+            }
+            
+            biz_res = supabase.schema("common").table("businesses").upsert(
+                biz_data, on_conflict="website_url"
+            ).execute()
+            
+            if not biz_res.data:
+                continue
+            biz_id = biz_res.data[0]["id"]
+            
+            # 2. Upsert into common.contacts (one per business)
+            contact_data = {
+                "business_id": biz_id,
+                "email": _clean(lead.get("email")),
+                "phone": _clean(lead.get("phone")),
+                "linkedin": _clean(lead.get("linkedin")),
+                "facebook": _clean(lead.get("facebook")),
+                "instagram": _clean(lead.get("instagram")),
+                "twitter": _clean(lead.get("twitter"))
+            }
+            supabase.schema("common").table("contacts").upsert(
+                contact_data, on_conflict="business_id"
+            ).execute()
+
+            # 3. Upsert into b2b.companies
+            comp_data = {
+                "business_id": biz_id,
+                "industry": _clean(lead.get("industry")),
+                "employee_count": _clean(lead.get("employees")),
+                "website_domain": website.replace("https://", "").replace("http://", "").split("/")[0],
+                "csv_source_file": "manual_upload"
+            }
+            comp_res = supabase.schema("b2b").table("companies").upsert(
+                comp_data, on_conflict="business_id"
+            ).execute()
+            
+            if not comp_res.data:
+                continue
+            comp_id = comp_res.data[0]["id"]
+            
+            # 4. Insert into b2b.leads
+            lead_data = {
+                "id": lead.get("id") or str(uuid.uuid4()),
+                "company_id": comp_id,
+                "business_id": biz_id,
+                "first_name": _clean(lead.get("first_name")),
+                "last_name": _clean(lead.get("last_name")),
+                "full_name": _clean(lead.get("name")),
+                "title": _clean(lead.get("title")),
+                "email": _clean(lead.get("email")),
+                "phone": _clean(lead.get("phone")),
+                "linkedin_url": _clean(lead.get("linkedin")),
+                "city": _clean(lead.get("city")),
+                "country": _clean(lead.get("country")),
+                "seniority": "Senior" if any(kw in (lead.get("title") or "").lower() for kw in SENIOR_TITLES) else "Junior",
+                "lead_score": lead.get("lead_score", 0),
+                "priority": lead.get("priority", "Medium"),
+                "scoring_reason": lead.get("reasoning")
+            }
+            
+            supabase.schema("b2b").table("leads").insert(lead_data).execute()
+            saved_count += 1
+            
+        except Exception as e:
+            logger.error(f"Failed to save lead {website}: {str(e)}")
+            errors.append(f"{website}: {str(e)}")
+            
+    return {
+        "message": f"Successfully saved {saved_count} leads to Supabase", 
+        "saved": saved_count,
+        "errors": errors if errors else None
     }
 
 

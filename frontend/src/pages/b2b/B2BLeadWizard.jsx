@@ -75,6 +75,7 @@ export default function B2BLeadWizard() {
 
     const [activeStep, setActiveStep] = useState(0)
     const [error, setError] = useState(null)
+    const [successMsg, setSuccessMsg] = useState(null)
 
     // Step 1: Org Details
     const [orgName, setOrgName] = useState('')
@@ -202,13 +203,20 @@ Team Size: ${teamSize}
         setSelectedFile(file)
         setIsUploading(true)
         setError(null)
+        setSuccessMsg(null)
 
         try {
             const res = await b2bLeadsAPI.uploadCSV(file)
-            setPreviewLeads(res.data.data || [])
+            const leads = res.data.data || []
+            setPreviewLeads(leads)
+            if (leads.length > 0) {
+                setSuccessMsg(res.data.message || `Successfully parsed ${leads.length} leads.`)
+            } else {
+                setError("No leads with valid names or emails found in this CSV.")
+            }
         } catch (err) {
             console.error('Upload failed:', err)
-            setError(err.response?.data?.detail || 'Failed to parse CSV file')
+            setError(err.response?.data?.detail || 'Failed to parse CSV file. Ensure it is a valid Apollo export.')
             setPreviewLeads([])
             setSelectedFile(null)
         } finally {
@@ -237,7 +245,7 @@ Team Size: ${teamSize}
         }
     }
 
-    const handleProceedToEmailGeneration = () => {
+    const handleProceedToEmailGeneration = async () => {
         const companyProfile = {
             name: orgName,
             industry: selectedIndustry,
@@ -248,10 +256,22 @@ Team Size: ${teamSize}
             website_url: ''
         }
         
+        // Ensure leads are saved to the database before generation
+        setIsUploading(true) // Reuse loading state for simplicity
+        try {
+            await b2bLeadsAPI.saveLeads(previewLeads)
+        } catch (err) {
+            console.error('Failed to save leads:', err)
+            setError('Failed to persist leads to database. Please try again.')
+            setIsUploading(false)
+            return
+        }
+        
         sessionStorage.setItem('b2b_company_profile', JSON.stringify(companyProfile))
         sessionStorage.setItem('b2b_scored_leads', JSON.stringify(previewLeads))
         sessionStorage.setItem('b2b_audience', JSON.stringify(audienceData))
 
+        setIsUploading(false)
         navigate('/b2b/email-generation')
     }
     
@@ -318,6 +338,14 @@ Team Size: ${teamSize}
                 <div className="flex items-center gap-3 p-4 mb-6 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 animate-fade-in">
                     <AlertCircle className="w-5 h-5 flex-shrink-0" />
                     {error}
+                </div>
+            )}
+
+            {/* ── Success Banner ── */}
+            {successMsg && (
+                <div className="flex items-center gap-3 p-4 mb-6 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 animate-fade-in">
+                    <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                    {successMsg}
                 </div>
             )}
 
@@ -633,7 +661,7 @@ Team Size: ${teamSize}
                                 <p className="text-gray-500 mt-2">Use your generated filters to export a CSV from your data provider (e.g. Apollo), then upload it below.</p>
                             </div>
 
-                            {!selectedFile && (
+                            {!selectedFile ? (
                                 <div className="max-w-2xl mx-auto">
                                     <div 
                                         className="border-2 border-dashed border-sky-300 bg-sky-50/50 hover:bg-sky-50 rounded-3xl p-12 text-center cursor-pointer transition-colors"
@@ -647,13 +675,38 @@ Team Size: ${teamSize}
                                         <input type="file" id="b2b-csv-upload" className="hidden" accept=".csv" onChange={handleFileUpload} />
                                     </div>
                                 </div>
+                            ) : (
+                                <div className="max-w-2xl mx-auto">
+                                    <div className="flex items-center gap-4 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl mb-4">
+                                        <div className="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-200">
+                                            {isUploading ? <Loader2 className="w-6 h-6 animate-spin" /> : <CheckCircle2 className="w-6 h-6" />}
+                                        </div>
+                                        <div className="flex-1">
+                                            <h4 className="font-bold text-gray-900">{isUploading ? 'Uploading...' : 'File Uploaded Successfully'}</h4>
+                                            <p className="text-sm text-emerald-700">{selectedFile.name} • {(selectedFile.size / 1024).toFixed(1)} KB</p>
+                                        </div>
+                                        {!isUploading && (
+                                            <button 
+                                                className="text-xs font-medium text-gray-500 hover:text-red-600 underline"
+                                                onClick={() => { setSelectedFile(null); setPreviewLeads([]); setSuccessMsg(null); }}
+                                            >
+                                                Change File
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
                             )}
 
                             {selectedFile && previewLeads.length > 0 && (
                                 <div className="mt-4">
                                     <div className="flex items-center justify-between mb-6">
                                         <div>
-                                            <h3 className="text-xl font-bold text-gray-900">{filteredLeads.length} Leads Found</h3>
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <h3 className="text-xl font-bold text-gray-900">{filteredLeads.length} Leads Parsed</h3>
+                                                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded uppercase tracking-wider border border-emerald-200">
+                                                    Saved to Session
+                                                </span>
+                                            </div>
                                             <p className="text-sm text-gray-500">
                                                 {filteredLeads.length !== previewLeads.length && <span>Showing {filteredLeads.length} of </span>}
                                                 {previewLeads.length} total from {selectedFile.name}
@@ -668,10 +721,14 @@ Team Size: ${teamSize}
                                                 {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
                                                 Export CSV
                                             </button>
-                                            <button className="btn btn-outline text-xs px-3 py-2" onClick={() => { setSelectedFile(null); setPreviewLeads([]) }}>
-                                                Change File
-                                            </button>
                                         </div>
+                                    </div>
+
+                                    {/* Preview Section Header */}
+                                    <div className="flex items-center gap-3 mb-4 mt-8">
+                                        <div className="h-px flex-1 bg-gray-100"></div>
+                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Data Preview</span>
+                                        <div className="h-px flex-1 bg-gray-100"></div>
                                     </div>
 
                                     {/* Availability Filters */}

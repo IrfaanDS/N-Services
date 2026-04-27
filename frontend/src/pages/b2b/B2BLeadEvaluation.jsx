@@ -28,6 +28,7 @@ export default function B2BLeadEvaluation() {
     const [scoredLeads, setScoredLeads] = useState([])
     const [summary, setSummary] = useState({ total: 0, avg_score: 0, high_potential: 0, low_potential: 0 })
     const [loading, setLoading] = useState(false)
+    const [saving, setSaving] = useState(false)
     const [error, setError] = useState(null)
 
     // ── On mount: check if leads came from B2B Lead Acquisition ──
@@ -85,9 +86,28 @@ export default function B2BLeadEvaluation() {
     }
 
     // ── Proceed to Email Generation ──
-    function handleProceedToEmail() {
-        sessionStorage.setItem('b2b_scored_leads', JSON.stringify(scoredLeads))
-        navigate('/b2b/email-generation')
+    async function handleProceedToEmail() {
+        if (scoredLeads.length === 0) return
+        
+        setSaving(true)
+        setError(null)
+        try {
+            // Save to Supabase first
+            await b2bLeadsAPI.saveLeads(scoredLeads)
+            
+            // Then store in session and navigate
+            sessionStorage.setItem('b2b_scored_leads', JSON.stringify(scoredLeads))
+            navigate('/b2b/email-generation')
+        } catch (err) {
+            console.error('Failed to save leads to DB:', err)
+            setError(err.response?.data?.detail || 'Failed to save leads to database. You can still proceed, but data won\'t be persisted.')
+            // If it fails, we still allow proceeding as a fallback, 
+            // but we warn the user.
+            sessionStorage.setItem('b2b_scored_leads', JSON.stringify(scoredLeads))
+            setTimeout(() => navigate('/b2b/email-generation'), 2000)
+        } finally {
+            setSaving(false)
+        }
     }
 
     const hasResults = scoredLeads.length > 0
@@ -110,9 +130,18 @@ export default function B2BLeadEvaluation() {
                             <Download className="w-4 h-4" />
                             Download Results
                         </button>
-                        <button className="btn btn-b2b text-sm" onClick={handleProceedToEmail}>
-                            <ArrowRight className="w-4 h-4" />
-                            Proceed to Email Generation
+                        <button className="btn btn-b2b text-sm" onClick={handleProceedToEmail} disabled={saving}>
+                            {saving ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    Saving to DB...
+                                </>
+                            ) : (
+                                <>
+                                    <ArrowRight className="w-4 h-4" />
+                                    Proceed to Email Generation
+                                </>
+                            )}
                         </button>
                     </div>
                 )}

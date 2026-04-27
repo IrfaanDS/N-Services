@@ -14,6 +14,7 @@ import FloatingAssistant from './components/FloatingAssistant'
 import B2BLeadAcquisition from './pages/b2b/B2BLeadAcquisition'
 import B2BLeadEvaluation from './pages/b2b/B2BLeadEvaluation'
 import B2BEmailGeneration from './pages/b2b/B2BEmailGeneration'
+import B2BOutreach from './pages/b2b/B2BOutreach'
 
 function AppLayout({ mode }) {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 1024)
@@ -51,6 +52,8 @@ function AppLayout({ mode }) {
                             <Route path="leads" element={<B2BLeadAcquisition />} />
                             <Route path="evaluation" element={<B2BLeadEvaluation />} />
                             <Route path="email-generation" element={<B2BEmailGeneration />} />
+                            <Route path="outreach" element={<B2BOutreach />} />
+                            <Route path="onebox" element={<Onebox />} />
                             <Route path="*" element={<Navigate to="/b2b/leads" replace />} />
                         </Routes>
                     )}

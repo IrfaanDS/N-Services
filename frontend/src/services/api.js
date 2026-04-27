@@ -71,6 +71,7 @@ export const sendingAPI = {
     updateCampaign: (id, data) => api.put(`/campaigns/${id}`, data),
     deleteCampaign: (id) => api.delete(`/campaigns/${id}`),
     testAccount: (id) => api.post(`/campaigns/accounts/${id}/test`),
+    testImap: (id) => api.post(`/campaigns/accounts/${id}/test-imap`),
     addGmailQuick: (data) => api.post('/campaigns/accounts/gmail-quick', data),
     updateLead: (businessId, data) => api.put(`/campaigns/leads/${businessId}`, data),
     deleteLead: (businessId) => api.delete(`/campaigns/leads/${businessId}`),
@@ -116,6 +117,7 @@ export const b2bLeadsAPI = {
         })
     },
     evaluate: (data) => api.post('/b2b/leads/evaluate', data),
+    saveLeads: (leads) => api.post('/b2b/leads/save', { leads }),
     generateAudience: (data) => api.post('/b2b/leads/generate-audience', data),
     exportCSV: (leads) => api.post('/b2b/leads/export', { leads }),
 }

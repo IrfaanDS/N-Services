@@ -185,5 +185,386 @@
                 "body": "Dear Chief Information Security Officer,\n\nAs a seasoned security leader, you understand the challenges of manual processes weighing down your teams. I'd like to explore how our automation solutions can alleviate these burdens, leading to improved operational efficiency and revenue growth.\n\nBest regards,\n[Your Name]"
             }
         ]
+    },
+    {
+        "business_id": "f6b0936b-ecca-4c70-9ba6-c74117b67661",
+        "business_name": "Cohere",
+        "business_url": "cohere.com",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Automate Your NLP Workflows for Enhanced Efficiency",
+        "body": "As an Engineering Fellow with expertise in NLP, you understand the importance of efficiency in your work. Manual processes can be a significant bottleneck. Our technology streamlines your workflows, freeing up valuable time for strategic initiatives. Let's discuss how we can help. Book a meeting with me at [Your Company URL].",
+        "status": "sent",
+        "created_at": "2026-04-27T12:36:19.595914",
+        "type": "b2b",
+        "persona": "Director, Engineering Fellow (NLP)",
+        "sequences": [
+            {
+                "subject": "Automate Your NLP Workflows for Enhanced Efficiency",
+                "body": "As an Engineering Fellow with expertise in NLP, you understand the importance of efficiency in your work. Manual processes can be a significant bottleneck. Our technology streamlines your workflows, freeing up valuable time for strategic initiatives. Let's discuss how we can help. Book a meeting with me at [Your Company URL]."
+            },
+            {
+                "subject": "Unlock Your Team's Potential with Efficient Workflows",
+                "body": "I understand your challenges in finding reliable service providers. Our solution is built on cutting-edge tech, ensuring predictable outcomes and measurable ROI. Would you like to receive a custom ROI analysis for your organization?"
+            },
+            {
+                "subject": "Maximize Your ROI with Our NLP Automation Solution",
+                "body": "Our technology is designed to demonstrate clear return-on-investment. I'd be happy to walk you through a case study of a similar organization. How can we help you drive business results?"
+            }
+        ]
+    },
+    {
+        "business_id": "3e22eda8-6dbd-4000-a126-6337e567cbd7",
+        "business_name": "Modulo Security Solutions",
+        "business_url": "modulo.com.br",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Streamline Operations and Boost Revenue",
+        "body": "As a forward-thinking executive, you're constantly seeking ways to optimize your business. I'd like to share a recent case study on how our solution helped a CTO like you reduce manual processes by 75% and increase efficiency by 30%.",
+        "status": "sent",
+        "created_at": "2026-04-27T12:36:19.595914",
+        "type": "b2b",
+        "persona": "CEO & CTO",
+        "sequences": [
+            {
+                "subject": "Streamline Operations and Boost Revenue",
+                "body": "As a forward-thinking executive, you're constantly seeking ways to optimize your business. I'd like to share a recent case study on how our solution helped a CTO like you reduce manual processes by 75% and increase efficiency by 30%."
+            },
+            {
+                "subject": "How to Find a Reliable Partner for Your Business Needs",
+                "body": "I understand the challenge of finding a trustworthy service provider. Our company has established itself as a trusted partner, delivering measurable results and transparent communication. Would you like to schedule a call to discuss how we can support your business?"
+            },
+            {
+                "subject": "Unlocking Clear ROI: A Proven Track Record",
+                "body": "I can provide detailed case studies and data on our previous successes, demonstrating the tangible impact of our solution on businesses like yours. This will give you confidence in our expertise and value proposition. Are you ready to explore how our solution can drive business growth for your organization?"
+            }
+        ]
+    },
+    {
+        "business_id": "855069bc-abac-46eb-a9bd-2d046dad2661",
+        "business_name": "CodeArrest Softwares Private Limited",
+        "business_url": "codearrest.com",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Optimizing Software Development for Operational Efficiency",
+        "body": "As a software development leader, you understand the importance of streamlining processes to drive business results. At [Sender Company], we've worked with many teams to increase efficiency and revenue. Let's discuss how our solutions can help your team achieve similar outcomes.",
+        "status": "sent",
+        "created_at": "2026-04-27T12:36:19.595914",
+        "type": "b2b",
+        "persona": "Director of Software Development",
+        "sequences": [
+            {
+                "subject": "Optimizing Software Development for Operational Efficiency",
+                "body": "As a software development leader, you understand the importance of streamlining processes to drive business results. At [Sender Company], we've worked with many teams to increase efficiency and revenue. Let's discuss how our solutions can help your team achieve similar outcomes."
+            },
+            {
+                "subject": "Addressing Time-Consuming Manual Processes in Software Development",
+                "body": "We understand the frustration of manual processes slowing down your development pipeline. Our team has developed an innovative solution to automate these tasks, saving you time and resources. We'd love to share more about it."
+            },
+            {
+                "subject": "Case Study: 30% Revenue Increase through Process Optimization",
+                "body": "Our solution has helped several software development teams achieve significant revenue growth. Would you like to review our latest case study and explore how we can help your team achieve similar results?"
+            }
+        ]
+    },
+    {
+        "business_id": "00ea7a0b-1627-4ae7-a2ae-9ec1d7bcc6e4",
+        "business_name": "H2O.ai",
+        "business_url": "h2o.ai",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Efficiency Optimization for Risk and Tech Teams",
+        "body": "Hi [Senior Vice President's Name],\nAs a Senior Vice President of Risk and Technology, you understand the importance of streamlined operations. Our platform automates manual processes, freeing up more time for high-leverage decisions. Would you like to learn more?\nBest, [Sender's Name]",
+        "status": "sent",
+        "created_at": "2026-04-27T12:36:19.595914",
+        "type": "b2b",
+        "persona": "Senior Vice President Risk & Technology",
+        "sequences": [
+            {
+                "subject": "Efficiency Optimization for Risk and Tech Teams",
+                "body": "Hi [Senior Vice President's Name],\nAs a Senior Vice President of Risk and Technology, you understand the importance of streamlined operations. Our platform automates manual processes, freeing up more time for high-leverage decisions. Would you like to learn more?\nBest, [Sender's Name]"
+            },
+            {
+                "subject": "Real-World ROI from Process Automation",
+                "body": "Hi [Senior Vice President's Name],\nWe'd like to share a case study demonstrating the tangible benefits of our platform. Increased efficiency and revenue are within reach. Would you like to review the case study?\nBest, [Sender's Name]"
+            },
+            {
+                "subject": "Exclusive Offer: Personalized Demo for Senior Leaders",
+                "body": "Hi [Senior Vice President's Name],\nTo help you make an informed decision, we're offering a personalized demo tailored to your risk and tech initiatives. What are your pain points, and how can we help?\nBest, [Sender's Name]"
+            }
+        ]
+    },
+    {
+        "business_id": "c3dd81e9-9b5c-4e5b-af9e-4feded3f4ad8",
+        "business_name": "The Missing Link",
+        "business_url": "themissinglink.com.au",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Transform Your Cybersecurity Operations with Efficiency",
+        "body": "Dear [Recipient Name],\nYour organization relies on reliable cybersecurity systems. But are you wasting time on manual workflows? Our company can transform your operations with automation capabilities. Want to discuss how?\nBest regards, [Your Name]\n[Sender Company]",
+        "status": "sent",
+        "created_at": "2026-04-27T12:36:19.595914",
+        "type": "b2b",
+        "persona": "Chief Information Security Officer",
+        "sequences": [
+            {
+                "subject": "Transform Your Cybersecurity Operations with Efficiency",
+                "body": "Dear [Recipient Name],\nYour organization relies on reliable cybersecurity systems. But are you wasting time on manual workflows? Our company can transform your operations with automation capabilities. Want to discuss how?\nBest regards, [Your Name]\n[Sender Company]"
+            },
+            {
+                "subject": "Efficient Cybersecurity Services for Your Business",
+                "body": "Hi [Recipient Name],\nHope you had time to reflect on how efficient processes can impact your bottom line. We're here to simplify your operations with our reliable services. Would you like to schedule a call? \nBest regards, [Your Name]\n[Sender Company]"
+            },
+            {
+                "subject": "Proven Results in Cybersecurity Efficiency",
+                "body": "Hi [Recipient Name],\nTo alleviate any doubts about our cybersecurity services, we'd like to invite you to our success stories page. We've helped similar businesses optimize their workflows, and now we'd love to help you. Schedule your consultation today.\nBest regards, [Your Name]\n[Sender Company]"
+            }
+        ]
+    },
+    {
+        "business_id": "f777df44-bd7d-4328-a6db-27dd0b7d31a4",
+        "business_name": "Cohere",
+        "business_url": "cohere.com",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Leveraging NLP for Operational Efficiency",
+        "body": "As an Engineering Fellow at your organization, we recognize your drive to improve operational efficiency and drive business results. We've helped similar teams streamline their processes, reducing manual labor by up to 75%. Would you like to explore how Nexus Core can help?",
+        "status": "sent",
+        "created_at": "2026-04-27T15:12:45.064332",
+        "type": "b2b",
+        "persona": "Director, Engineering Fellow (NLP)",
+        "sequences": [
+            {
+                "step": 1,
+                "subject": "Leveraging NLP for Operational Efficiency",
+                "body": "As an Engineering Fellow at your organization, we recognize your drive to improve operational efficiency and drive business results. We've helped similar teams streamline their processes, reducing manual labor by up to 75%. Would you like to explore how Nexus Core can help?"
+            },
+            {
+                "step": 2,
+                "subject": "Solving Your Challenges in NLP Service Provision",
+                "body": "We understand the struggle of finding reliable partners for NLP services. At Nexus Core, we offer a proven track record of delivering high-quality results on-time, ensuring a smooth integration with your existing infrastructure. Schedule a call to learn more."
+            },
+            {
+                "step": 3,
+                "subject": "Unlocking ROI in NLP Initiatives",
+                "body": "Demonstrating tangible ROI on NLP projects can be a significant challenge. Our data-driven approach ensures you get the most out of your investments. Talk to us about how Nexus Core can help you measure and maximize your returns on NLP initiatives."
+            }
+        ]
+    },
+    {
+        "business_id": "17ffaad4-c43b-460e-9740-45eb1926ce92",
+        "business_name": "Modulo Security Solutions",
+        "business_url": "modulo.com.br",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Unlock Efficiency Gains with Nexus Core",
+        "body": "Hi [CEO & CTO's Name],\n                I came across Nexus Core and believe our solution can alleviate the challenges you're facing with time-consuming manual processes and difficulty finding reliable service providers. I'd love to discuss how our platform can drive efficiency and revenue growth for your organization.",
+        "status": "sent",
+        "created_at": "2026-04-27T15:12:45.064332",
+        "type": "b2b",
+        "persona": "CEO & CTO",
+        "sequences": [
+            {
+                "subject": "Unlock Efficiency Gains with Nexus Core",
+                "body": "Hi [CEO & CTO's Name],\n                I came across Nexus Core and believe our solution can alleviate the challenges you're facing with time-consuming manual processes and difficulty finding reliable service providers. I'd love to discuss how our platform can drive efficiency and revenue growth for your organization."
+            },
+            {
+                "subject": "A Data-Driven Approach to Operational Efficiency",
+                "body": "Hi [CEO & CTO's Name],\n                As a seasoned executive leader, your goal is likely to drive business results. Nexus Core's platform offers the tools to streamline processes, improve collaboration, and boost revenue. I'd be happy to schedule a quick call to explore how we can help your business shine."
+            },
+            {
+                "subject": "Case Study: Real ROIs for Nexus Core Clients",
+                "body": "Hi [CEO & CTO's Name],\n                I wanted to share a recent success story from one of our clients. By implementing Nexus Core's platform, they achieved a 25% boost in operational efficiency and a 18% increase in revenue. I'd love to discuss the possibility of a similar ROI for your organization."
+            }
+        ]
+    },
+    {
+        "business_id": "9adcebb7-a3f5-44cc-b9eb-6d337e1f3c17",
+        "business_name": "CodeArrest Softwares Private Limited",
+        "business_url": "codearrest.com",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Maximize Software Development Efficiency with Nexus Core",
+        "body": "Hi [Director's Name],\n\nAs a Director of Software Development, you wear many hats. You're constantly looking for ways to streamline processes and drive business results. That's why we developed Nexus Core - a game-changing platform that automates manual tasks and boosts efficiency. Let's explore how we can help you achieve your goals.",
+        "status": "sent",
+        "created_at": "2026-04-27T15:12:45.064332",
+        "type": "b2b",
+        "persona": "Director of Software Development",
+        "sequences": [
+            {
+                "subject": "Maximize Software Development Efficiency with Nexus Core",
+                "body": "Hi [Director's Name],\n\nAs a Director of Software Development, you wear many hats. You're constantly looking for ways to streamline processes and drive business results. That's why we developed Nexus Core - a game-changing platform that automates manual tasks and boosts efficiency. Let's explore how we can help you achieve your goals."
+            },
+            {
+                "subject": "How Nexus Core Can Reduce Your Time to Market",
+                "body": "Hi [Director's Name],\n\nHope you're doing well. We wanted to follow up on our previous email regarding Nexus Core. Did you know that our platform enables development teams to deploy solutions up to 5X faster? This means you can bring products to market quicker, drive revenue growth, and stay ahead of the competition. Would you be open to a quick call to discuss further?"
+            },
+            {
+                "subject": "Let's Discuss Your ROI Potential",
+                "body": "Hi [Director's Name],\n\nThis is a brief follow-up to our previous conversations. We believe Nexus Core has the potential to drive significant ROI for your organization. Would you be available for a call next week to explore case studies, success stories, and how we can tailor our solution to meet your specific needs?"
+            }
+        ]
+    },
+    {
+        "business_id": "898a2dd6-cc73-44b0-98e0-bcafae094616",
+        "business_name": "H2O.ai",
+        "business_url": "h2o.ai",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Streamlining Risk Management: A New Approach for Your Team",
+        "body": "Hi [Name],\n\nAs a Senior Vice President of Risk & Technology, you know the importance of efficiency in driving business results. At Nexus Core, we've developed a solution that automates manual processes, ensuring seamless collaboration between teams and stakeholders.\n\nLearn more about how we can help you optimize risk management.\n\nBest, [Your Name]",
+        "status": "sent",
+        "created_at": "2026-04-27T15:12:45.064332",
+        "type": "b2b",
+        "persona": "Senior Vice President Risk & Technology",
+        "sequences": [
+            {
+                "subject": "Streamlining Risk Management: A New Approach for Your Team",
+                "body": "Hi [Name],\n\nAs a Senior Vice President of Risk & Technology, you know the importance of efficiency in driving business results. At Nexus Core, we've developed a solution that automates manual processes, ensuring seamless collaboration between teams and stakeholders.\n\nLearn more about how we can help you optimize risk management.\n\nBest, [Your Name]"
+            },
+            {
+                "subject": "Maximize ROI in Risk Management with Nexus Core",
+                "body": "Hi [Name],\n\nWe wanted to follow up on our previous email and discuss how Nexus Core can help you achieve clear ROI on your risk management investments.\n\nOur solution provides actionable insights and data-driven decision-making capabilities, ensuring you make informed choices that drive operational efficiency and revenue growth.\n\nSchedule a call to learn more.\n\nBest, [Your Name]"
+            },
+            {
+                "subject": "Expert Insights on Risk Management: Exclusive Webinar Invitation",
+                "body": "Hi [Name],\n\nAs a thought leader in risk management, we'd like to invite you to an exclusive webinar where our experts will share actionable strategies to optimize operational efficiency and drive business results.\n\nJoin us on [Date] to learn how Nexus Core can empower your team to succeed.\n\nRegister now.\n\nBest, [Your Name]"
+            }
+        ]
+    },
+    {
+        "business_id": "65561fcd-e932-4abd-8cfb-95875cdd0896",
+        "business_name": "The Missing Link",
+        "business_url": "themissinglink.com.au",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "",
+        "body": "Dear [Name], \n         As a Chief Information Security Officer, you're no stranger to navigating complex security frameworks. At Nexus Core, we've observed that many organizations struggle with manual processes, hindering operational efficiency. Our expertise can help.",
+        "status": "sent",
+        "created_at": "2026-04-27T15:12:45.064332",
+        "type": "b2b",
+        "persona": "Chief Information Security Officer",
+        "sequences": [
+            {
+                "subject": "",
+                "body": "Dear [Name], \n         As a Chief Information Security Officer, you're no stranger to navigating complex security frameworks. At Nexus Core, we've observed that many organizations struggle with manual processes, hindering operational efficiency. Our expertise can help."
+            },
+            {
+                "subject": "",
+                "body": "Hi [Name], \n         We understand the challenges of finding reliable service providers. At Nexus Core, our team has extensive experience in delivering high-quality solutions. Let's schedule a call to discuss your needs."
+            },
+            {
+                "subject ": "",
+                "body": "Hi [Name], \n         To demonstrate the impact of our services, we'd like to share a case study showcasing a [XX)% increase in efficiency and revenue for a similar organization. Schedule a call to learn more."
+            },
+            {
+                "subject": "Nexus Core: Operational Efficiency for CISOs",
+                "body": "Hi [Name], \n         At Nexus Core, our mission is to empower Chief Information Security Officers like you to drive business results through increased efficiency. If you're interested in exploring how we can help, let's schedule a call."
+            }
+        ]
+    },
+    {
+        "business_id": "a4dd3445-1de0-4162-a316-f32cefbfe714",
+        "business_name": "Modulo Security Solutions",
+        "business_url": "modulo.com.br",
+        "target_email": "abastos@modulo.com.br",
+        "subject": "Revolutionize Your Operations with Nexus Core",
+        "body": "Hi [Recipient's Name],\n\nAs a fellow executive, I understand the importance of data-driven insights to inform strategic decisions. Our custom software solutions and self-serve ERP have helped numerous CTOs like yourself increase efficiency and revenue. Would you like to learn more?",
+        "status": "draft",
+        "created_at": "2026-04-27T18:31:43.443612",
+        "type": "b2b",
+        "persona": "CEO & CTO",
+        "sequences": [
+            {
+                "step": 1,
+                "subject": "Revolutionize Your Operations with Nexus Core",
+                "body": "Hi [Recipient's Name],\n\nAs a fellow executive, I understand the importance of data-driven insights to inform strategic decisions. Our custom software solutions and self-serve ERP have helped numerous CTOs like yourself increase efficiency and revenue. Would you like to learn more?"
+            },
+            {
+                "step": 2,
+                "subject": "Real ROI: A Custom ERP Solution for Modernizing Legacy Systems",
+                "body": "Hi [Recipient's Name],\n\nBuilding on our initial conversation, I wanted to provide further insight into the value our self-serve ERP can bring. By automating manual processes, you can expect a substantial reduction in project timelines and operational costs. Interested in exploring a custom solution tailored to your business needs?"
+            },
+            {
+                "step": 3,
+                "subject": "Expert Guidance for Your Modernization Journey",
+                "body": "Hi [Recipient's Name],\n\nOur IT consulting team has extensive experience in streamlining manufacturing and logistics operations. With Nexus Core, you'll receive personalized guidance to ensure a seamless transition to our custom ERP. Shall we schedule a call to discuss the next steps?"
+            }
+        ],
+        "persona_id": "debc4c83-14d0-461c-bc40-279511973041"
+    },
+    {
+        "business_id": "ee5c421d-3441-45e5-88b9-c850fd8125c8",
+        "business_name": "CodeArrest Softwares Private Limited",
+        "business_url": "codearrest.com",
+        "target_email": "abhishek.sharma@codearrest.com",
+        "subject": "Streamlining Operations: Insights for Software Development Directors",
+        "body": "Hi John, As a Software Development Director, you're constantly looking for ways to improve operational efficiency. I'd like to share some insights on how Nexus Core's IT consulting and custom software development services can help. Would you like to schedule a call to discuss further?",
+        "status": "draft",
+        "created_at": "2026-04-27T18:31:46.738109",
+        "type": "b2b",
+        "persona": "Director of Software Development",
+        "sequences": [
+            {
+                "subject": "Streamlining Operations: Insights for Software Development Directors",
+                "body": "Hi John, As a Software Development Director, you're constantly looking for ways to improve operational efficiency. I'd like to share some insights on how Nexus Core's IT consulting and custom software development services can help. Would you like to schedule a call to discuss further?"
+            },
+            {
+                "subject": "Boosting Efficiency and Revenue with Nexus Core",
+                "body": "Hi John, As we discussed briefly, our custom ERP solution has enabled manufacturers to streamline operations and increase revenue by up to 25%. I'd like to schedule a demo to show you how it can work for your business. What's your availability this week?"
+            },
+            {
+                "subject": "Maximizing ROI with Nexus Core's ERP Solution",
+                "body": "Hi John, I wanted to follow-up on our previous conversation regarding Nexus Core's ERP solution. We've helped numerous clients like yours achieve significant efficiency gains and revenue increases. I've prepared a customized ROI analysis for your business. Would you like to review it?"
+            }
+        ],
+        "persona_id": "318b8552-3382-4cd4-95a5-df327b2fdcfd"
+    },
+    {
+        "business_id": "8672ae94-8eb0-4928-857b-cee8bfcae78c",
+        "business_name": "H2O.ai",
+        "business_url": "h2o.ai",
+        "target_email": "agus.sudjianto@h2o.ai",
+        "subject": "Modernize Your Operations",
+        "body": "Greetings Senior Vice President Risk & Technology,\n\nAt Nexus Core, we've helped numerous manufacturing and logistics companies modernize their business operations, saving them time and increasing revenue. Would you like to learn more about our custom software development solutions?",
+        "status": "draft",
+        "created_at": "2026-04-27T18:31:49.993902",
+        "type": "b2b",
+        "persona": "Senior Vice President Risk & Technology",
+        "sequences": [
+            {
+                "subject": "Modernize Your Operations",
+                "body": "Greetings Senior Vice President Risk & Technology,\n\nAt Nexus Core, we've helped numerous manufacturing and logistics companies modernize their business operations, saving them time and increasing revenue. Would you like to learn more about our custom software development solutions?"
+            },
+            {
+                "subject": "Transform Your Business with Our SaaS ERP",
+                "body": "Senior Vice President Risk & Technology, I wanted to follow up on our previous discussion regarding operational efficiency. Our $29.99/month self-serve SaaS ERP solution has been a game-changer for companies like yours. Would you like a demo to see its capabilities?"
+            },
+            {
+                "subject": "Clear ROI with Nexus Core",
+                "body": "Senior Vice President Risk & Technology, we've got a concrete use case study that showcases the clear ROI our solution can bring to your business. Would you like to discuss how we can apply these results to your company's specific challenges?"
+            }
+        ],
+        "persona_id": "73e07977-d2b6-4efd-b002-535ddc8ade7e"
+    },
+    {
+        "business_id": "7180714e-1dd2-4d2b-a679-045880a8e2b8",
+        "business_name": "The Missing Link",
+        "business_url": "themissinglink.com.au",
+        "target_email": "abailey@themissinglink.com.au",
+        "subject": "Maximize Efficiency in Operational Security: A New Mindset is Needed",
+        "body": "Dear [CISO's Name],\nImplementing robust operational security doesn't have to be a bottleneck. At Nexus Core, we've helped numerous manufacturing and logistics organizations modernize their systems for streamlined processes. Let's discuss how our expertise can benefit your organization.\nLooking forward to exploring opportunities.\nBest, [Your Name]",
+        "status": "draft",
+        "created_at": "2026-04-27T18:31:53.617707",
+        "type": "b2b",
+        "persona": "Chief Information Security Officer",
+        "sequences": [
+            {
+                "step": 1,
+                "subject": "Maximize Efficiency in Operational Security: A New Mindset is Needed",
+                "body": "Dear [CISO's Name],\nImplementing robust operational security doesn't have to be a bottleneck. At Nexus Core, we've helped numerous manufacturing and logistics organizations modernize their systems for streamlined processes. Let's discuss how our expertise can benefit your organization.\nLooking forward to exploring opportunities.\nBest, [Your Name]"
+            },
+            {
+                "step": 2,
+                "subject": "Streamline Manual Processes with Custom Software",
+                "body": "Hi [CISO's Name],\nOur custom software development can automate time-consuming tasks and reduce manual errors. By partnering with Nexus Core, you can minimize operational risks and enhance productivity. Shall we schedule a call to discuss further?\nLooking forward to it.\n[Your Name]"
+            },
+            {
+                "step": 3,
+                "subject": "Quantify ROI with Nexus Core's Self-Serve SaaS ERP",
+                "body": "Hi [CISO's Name],\nOur ERP solution is designed to rapidly deploy into your operations, showcasing immediate efficiency gains. At Nexus Core, we're committed to delivering measurable results. How about we explore the ROI potential of our solution together?\nBest, [Your Name]"
+            }
+        ],
+        "persona_id": "e958cbc0-4c44-4edc-93a7-ed5d8565778a"
     }
 ]

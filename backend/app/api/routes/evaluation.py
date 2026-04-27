@@ -203,7 +203,7 @@ def _fetch_and_score(supabase, business_ids: list[str]) -> list[dict]:
 
         scored.append({
             "business_id": bid,
-            "business_name": _clean(biz.get("business_name")),
+            "business_name": _clean(biz.get("name")),
             "website_url": _clean(biz.get("website_url")),
             "niche": _clean(biz.get("niche")),
             "city": _clean(biz.get("city")),

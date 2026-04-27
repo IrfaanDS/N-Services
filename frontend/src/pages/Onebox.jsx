@@ -13,7 +13,8 @@ import {
     Trash2,
     Calendar,
     User,
-    Mail
+    Mail,
+    X
 } from 'lucide-react'
 import { oneboxAPI } from '../services/api'
 
@@ -51,7 +52,8 @@ export default function Onebox() {
     const [offset, setOffset] = useState(0)
     const [limit] = useState(30)
     const [searchQuery, setSearchQuery] = useState('')
-    const [statusFilter, setStatusFilter] = useState('All') // 'All', 'Interested', 'Meeting Booked', etc.
+    const [statusFilter, setStatusFilter] = useState('All')
+    const [folder, setFolder] = useState('Inbox')
 
     // Fetch thread list
     const fetchThreads = async () => {
@@ -61,7 +63,8 @@ export default function Onebox() {
                 limit,
                 offset,
                 q: searchQuery,
-                status: statusFilter
+                status: statusFilter,
+                inbox: folder // Pass selected folder to API
             })
             setThreads(res.data?.data || [])
             // If we have threads and none selected, select the first one (optional)
@@ -78,7 +81,7 @@ export default function Onebox() {
     // Initial load
     useEffect(() => {
         fetchThreads()
-    }, [offset, statusFilter]) // Refresh when pagination or filter changes
+    }, [offset, statusFilter, folder]) // Refresh when pagination, filter or folder changes
 
     // Handle selecting a thread -> fetch full thread details
     const handleSelectThread = async (thread) => {
@@ -180,6 +183,22 @@ export default function Onebox() {
                             onKeyDown={e => e.key === 'Enter' && fetchThreads()}
                         />
                     </div>
+                    {/* Folder Switcher */}
+                    <div className="flex bg-gray-100 p-1 rounded-xl">
+                        <button 
+                            onClick={() => setFolder('Inbox')}
+                            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${folder === 'Inbox' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-500 hover:text-gray-700'}`}
+                        >
+                            Inbox
+                        </button>
+                        <button 
+                            onClick={() => setFolder('Sent')}
+                            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${folder === 'Sent' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-500 hover:text-gray-700'}`}
+                        >
+                            Sent
+                        </button>
+                    </div>
+
                     {/* Filters */}
                     <div className="flex gap-2 text-xs overflow-x-auto pb-1 scrollbar-hide">
                         {['All', 'Interested', 'Meeting Booked', 'Closed'].map(status => (
@@ -209,6 +228,9 @@ export default function Onebox() {
                         <div className="py-10 flex flex-col items-center text-gray-400">
                             <Inbox className="w-10 h-10 mb-2 opacity-20" />
                             <p className="text-sm">No conversations found</p>
+                            <p className="text-[10px] mt-4 px-8 text-center opacity-60">
+                                If you have connected accounts, verify your IMAP settings and ensure you are using an <b>App Password</b> for Zoho/Gmail.
+                            </p>
                         </div>
                     ) : (
                         <ul className="divide-y divide-gray-100">
