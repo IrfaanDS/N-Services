@@ -35,14 +35,14 @@ api.interceptors.response.use(
 
 // ─── Lead Acquisition ───
 export const leadsAPI = {
-    getLeads: (filters) => api.get('/leads', { params: filters }),
+    getLeads: (filters) => api.get('/leads/', { params: filters }),
     getFilters: () => api.get('/leads/filters'),
     exportCSV: (filters) => api.get('/leads/export', { params: filters, responseType: 'blob' }),
 }
 
 // ─── Lead Evaluation ───
 export const evaluationAPI = {
-    evaluate: (data) => api.post('/evaluate', data),
+    evaluate: (data) => api.post('/evaluate/', data),
     uploadCSV: (file) => {
         const formData = new FormData()
         formData.append('file', file)

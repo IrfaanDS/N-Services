@@ -79,7 +79,11 @@ async def get_leads(
     leads = []
     for row in (result.data or []):
         contacts = row.pop("business_contacts", [])
-        contact = contacts[0] if contacts else {}
+        # Handle both list and single object results from Supabase
+        if isinstance(contacts, list):
+            contact = contacts[0] if contacts else {}
+        else:
+            contact = contacts if contacts else {}
         leads.append({
             "id": row.get("id"),
             "business_name": _clean(row.get("name")),
@@ -165,7 +169,10 @@ async def export_leads_csv(
     # Rows
     for row in (result.data or []):
         contacts = row.get("business_contacts", [])
-        contact = contacts[0] if contacts else {}
+        if isinstance(contacts, list):
+            contact = contacts[0] if contacts else {}
+        else:
+            contact = contacts if contacts else {}
         writer.writerow([
             row.get("name", ""),
             row.get("website_url", ""),

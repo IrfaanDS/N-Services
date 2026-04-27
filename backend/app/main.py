@@ -2,11 +2,25 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import leads, evaluation, emails, sending, dashboard, auth, onebox, seo_assistant
 from app.api.routes import b2b_leads, b2b_emails
+from app.api.routes import shopify, shopify_leads
+
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Initialize Shopify MongoDB indexes
+    from app.api.routes.shopify import store_manager
+    try:
+        await store_manager.ensure_indexes()
+    except Exception as e:
+        print(f"⚠️ Shopify Init Error: {e}")
+    yield
 
 app = FastAPI(
     title="LeadFlow Platform API",
     description="Lead acquisition, evaluation, email generation & sending platform for SEO and B2B services",
     version="2.0.0",
+    lifespan=lifespan,
 )
 
 # ── CORS (allow React dev server) ──
@@ -31,6 +45,9 @@ app.include_router(seo_assistant.router,   prefix="/api/assistant",    tags=["SE
 # ── Register B2B route modules ──
 app.include_router(b2b_leads.router,  prefix="/api/b2b/leads",  tags=["B2B Lead Acquisition"])
 app.include_router(b2b_emails.router, prefix="/api/b2b/emails", tags=["B2B Email Generation"])
+
+# ── Register Shopify RAG modules ──
+app.include_router(shopify.router, prefix="/api/shopify", tags=["Shopify AI"])
 
 
 @app.get("/api/health")

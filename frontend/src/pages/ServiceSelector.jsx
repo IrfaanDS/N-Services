@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Search, Users, ArrowRight, Zap, Globe, Target, Mail, BarChart3, Sparkles } from 'lucide-react'
+import { Search, Users, ArrowRight, Zap, Globe, Target, Mail, BarChart3, Sparkles, ShoppingBag } from 'lucide-react'
 
 const services = [
     {
@@ -38,6 +38,24 @@ const services = [
         accentColor: 'text-sky-400',
         borderHover: 'hover:border-sky-500/40',
     },
+    {
+        id: 'shopify',
+        title: 'Shopify AI Services',
+        subtitle: 'Shopify RAG & Lead Engine',
+        description: 'Provision smart AI assistants for Shopify stores and discover ecommerce leads with the specialized RAG-powered engine.',
+        path: '/shopify',
+        gradient: 'from-emerald-600 via-green-600 to-teal-600',
+        iconBg: 'bg-emerald-600/20',
+        hoverShadow: 'hover:shadow-[0_20px_60px_-15px_rgba(16,185,129,0.4)]',
+        features: [
+            { icon: Search, label: 'Lead Discovery' },
+            { icon: Zap, label: 'Store Onboarding' },
+            { icon: Sparkles, label: 'AI RAG Chat' },
+            { icon: Target, label: 'Admin Dashboard' },
+        ],
+        accentColor: 'text-emerald-400',
+        borderHover: 'hover:border-emerald-500/40',
+    },
 ]
 
 export default function ServiceSelector() {
@@ -66,7 +84,7 @@ export default function ServiceSelector() {
                 </div>
 
                 {/* Service Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full animate-fade-in-up">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full animate-fade-in-up">
                     {services.map((service) => (
                         <button
                             key={service.id}
@@ -95,8 +113,10 @@ export default function ServiceSelector() {
                                         group-hover:scale-110 transition-transform duration-300`}>
                                         {service.id === 'seo' ? (
                                             <Search className="w-6 h-6 text-white/80" />
-                                        ) : (
+                                        ) : service.id === 'b2b' ? (
                                             <Users className="w-6 h-6 text-white/80" />
+                                        ) : (
+                                            <ShoppingBag className="w-6 h-6 text-white/80" />
                                         )}
                                     </div>
                                 </div>

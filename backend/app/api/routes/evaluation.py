@@ -174,7 +174,10 @@ def _fetch_and_score(supabase, business_ids: list[str]) -> list[dict]:
     biz_map = {}
     for row in (biz_result.data or []):
         contacts = row.pop("business_contacts", [])
-        contact = contacts[0] if contacts else {}
+        if isinstance(contacts, list):
+            contact = contacts[0] if contacts else {}
+        else:
+            contact = contacts if contacts else {}
         biz_map[row["id"]] = {"business": row, "contact": contact}
 
     # Fetch seo_audits

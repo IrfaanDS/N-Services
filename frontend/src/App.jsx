@@ -16,6 +16,14 @@ import B2BLeadEvaluation from './pages/b2b/B2BLeadEvaluation'
 import B2BEmailGeneration from './pages/b2b/B2BEmailGeneration'
 import B2BOutreach from './pages/b2b/B2BOutreach'
 
+import ShopifyHomeSelection from './pages/shopify/HomeSelection'
+import ShopifyStoreLanding from './pages/shopify/StoreLanding'
+import ShopifyStoreChat from './pages/shopify/StoreChat'
+import ShopifyAdminDashboard from './pages/shopify/AdminDashboard'
+import ShopifyAdminLogin from './pages/shopify/AdminLogin'
+import ShopifyLeads from './pages/shopify/Leads'
+import ShopifyProtectedRoute from './components/shopify/ProtectedRoute'
+
 function AppLayout({ mode }) {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 1024)
 
@@ -78,6 +86,15 @@ export default function App() {
             <Route path="/email-generation" element={<Navigate to="/seo/email-generation" replace />} />
             <Route path="/email-sending" element={<Navigate to="/seo/email-sending" replace />} />
             <Route path="/onebox" element={<Navigate to="/seo/onebox" replace />} />
+            
+            {/* Shopify RAG Platform Routes */}
+            <Route path="/shopify" element={<ShopifyHomeSelection />} />
+            <Route path="/shopify/onboard" element={<ShopifyStoreLanding initialMode="onboard" />} />
+            <Route path="/shopify/launch" element={<ShopifyStoreLanding initialMode="lookup" />} />
+            <Route path="/shopify/leads" element={<ShopifyLeads />} />
+            <Route path="/shopify/admin/login" element={<ShopifyAdminLogin />} />
+            <Route path="/shopify/admin" element={<ShopifyProtectedRoute><ShopifyAdminDashboard /></ShopifyProtectedRoute>} />
+            <Route path="/shopify/chat/:storeId" element={<ShopifyStoreChat />} />
         </Routes>
     )
 }

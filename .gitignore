@@ -27,3 +27,10 @@ venv/
 backend/app/api/routes/accounts.json
 backend/app/api/routes/mailbox.json
 backend/app/api/routes/campaigns.json
+
+# Shopify Platform Data
+stores/
+backend/stores/
+*.log
+pip_error.txt
+build_log.txt
