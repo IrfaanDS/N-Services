@@ -42,18 +42,42 @@ export default function Onebox() {
     const [threads, setThreads] = useState([])
     const [selectedThread, setSelectedThread] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [threadLoading, setThreadLoading] = useState(false)
     const [replying, setReplying] = useState(false)
     const [replyBody, setReplyBody] = useState('')
     const [sending, setSending] = useState(false)
     const [attachments, setAttachments] = useState([])
     const fileInputRef = useRef(null)
 
-    // Pagination / Filter state
     const [offset, setOffset] = useState(0)
     const [limit] = useState(30)
     const [searchQuery, setSearchQuery] = useState('')
     const [statusFilter, setStatusFilter] = useState('All')
     const [folder, setFolder] = useState('Inbox')
+    const [accounts, setAccounts] = useState([])
+    const [selectedAccountId, setSelectedAccountId] = useState('all')
+
+    // Determine if we are in SEO mode from path
+    const isSEOMode = window.location.pathname.startsWith('/seo')
+
+    // Fetch available accounts
+    const fetchAccounts = async () => {
+        try {
+            const res = await oneboxAPI.listAccounts() // Need to add this to api.js or use sendingAPI
+            const accs = res.data || []
+            setAccounts(accs)
+            
+            // If in SEO mode, try to auto-select Morgan Fletcher
+            if (isSEOMode) {
+                const morgan = accs.find(a => a.name.toLowerCase().includes('morgan'))
+                if (morgan) {
+                    setSelectedAccountId(morgan.id)
+                }
+            }
+        } catch (err) {
+            console.error('Failed to fetch accounts', err)
+        }
+    }
 
     // Fetch thread list
     const fetchThreads = async () => {
@@ -64,7 +88,8 @@ export default function Onebox() {
                 offset,
                 q: searchQuery,
                 status: statusFilter,
-                inbox: folder // Pass selected folder to API
+                inbox: folder,
+                accountId: selectedAccountId === 'all' ? undefined : selectedAccountId
             })
             setThreads(res.data?.data || [])
             // If we have threads and none selected, select the first one (optional)
@@ -80,31 +105,30 @@ export default function Onebox() {
 
     // Initial load
     useEffect(() => {
+        fetchAccounts()
+    }, [])
+
+    useEffect(() => {
         fetchThreads()
-    }, [offset, statusFilter, folder]) // Refresh when pagination, filter or folder changes
+    }, [offset, statusFilter, folder, selectedAccountId]) // Refresh when pagination, filter, folder or account changes
 
     // Handle selecting a thread -> fetch full thread details
     const handleSelectThread = async (thread) => {
-        // Just set it immediately for perceived speed, effectively "optimistic" if we already have data
-        // For full thread reconstruction (all messages), we might need `oneboxAPI.getThread(thread.id)`
-        // But the list endpoint returns a good summary.
-        // Let's assume we want to call the detailed endpoint to mark as read or get full history:
+        // Set immediately so UI shows the header
+        setSelectedThread({ ...thread, messages: [thread] })
+        setThreadLoading(true)
         
         try {
-            // Corrected to pass thread ID directly
             const res = await oneboxAPI.getThread(thread.id || thread.threadId || thread.messageId)
-            // results.data is an array of messages in the thread
             if (res.data?.data) {
-                // Sort by date usually
                 const sorted = res.data.data.sort((a,b) => new Date(a.sentAt) - new Date(b.sentAt))
                 setSelectedThread({ ...thread, messages: sorted })
-            } else {
-                setSelectedThread({ ...thread, messages: [thread] })
             }
         } catch (err) {
             console.error('Failed to load thread details', err)
-            // Fallback to just showing the clicked item as a single message
-            setSelectedThread({ ...thread, messages: [thread] })
+            // Keep the fallback message
+        } finally {
+            setThreadLoading(false)
         }
     }
 
@@ -199,6 +223,21 @@ export default function Onebox() {
                         </button>
                     </div>
 
+                    {/* Account Selector */}
+                    <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-bold text-gray-400 uppercase ml-1">Sending Account</label>
+                        <select 
+                            className="w-full text-xs border border-gray-300 rounded-lg py-2 px-2 bg-white focus:ring-2 focus:ring-primary-500"
+                            value={selectedAccountId}
+                            onChange={(e) => setSelectedAccountId(e.target.value)}
+                        >
+                            <option value="all">All Accounts</option>
+                            {accounts.map(acc => (
+                                <option key={acc.id} value={acc.id}>{acc.name} ({acc.smtp_user})</option>
+                            ))}
+                        </select>
+                    </div>
+
                     {/* Filters */}
                     <div className="flex gap-2 text-xs overflow-x-auto pb-1 scrollbar-hide">
                         {['All', 'Interested', 'Meeting Booked', 'Closed'].map(status => (
@@ -248,7 +287,9 @@ export default function Onebox() {
                                     >
                                         <div className="flex justify-between items-start mb-1">
                                             <h4 className={`text-sm truncate pr-2 ${!thread.isRead ? 'font-bold text-gray-900' : 'font-medium text-gray-700'}`}>
-                                                {thread.fromName || thread.fromEmail}
+                                                {folder === 'Sent' 
+                                                    ? (thread.toName || thread.toEmail || 'To: (unknown)') 
+                                                    : (thread.fromName || thread.fromEmail)}
                                             </h4>
                                             <span className="text-[10px] text-gray-400 whitespace-nowrap">
                                                 {formatDate(thread.sentAt)}
@@ -301,8 +342,14 @@ export default function Onebox() {
 
                         {/* Thread Messages */}
                         <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50">
-                            {selectedThread.messages?.map((msg, idx) => (
-                                <div key={msg.id || idx} className={`flex flex-col max-w-3xl ${msg.fromEmail === msg.account ? 'ml-auto items-end' : 'mr-auto items-start'}`}>
+                            {threadLoading ? (
+                                <div className="h-full flex flex-col items-center justify-center space-y-3">
+                                    <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+                                    <p className="text-sm text-gray-400">Fetching message content...</p>
+                                </div>
+                            ) : (
+                                selectedThread.messages?.map((msg, idx) => (
+                                    <div key={msg.id || idx} className={`flex flex-col max-w-3xl ${msg.fromEmail?.includes(msg.account) ? 'ml-auto items-end' : 'mr-auto items-start'}`}>
                                     <div className="flex items-center gap-2 mb-1 px-1">
                                         <span className="text-xs font-bold text-gray-700">{msg.fromName || msg.fromEmail}</span>
                                         <span className="text-[10px] text-gray-400">{formatDate(msg.sentAt)}</span>
@@ -317,7 +364,8 @@ export default function Onebox() {
                                         <div dangerouslySetInnerHTML={{ __html: msg.body }} />
                                     </div>
                                 </div>
-                            ))}
+                                ))
+                            )}
                         </div>
 
                         {/* Reply Box */}

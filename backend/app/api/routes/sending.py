@@ -177,32 +177,51 @@ async def test_imap_connection(account_id: str, supabase=Depends(get_supabase)):
 
 @router.get("/mailbox")
 async def get_mailbox(status: Optional[str] = Query(None), supabase=Depends(get_supabase)):
-    """Fetch B2B leads from outreach.b2b_campaign_leads."""
+    """Fetch leads from outreach.b2b_campaign_leads and enrich with details."""
     try:
-        query = supabase.schema("outreach").table("b2b_campaign_leads").select(
-            "*, lead:lead_id (full_name, email, title, company:company_id (industry))"
-        )
+        # 1. Fetch base campaign leads
+        query = supabase.schema("outreach").table("b2b_campaign_leads").select("*")
         if status and status != "all":
             query = query.eq("status", status)
         
         res = query.execute()
         data = res.data or []
         
+        if not data:
+            return {"emails": [], "total": 0}
+
+        # 2. Collect lead IDs to fetch details
+        lead_ids = [row["lead_id"] for row in data if row.get("lead_id")]
+        
+        # 3. Fetch lead details from b2b.leads (cross-schema manual join)
+        lead_map = {}
+        if lead_ids:
+            try:
+                # We fetch from b2b schema separately
+                lead_res = supabase.schema("b2b").table("leads").select(
+                    "id, full_name, email, title"
+                ).in_("id", lead_ids).execute()
+                for l in (lead_res.data or []):
+                    lead_map[l["id"]] = l
+            except Exception as e:
+                logger.warning(f"Could not enrich from b2b.leads: {e}")
+
+        # 4. Format response
         emails = []
         for row in data:
-            lead = row.get("lead") or {}
+            lead_detail = lead_map.get(row["lead_id"], {})
             emails.append({
                 "id": row["id"],
                 "business_id": row["lead_id"],
-                "business_name": lead.get("full_name") or "Lead",
-                "business_url": "",
-                "target_email": row.get("target_email") or lead.get("email"),
+                "business_name": lead_detail.get("full_name") or row.get("business_name") or "Lead",
+                "business_url": row.get("website_url") or "",
+                "target_email": row.get("target_email") or lead_detail.get("email"),
                 "subject": row["subject"],
                 "body": row["body"],
                 "status": row["status"],
                 "created_at": row["created_at"],
-                "type": "b2b",
-                "persona": lead.get("title", "Lead")
+                "type": "b2b" if lead_detail else "seo",
+                "persona": lead_detail.get("title", "Lead")
             })
             
         return {"emails": emails[::-1], "total": len(emails)}
@@ -212,35 +231,80 @@ async def get_mailbox(status: Optional[str] = Query(None), supabase=Depends(get_
 
 @router.post("/receive")
 async def receive_emails(request: ReceiveEmailsRequest, supabase=Depends(get_supabase)):
+    """
+    Receive generated emails and save them to the outreach queue.
+    Handles both B2B leads and SEO businesses by ensuring the lead exists in b2b.leads.
+    """
     saved = 0
     errors = []
     for item in request.emails:
         try:
+            lead_id = item.business_id
+            
+            # 1. Ensure lead exists in b2b.leads (SEO compatibility)
+            # Check if lead exists
+            lead_res = supabase.schema("b2b").table("leads").select("id").eq("id", lead_id).execute()
+            if not lead_res.data:
+                # If not, try to find business in common.businesses
+                biz_res = supabase.schema("common").table("businesses").select("*").eq("id", lead_id).execute()
+                if biz_res.data:
+                    biz = biz_res.data[0]
+                    # Ensure company exists in b2b.companies
+                    comp_res = supabase.schema("b2b").table("companies").select("id").eq("business_id", lead_id).execute()
+                    if not comp_res.data:
+                        comp_data = {
+                            "business_id": lead_id,
+                            "industry": biz.get("niche") or "SEO",
+                            "website_domain": (biz.get("website_url") or "").replace("https://", "").replace("http://", "").split("/")[0]
+                        }
+                        comp_res = supabase.schema("b2b").table("companies").insert(comp_data).execute()
+                    
+                    if comp_res.data:
+                        comp_id = comp_res.data[0]["id"]
+                        # Create lead entry
+                        lead_data = {
+                            "id": lead_id,
+                            "company_id": comp_id,
+                            "business_id": lead_id,
+                            "full_name": item.business_name or biz.get("name") or "Lead",
+                            "email": item.email,
+                            "title": "Owner/Manager",
+                            "status": "new"
+                        }
+                        supabase.schema("b2b").table("leads").insert(lead_data).execute()
+
+            # 2. Manual Upsert into outreach.b2b_campaign_leads
             data = {
-                "lead_id": item.business_id,
+                "lead_id": lead_id,
                 "target_email": item.email,
                 "subject": item.subject,
                 "body": item.body,
                 "status": "draft"
             }
-            # Note: We use lead_id as the primary key/unique identifier in campaign_leads for now
-            supabase.schema("outreach").table("b2b_campaign_leads").upsert(
-                data, on_conflict="lead_id"
-            ).execute()
+            
+            # Check if lead already exists in the outreach queue
+            existing = supabase.schema("outreach").table("b2b_campaign_leads").select("id").eq("lead_id", lead_id).execute()
+            
+            if existing.data:
+                # Update existing draft
+                supabase.schema("outreach").table("b2b_campaign_leads").update(data).eq("id", existing.data[0]["id"]).execute()
+            else:
+                # Insert new draft
+                supabase.schema("outreach").table("b2b_campaign_leads").insert(data).execute()
+            
             saved += 1
         except Exception as e:
+            logger.error(f"Failed to receive email for {item.business_id}: {e}")
             errors.append(str(e))
             
     return {"saved": saved, "message": f"Received {saved} emails into Supabase", "errors": errors if errors else None}
 
 @router.patch("/emails/{business_id}")
-async def update_email_status(business_id: str, status: str = Query(...)):
+async def update_email_status(business_id: str, status: str = Query(...), supabase=Depends(get_supabase)):
     try:
-        mailbox = load_mailbox()
-        for m in mailbox:
-            if m.get("business_id") == business_id:
-                m["status"] = status
-        save_mailbox(mailbox)
+        res = supabase.schema("outreach").table("b2b_campaign_leads").update({"status": status}).eq("lead_id", business_id).execute()
+        if not res.data:
+            raise HTTPException(status_code=404, detail="Lead not found in mailbox")
         return {"updated": True}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -262,12 +326,16 @@ async def send_campaign(request: SendCampaignRequest, background_tasks: Backgrou
         "account_id": request.account_id,
         "status": "Running",
         "total_leads": len(request.business_ids),
-        "settings": {"send_rate": request.send_rate}
+        "send_rate": request.send_rate
     }
-    camp_res = supabase.schema("outreach").table("b2b_campaigns").insert(camp_data).execute()
-    if not camp_res.data:
-        raise HTTPException(400, "Failed to create campaign")
-    campaign_id = camp_res.data[0]["id"]
+    try:
+        camp_res = supabase.schema("outreach").table("b2b_campaigns").insert(camp_data).execute()
+        if not camp_res.data:
+            raise HTTPException(400, "Failed to create campaign")
+        campaign_id = camp_res.data[0]["id"]
+    except Exception as e:
+        logger.error(f"Campaign creation error: {e}")
+        raise HTTPException(status_code=500, detail=f"Database error while creating campaign: {str(e)}")
 
     # 3. Fetch and schedule leads
     leads_res = supabase.schema("outreach").table("b2b_campaign_leads").select("*").in_("lead_id", request.business_ids).execute()
@@ -344,15 +412,7 @@ async def process_sending(leads, account, rate, campaign_id):
     logger.info(f"Campaign {campaign_id} finished. Sent {sent_count} emails.")
     
     # Mark campaign as completed when all emails are processed
-    if campaign_id:
-        campaigns = load_campaigns()
-        for c in campaigns:
-            if c["id"] == campaign_id:
-                c["status"] = "Completed"
-                c["sent_count"] = sent_count
-                c["completed_at"] = datetime.now().isoformat()
-        save_campaigns(campaigns)
-        logger.info(f"Campaign {campaign_id} completed. Sent {sent_count} emails.")
+    logger.info(f"Campaign {campaign_id} completed. Sent {sent_count} emails.")
 
 def send_smtp(msg, account):
     try:

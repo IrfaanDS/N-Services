@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Sparkles, Download, Eye, ArrowRight, Mail, Loader2, AlertCircle, X, Send } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { emailsAPI } from '../services/api'
+import { emailsAPI, sendingAPI } from '../services/api'
 
 function getStatusBadge(status) {
     switch (status) {
@@ -17,8 +17,10 @@ export default function EmailGeneration() {
     const navigate = useNavigate()
     const [leads, setLeads] = useState([])
     const [loading, setLoading] = useState(false)
+    const [saving, setSaving] = useState(false)
     const [error, setError] = useState(null)
     const [previewEmail, setPreviewEmail] = useState(null)
+    const [selectedIds, setSelectedIds] = useState([])
 
     useEffect(() => {
         const stored = sessionStorage.getItem('scored_leads')
@@ -32,6 +34,8 @@ export default function EmailGeneration() {
                     body: ''
                 }))
                 setLeads(mappedLeads)
+                // Select all generated leads by default if they were already generated
+                // Actually, they are all pending initially, so we don't select anything yet
             } catch (e) {
                 console.error("Failed to parse scored_leads", e)
             }
@@ -85,6 +89,8 @@ export default function EmailGeneration() {
                         throw new Error("No data returned")
                     }
                     setLeads(currentLeads)
+                    // Auto-select generated leads
+                    setSelectedIds(prev => [...new Set([...prev, lead.business_id])])
                 } catch (err) {
                     console.error(`Email generation failed for ${lead.business_name}`, err)
                     // Mark as failed/pending to try again later
@@ -99,27 +105,49 @@ export default function EmailGeneration() {
         }
     }
 
-    const handleMoveToSending = () => {
-        const generatedLeads = leads.filter(l => l.status === 'generated')
-        if (generatedLeads.length === 0) {
-            setError("No generated emails to move.")
+    const handleMoveToSending = async () => {
+        const selectedLeads = leads.filter(l => selectedIds.includes(l.business_id) && l.status === 'generated')
+        
+        if (selectedLeads.length === 0) {
+            setError("No selected emails to move. Please select generated emails first.")
             return
         }
 
-        // Auto-download the CSV
-        try {
-            handleExport()
-        } catch (e) { console.error("Could not export automatically", e) }
+        setSaving(true)
+        setError(null)
 
-        // Give the browser a moment to process the download before unmounting
-        setTimeout(() => {
+        try {
+            // Save to backend mailbox
+            const payload = {
+                emails: selectedLeads.map(l => ({
+                    business_id: l.business_id,
+                    business_name: l.business_name,
+                    website_url: l.website_url,
+                    email: l.email,
+                    subject: l.subject,
+                    body: l.body
+                }))
+            }
+            await sendingAPI.receiveEmails(payload)
+
+            // Auto-download the CSV as a backup
+            try {
+                handleExport()
+            } catch (e) { console.error("Could not export automatically", e) }
+
+            // Navigate to sending page
             navigate('/email-sending', {
                 state: {
                     autoOpenCampaign: true,
-                    preselectedIds: generatedLeads.map(l => l.business_id)
+                    preselectedIds: selectedLeads.map(l => l.business_id)
                 }
             })
-        }, 300)
+        } catch (err) {
+            console.error("Failed to move leads to sending:", err)
+            setError(err.response?.data?.detail || "Failed to save emails to the sending queue. Please try again.")
+        } finally {
+            setSaving(false)
+        }
     }
 
     const handleExport = () => {
@@ -152,6 +180,21 @@ export default function EmailGeneration() {
     const generatedCount = leads.filter(l => l.status === 'generated').length
     const pendingCount = leads.filter(l => l.status === 'pending').length
     const queuedCount = leads.filter(l => l.status === 'queued' || l.status === 'processing').length
+    const selectedCount = selectedIds.length
+
+    const handleSelectAll = (e) => {
+        if (e.target.checked) {
+            setSelectedIds(leads.filter(l => l.status === 'generated').map(l => l.business_id))
+        } else {
+            setSelectedIds([])
+        }
+    }
+
+    const handleToggleSelect = (id) => {
+        setSelectedIds(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        )
+    }
 
     return (
         <div className="page-enter">
@@ -207,9 +250,10 @@ export default function EmailGeneration() {
                     <button
                         className="text-sm text-primary-700 hover:underline font-medium disabled:opacity-50 flex items-center gap-1"
                         onClick={handleMoveToSending}
-                        disabled={generatedCount === 0 || loading}
+                        disabled={generatedCount === 0 || loading || saving}
                     >
-                        <Send className="w-4 h-4" /> Proceed to Sending →
+                        {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                        {saving ? 'Moving to Sending...' : `Proceed to Sending (${selectedCount}) →`}
                     </button>
                 </div>
 
@@ -224,6 +268,15 @@ export default function EmailGeneration() {
                         <table className="data-table min-w-[800px]">
                             <thead>
                                 <tr>
+                                    <th className="w-10">
+                                        <input
+                                            type="checkbox"
+                                            className="checkbox checkbox-sm"
+                                            checked={generatedCount > 0 && selectedIds.length === generatedCount}
+                                            onChange={handleSelectAll}
+                                            disabled={generatedCount === 0}
+                                        />
+                                    </th>
                                     <th>Business</th>
                                     <th>Recipient</th>
                                     <th>Subject Line</th>
@@ -233,7 +286,16 @@ export default function EmailGeneration() {
                             </thead>
                             <tbody>
                                 {leads.map((item, idx) => (
-                                    <tr key={idx}>
+                                    <tr key={idx} className={selectedIds.includes(item.business_id) ? 'bg-primary-50/30' : ''}>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                className="checkbox checkbox-sm"
+                                                checked={selectedIds.includes(item.business_id)}
+                                                onChange={() => handleToggleSelect(item.business_id)}
+                                                disabled={item.status !== 'generated'}
+                                            />
+                                        </td>
                                         <td className="font-medium text-gray-900 truncate max-w-[150px]">{item.business_name || item.website_url}</td>
                                         <td className="text-gray-500 truncate max-w-[150px]">{item.email}</td>
                                         <td className="text-gray-700 max-w-[300px] truncate">{item.subject || '—'}</td>

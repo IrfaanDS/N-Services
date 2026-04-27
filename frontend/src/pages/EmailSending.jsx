@@ -468,7 +468,7 @@ export default function EmailSending() {
                                                     className="rounded border-gray-300"
                                                 />
                                             </td>
-                                            <td className="font-medium text-gray-900 truncate max-w-[150px]">{email.business_url || '—'}</td>
+                                            <td className="font-medium text-gray-900 truncate max-w-[150px]">{email.business_name || email.business_url || '—'}</td>
                                             <td className="text-gray-500 truncate max-w-[180px]">{email.target_email}</td>
                                             <td className="text-gray-700 truncate max-w-[250px]">{email.subject || '—'}</td>
                                             <td>{getStatusBadge(email.status)}</td>

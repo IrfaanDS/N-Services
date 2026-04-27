@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Bot, Rocket } from 'lucide-react';
 import './HomeSelection.css';
 
 export default function HomeSelection() {
@@ -17,7 +18,7 @@ export default function HomeSelection() {
       
       <div className="home-cards">
         <div className="home-card">
-          <div className="card-icon">🤖</div>
+          <div className="card-icon text-black"><Bot className="w-10 h-10 mx-auto" /></div>
           <div className="card-content">
             <h2>AI Store Assistant</h2>
             <p>Manage store integrations, RAG documents, and conversation history.</p>
@@ -30,7 +31,7 @@ export default function HomeSelection() {
         </div>
 
         <div className="home-card lead-engine" onClick={() => navigate('/shopify/leads')}>
-          <div className="card-icon">🚀</div>
+          <div className="card-icon text-black"><Rocket className="w-10 h-10 mx-auto" /></div>
           <div className="card-content">
             <h2>Ecommerce Lead Engine</h2>
             <p>Discover, qualify, and outreach to new ecommerce prospects.</p>

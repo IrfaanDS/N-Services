@@ -1,0 +1,3320 @@
+[
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "title",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "role_category",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "primary_goal",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "pain_points",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "desired_outcomes",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "problems_we_solve",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "responsibilities",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "lead_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "buyer_personas",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "industry",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "employee_count",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "website_domain",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "headquarters",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "founded_year",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "revenue_range",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "tech_stack",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "tags",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "notes",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "csv_source_file",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "companies",
+        "column": "imported_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "email_sequences",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "email_sequences",
+        "column": "persona_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "email_sequences",
+        "column": "step_number",
+        "data_type": "integer",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "email_sequences",
+        "column": "subject",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "email_sequences",
+        "column": "body",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "email_sequences",
+        "column": "tone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "email_sequences",
+        "column": "model_used",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "email_sequences",
+        "column": "generated_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "lead_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "full_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "title",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "phone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "linkedin_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "seniority",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "lead_score",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "priority",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "lead_status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "company_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "company_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "website_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "industry",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "employee_count",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "headquarters",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "persona_title",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "persona_role",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "outreach_status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "sent_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "opened_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "replied_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "campaign_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "campaign_status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "lead_dashboard",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "company_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "first_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "last_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "full_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "title",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "phone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "linkedin_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "twitter_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "facebook_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "instagram_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "city",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "state",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "country",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "seniority",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "lead_score",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "priority",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "scoring_reason",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "persona_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "b2b",
+        "table": "leads",
+        "column": "updated_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "website_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "city",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "niche",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "source",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "phone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "instagram",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "facebook",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "is_https",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "has_schema_markup",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "has_ai_assistant",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "sku_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "ai_widget_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "score",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "composite_score",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "all_leads",
+        "column": "tier",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "website_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "niche",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "city",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "country",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "source",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "businesses",
+        "column": "updated_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "campaign_leads",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "campaign_leads",
+        "column": "campaign_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "campaign_leads",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "campaign_leads",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "campaign_leads",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "campaigns",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "campaigns",
+        "column": "user_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "campaigns",
+        "column": "campaign_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "campaigns",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "chat_history",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "chat_history",
+        "column": "user_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "chat_history",
+        "column": "user_message",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "chat_history",
+        "column": "ai_response",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "chat_history",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "phone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "linkedin",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "instagram",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "facebook",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "twitter",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "whatsapp",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "contacts",
+        "column": "enriched_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "score",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "reasoning",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "model_type",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "seo_score",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "omnichannel_gap",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "shopify_gap",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "composite_score",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "tier",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "lead_scores",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "users",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "users",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "users",
+        "column": "password_hash",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "common",
+        "table": "users",
+        "column": "plan",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "common",
+        "table": "users",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "campaign_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "lead_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "persona_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "target_email",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "subject",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "body",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "current_step",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "sent_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "opened_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "replied_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "bounced_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "error_message",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaign_leads",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "name",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "account_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "total_leads",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "sent_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "replied_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "bounced_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "send_rate",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "scheduled_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "started_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "completed_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_campaigns",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "account_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "campaign_lead_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "from_email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "from_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "to_email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "subject",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "body",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "message_id",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "in_reply_to",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "direction",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "is_read",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_inbox_messages",
+        "column": "fetched_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "name",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "smtp_host",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "smtp_port",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "smtp_user",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "smtp_pass",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "imap_host",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "imap_port",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "imap_user",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "imap_pass",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "is_active",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "daily_limit",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "sent_today",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "last_used",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "b2b_sending_accounts",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "campaign_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "subject",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "body",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "email_sent",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "response",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "sent_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "opened_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "replied_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "emails",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "store_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "outreach_type",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "assigned_to",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "notes",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "outreach",
+        "table": "shopify_outreach",
+        "column": "updated_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "title",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "role_category",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "primary_goal",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "pain_points",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "desired_outcomes",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "problems_we_solve",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "responsibilities",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "lead_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_buyer_personas",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "account_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "total_leads",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "sent_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "replied_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "bounced_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "send_rate",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "scheduled_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "started_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "completed_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_campaigns",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "industry",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "employee_count",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "website_domain",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "headquarters",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "founded_year",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "revenue_range",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "tech_stack",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "tags",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "notes",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "csv_source_file",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_companies",
+        "column": "imported_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "company_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "first_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "last_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "full_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "title",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "phone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "linkedin_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "twitter_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "facebook_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "instagram_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "city",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "state",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "country",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "seniority",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "lead_score",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "priority",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "scoring_reason",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "persona_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "b2b_leads",
+        "column": "updated_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "phone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "linkedin",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "instagram",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "facebook",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "twitter",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "whatsapp",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts",
+        "column": "enriched_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts_old",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts_old",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts_old",
+        "column": "phone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts_old",
+        "column": "linkedin",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts_old",
+        "column": "instagram",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "business_contacts_old",
+        "column": "facebook",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses",
+        "column": "name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses",
+        "column": "website_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses",
+        "column": "niche",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses",
+        "column": "city",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses",
+        "column": "country",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses",
+        "column": "source",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "businesses_old",
+        "column": "business_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses_old",
+        "column": "website_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses_old",
+        "column": "niche",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses_old",
+        "column": "city",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses_old",
+        "column": "country",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "businesses_old",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads",
+        "column": "campaign_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads_old",
+        "column": "campaign_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads_old",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads_old",
+        "column": "status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaign_leads_old",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaigns",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaigns",
+        "column": "user_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaigns",
+        "column": "campaign_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaigns",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaigns_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "campaigns_old",
+        "column": "user_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaigns_old",
+        "column": "campaign_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "campaigns_old",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history",
+        "column": "user_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history",
+        "column": "user_message",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history",
+        "column": "ai_response",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history_old",
+        "column": "user_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history_old",
+        "column": "user_message",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history_old",
+        "column": "ai_response",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "chat_history_old",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "score",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "reasoning",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "model_type",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "seo_score",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "omnichannel_gap",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "shopify_gap",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "composite_score",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "tier",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores_old",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores_old",
+        "column": "score",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores_old",
+        "column": "reasoning",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores_old",
+        "column": "model_type",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "lead_scores_old",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "campaign_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "subject",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "body",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "email_sent",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "response",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "sent_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "opened_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "replied_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history_old",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history_old",
+        "column": "campaign_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history_old",
+        "column": "email_sent",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history_old",
+        "column": "response",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "outreach_history_old",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "title_present",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "meta_description_present",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "h1_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "has_schema_markup",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "is_https",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "script_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "internal_links_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "external_links_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "extra_metrics",
+        "data_type": "jsonb",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits",
+        "column": "audited_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "title_present",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "meta_description_present",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "h1_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "has_schema_markup",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "is_https",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "script_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "internal_links_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "external_links_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "extra_metrics",
+        "data_type": "jsonb",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "seo_audits_old",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "users",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "users",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "users",
+        "column": "password_hash",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "users",
+        "column": "plan",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "users",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "users_old",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "users_old",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "users_old",
+        "column": "password_hash",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "public",
+        "table": "users_old",
+        "column": "plan",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "public",
+        "table": "users_old",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "title_present",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "meta_description_present",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "h1_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "has_schema_markup",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "is_https",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "script_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "internal_links_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "external_links_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "extra_metrics",
+        "data_type": "jsonb",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "seo",
+        "table": "audits",
+        "column": "audited_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "store_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "website_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "niche",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "country",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "email",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "phone",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "instagram",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "facebook",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "lead_score",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "composite_score",
+        "data_type": "double precision",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "tier",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "myshopify_url",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "sku_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "has_ai_assistant",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "ai_widget_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "assistant_created",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "assistant_created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "mongo_store_id",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "outreach_status",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "outreach_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "lead_dashboard",
+        "column": "created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "store_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "product_id",
+        "data_type": "bigint",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "title",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "vendor",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "product_type",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "price",
+        "data_type": "numeric",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "tags",
+        "data_type": "ARRAY",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "products_snapshot",
+        "column": "snapshot_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "id",
+        "data_type": "uuid",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "business_id",
+        "data_type": "uuid",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "myshopify_url",
+        "data_type": "text",
+        "allows_empty": "NO"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "custom_domain",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "has_public_products",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "sku_count",
+        "data_type": "integer",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "price_range_min",
+        "data_type": "numeric",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "price_range_max",
+        "data_type": "numeric",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "niche",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "has_ai_assistant",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "ai_widget_name",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "has_about_page",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "has_policy_pages",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "has_blog",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "discovered_via",
+        "data_type": "text",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "crawled_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "assistant_created",
+        "data_type": "boolean",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "assistant_created_at",
+        "data_type": "timestamp without time zone",
+        "allows_empty": "YES"
+    },
+    {
+        "folder": "shopify",
+        "table": "stores",
+        "column": "mongo_store_id",
+        "data_type": "text",
+        "allows_empty": "YES"
+    }
+]

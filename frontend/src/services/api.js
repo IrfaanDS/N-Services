@@ -87,6 +87,7 @@ export const oneboxAPI = {
         },
     }),
     getMessages: (email, params) => api.get(`/onebox/messages/${email}`, { params }),
+    listAccounts: () => api.get('/campaigns/accounts'),
 }
 
 // ─── SEO Assistant (RAG Agent) ───

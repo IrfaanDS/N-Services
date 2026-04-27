@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Mail, Instagram, Facebook } from 'lucide-react';
 const API_BASE = 'http://localhost:8000/api/shopify';
 import './Leads.css';
 
@@ -110,10 +111,10 @@ export default function Leads() {
                 <p><strong>URL:</strong> <a href={lead.website_url} target="_blank" rel="noreferrer">{lead.website_url}</a></p>
                 <p><strong>Score:</strong> <span className="lead-score">{lead.lead_score || 0}</span></p>
                 
-                <div className="lead-socials">
-                  {lead.email && <span title={lead.email}>📧</span>}
-                  {lead.instagram && <span title={lead.instagram}>📸</span>}
-                  {lead.facebook && <span title={lead.facebook}>📘</span>}
+                <div className="lead-socials flex gap-3 mt-3">
+                  {lead.email && <Mail className="w-4 h-4 text-black/60" title={lead.email} />}
+                  {lead.instagram && <Instagram className="w-4 h-4 text-black/60" title={lead.instagram} />}
+                  {lead.facebook && <Facebook className="w-4 h-4 text-black/60" title={lead.facebook} />}
                 </div>
               </div>
 

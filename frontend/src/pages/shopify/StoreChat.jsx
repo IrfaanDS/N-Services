@@ -8,9 +8,9 @@ const API_BASE = 'http://localhost:8000/api/shopify';
 
 // Default suggestions if store config doesn't provide any
 const DEFAULT_SUGGESTIONS = [
-  { label: '🛍️ Browse products', query: 'What products do you have?' },
-  { label: '📦 Return policy', query: 'What is your return policy?' },
-  { label: '🚚 Shipping info', query: 'How does shipping work?' },
+  { label: 'Browse products', query: 'What products do you have?' },
+  { label: 'Return policy', query: 'What is your return policy?' },
+  { label: 'Shipping info', query: 'How does shipping work?' },
 ]
 
 export default function StoreChat() {
@@ -181,7 +181,7 @@ export default function StoreChat() {
         ...prev,
         {
           role: 'assistant',
-          content: '⚠️ Sorry, I couldn\'t connect to the server. Please make sure the backend is running.',
+          content: 'Error: Sorry, I couldn\'t connect to the server. Please make sure the backend is running.',
           intent: 'ERROR',
         },
       ])
@@ -211,7 +211,7 @@ export default function StoreChat() {
     return (
       <div className="error-screen">
         <div className="error-content">
-          <h2>😕 Access Denied</h2>
+          <h2>Access Denied</h2>
           <p>{configError}</p>
           <Link to="/" className="error-back-btn">← Back to Login</Link>
         </div>

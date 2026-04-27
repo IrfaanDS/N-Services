@@ -33,6 +33,7 @@ export default function LeadEvaluation() {
     const [source, setSource] = useState(null) // 'acquisition' | 'upload' | null
     const [uploadedFileName, setUploadedFileName] = useState(null)
     const [incomingLeads, setIncomingLeads] = useState(null) // leads from acquisition
+    const [selectedIds, setSelectedIds] = useState(new Set())
 
     // ── On mount: check if leads came from Lead Acquisition ──
     useEffect(() => {
@@ -106,26 +107,52 @@ export default function LeadEvaluation() {
         }
     }
 
+    // ── Selection Handlers ──
+    function toggleSelect(id) {
+        setSelectedIds(prev => {
+            const next = new Set(prev)
+            if (next.has(id)) next.delete(id)
+            else next.add(id)
+            return next
+        })
+    }
+
+    function toggleSelectAll() {
+        if (selectedIds.size === scoredLeads.length && scoredLeads.length > 0) {
+            setSelectedIds(new Set())
+        } else {
+            setSelectedIds(new Set(scoredLeads.map((lead, idx) => lead.business_id || idx)))
+        }
+    }
+
+    const selectedLeads = useMemo(() => {
+        if (selectedIds.size === 0) return []
+        return scoredLeads.filter((lead, idx) => selectedIds.has(lead.business_id || idx))
+    }, [scoredLeads, selectedIds])
+
     // ── Download scored CSV ──
     function handleDownload() {
-        if (scoredLeads.length === 0) return
+        const leadsToDownload = selectedLeads.length > 0 ? selectedLeads : scoredLeads
+        if (leadsToDownload.length === 0) return
+        
         const headers = ['business_name', 'website_url', 'niche', 'city', 'country', 'email', 'phone', 'facebook', 'instagram', 'linkedin', 'lead_score', 'priority', 'reasoning']
         const csvRows = [headers.join(',')]
-        for (const lead of scoredLeads) {
+        for (const lead of leadsToDownload) {
             csvRows.push(headers.map((h) => `"${(lead[h] ?? '').toString().replace(/"/g, '""')}"`).join(','))
         }
         const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' })
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = 'scored_leads.csv'
+        a.download = selectedLeads.length > 0 ? 'selected_scored_leads.csv' : 'scored_leads.csv'
         a.click()
         window.URL.revokeObjectURL(url)
     }
 
     // ── Proceed to Email Generation ──
     function handleProceedToEmail() {
-        sessionStorage.setItem('scored_leads', JSON.stringify(scoredLeads))
+        const leadsToProceed = selectedLeads.length > 0 ? selectedLeads : scoredLeads
+        sessionStorage.setItem('scored_leads', JSON.stringify(leadsToProceed))
         navigate('/email-generation')
     }
 
@@ -150,13 +177,16 @@ export default function LeadEvaluation() {
                 </div>
                 {hasResults && (
                     <div className="flex items-center gap-3">
+                        <span className="text-xs text-gray-500 mr-2">
+                            {selectedIds.size > 0 ? `${selectedIds.size} leads selected` : 'All leads will be used'}
+                        </span>
                         <button className="btn btn-outline text-sm" onClick={handleDownload}>
                             <Download className="w-4 h-4" />
-                            Download Results
+                            {selectedIds.size > 0 ? 'Download Selected' : 'Download Results'}
                         </button>
                         <button className="btn btn-accent text-sm" onClick={handleProceedToEmail}>
                             <ArrowRight className="w-4 h-4" />
-                            Proceed to Email Generation
+                            {selectedIds.size > 0 ? 'Proceed with Selected' : 'Proceed to Email Generation'}
                         </button>
                     </div>
                 )}
@@ -251,6 +281,14 @@ export default function LeadEvaluation() {
                     <table className="data-table text-xs">
                         <thead>
                             <tr>
+                                <th className="w-10">
+                                    <input
+                                        type="checkbox"
+                                        className="rounded border-gray-300 text-primary-700 focus:ring-primary-700"
+                                        checked={selectedIds.size === scoredLeads.length && scoredLeads.length > 0}
+                                        onChange={toggleSelectAll}
+                                    />
+                                </th>
                                 <th>Website</th>
                                 <th>Niche</th>
                                 <th>City</th>
@@ -262,35 +300,47 @@ export default function LeadEvaluation() {
                             </tr>
                         </thead>
                         <tbody>
-                            {scoredLeads.map((lead, idx) => (
-                                <tr key={lead.business_id || idx}>
-                                    <td className="text-primary-700 whitespace-nowrap max-w-[180px] truncate">
-                                        {lead.website_url ? (
-                                            <a href={lead.website_url.startsWith('http') ? lead.website_url : `https://${lead.website_url}`}
-                                                target="_blank" rel="noopener noreferrer" className="hover:underline">
-                                                {lead.website_url.replace(/^https?:\/\/(www\.)?/, '')}
-                                            </a>
-                                        ) : '—'}
-                                    </td>
-                                    <td>{lead.niche ? <span className="tag text-xs">{lead.niche}</span> : '—'}</td>
-                                    <td className="whitespace-nowrap">{lead.city || '—'}</td>
-                                    <td className="text-gray-500 whitespace-nowrap max-w-[150px] truncate">{lead.email || '—'}</td>
-                                    <td className="text-gray-500 whitespace-nowrap">{lead.phone || '—'}</td>
-                                    <td>
-                                        <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold ${getScoreColor(lead.lead_score)}`}>
-                                            {lead.lead_score}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getPriorityBadge(lead.priority)}`}>
-                                            {lead.priority}
-                                        </span>
-                                    </td>
-                                    <td className="text-gray-500 text-xs max-w-[250px]">
-                                        <span className="line-clamp-2">{lead.reasoning}</span>
-                                    </td>
-                                </tr>
-                            ))}
+                            {scoredLeads.map((lead, idx) => {
+                                const leadId = lead.business_id || idx
+                                const isSelected = selectedIds.has(leadId)
+                                return (
+                                    <tr key={leadId} className={isSelected ? 'bg-primary-50/30' : ''}>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                className="rounded border-gray-300 text-primary-700 focus:ring-primary-700"
+                                                checked={isSelected}
+                                                onChange={() => toggleSelect(leadId)}
+                                            />
+                                        </td>
+                                        <td className="text-primary-700 whitespace-nowrap max-w-[180px] truncate">
+                                            {lead.website_url ? (
+                                                <a href={lead.website_url.startsWith('http') ? lead.website_url : `https://${lead.website_url}`}
+                                                    target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                                    {lead.website_url.replace(/^https?:\/\/(www\.)?/, '')}
+                                                </a>
+                                            ) : '—'}
+                                        </td>
+                                        <td>{lead.niche ? <span className="tag text-xs">{lead.niche}</span> : '—'}</td>
+                                        <td className="whitespace-nowrap">{lead.city || '—'}</td>
+                                        <td className="text-gray-500 whitespace-nowrap max-w-[150px] truncate">{lead.email || '—'}</td>
+                                        <td className="text-gray-500 whitespace-nowrap">{lead.phone || '—'}</td>
+                                        <td>
+                                            <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold ${getScoreColor(lead.lead_score)}`}>
+                                                {lead.lead_score}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getPriorityBadge(lead.priority)}`}>
+                                                {lead.priority}
+                                            </span>
+                                        </td>
+                                        <td className="text-gray-500 text-xs max-w-[250px]">
+                                            <span className="line-clamp-2">{lead.reasoning}</span>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                 )}

@@ -30,12 +30,17 @@ async def list_onebox_emails(
     status: str = "All",
     inbox: str = "Inbox",
     q: str = "",
+    accountId: Optional[str] = None,
     supabase=Depends(get_supabase)
 ):
     """
     Retrieve a list of email threads from all configured IMAP Servers in Supabase.
     """
-    res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").execute()
+    query = supabase.schema("outreach").table("b2b_sending_accounts").select("*")
+    if accountId:
+        query = query.eq("id", accountId)
+    
+    res = query.execute()
     accounts = res.data or []
     if not accounts:
         return {"data": []}
@@ -66,10 +71,18 @@ def fetch_imap_emails(account, limit, offset, mailbox):
     try:
         mail = imaplib.IMAP4_SSL(account["imap_host"])
         mail.login(account["imap_user"], account["imap_pass"])
-        mail.select(mailbox)
-        
-        status, response = mail.search(None, 'ALL')
+        # Try to select the mailbox, handle case sensitivity
+        status, _ = mail.select(mailbox)
         if status != 'OK':
+            # Try all caps just in case
+            status, _ = mail.select(mailbox.upper())
+            if status != 'OK':
+                logger.error(f"Failed to select mailbox {mailbox} or {mailbox.upper()}")
+                return []
+            
+        status, response = mail.uid('search', None, 'ALL')
+        if status != 'OK':
+            logger.error(f"Search failed for {mailbox}")
             return []
             
         messages = response[0].split()
@@ -86,23 +99,27 @@ def fetch_imap_emails(account, limit, offset, mailbox):
         
         for i in range(start, end):
             try:
-                msg_id = messages[i]
-                typ, msg_data = mail.fetch(msg_id, '(BODY.PEEK[HEADER.FIELDS (SUBJECT FROM DATE)] RFC822.SIZE)')
+                msg_uid = messages[i].decode()
+                typ, msg_data = mail.uid('fetch', msg_uid, '(BODY.PEEK[HEADER.FIELDS (SUBJECT FROM TO DATE)] RFC822.SIZE)')
                 for response_part in msg_data:
                     if isinstance(response_part, tuple):
                         msg = email.message_from_bytes(response_part[1])
                         subject = decode_header_safe(msg["Subject"])
                         from_header = decode_header_safe(msg.get("From", ""))
+                        to_header = decode_header_safe(msg.get("To", ""))
                         date_str = msg.get("Date", "")
                         
                         results.append({
-                            "id": f"{account['id']}:{msg_id.decode()}",
-                            "threadId": f"{account['id']}:{msg_id.decode()}",
+                            "id": f"{account['id']}:{mailbox}:{msg_uid}",
+                            "threadId": f"{account['id']}:{mailbox}:{msg_uid}",
                             "subject": subject,
                             "fromEmail": from_header,
                             "fromName": from_header.split("<")[0].strip() if "<" in from_header else from_header,
+                            "toEmail": to_header,
+                            "toName": to_header.split("<")[0].strip() if "<" in to_header else to_header,
                             "sentAt": date_str,
                             "isRead": True,
+                            "mailbox": mailbox,
                             "body": "Click to view message", # Only loading headers for list
                         })
             except Exception as e:
@@ -135,34 +152,48 @@ def decode_header_safe(header_val):
     return result
 
 @router.get("/thread/{thread_id}")
-async def get_onebox_thread(thread_id: str):
+async def get_onebox_thread(thread_id: str, supabase=Depends(get_supabase)):
     """
     Retrieve specific thread details via IMAP.
     """
-    if ":" not in thread_id:
+    parts = thread_id.split(":")
+    if len(parts) < 2:
         return {"data": []}
         
-    acc_id, msg_idx = thread_id.split(":", 1)
-    accounts = load_accounts()
-    account = next((a for a in accounts if a["id"] == acc_id), None)
+    acc_id = parts[0]
+    if len(parts) == 3:
+        mailbox = parts[1]
+        msg_idx = parts[2]
+    else:
+        mailbox = "INBOX"
+        msg_idx = parts[1]
+
+    res = supabase.schema("outreach").table("b2b_sending_accounts").select("*").eq("id", acc_id).execute()
+    account = res.data[0] if res.data else None
     
     if not account:
         return {"data": []}
     
     try:
         loop = asyncio.get_event_loop()
-        messages = await loop.run_in_executor(None, fetch_imap_thread, account, msg_idx)
+        messages = await loop.run_in_executor(None, fetch_imap_thread, account, mailbox, msg_idx)
+        if not messages:
+            raise HTTPException(status_code=404, detail=f"Message {msg_idx} not found in {mailbox}")
         return {"data": messages}
     except Exception as e:
+         logger.error(f"Thread fetch failed: {e}")
          raise HTTPException(status_code=500, detail=str(e))
 
-def fetch_imap_thread(account, thread_id):
+def fetch_imap_thread(account, mailbox, thread_id):
     try:
         mail = imaplib.IMAP4_SSL(account["imap_host"])
         mail.login(account["imap_user"], account["imap_pass"])
-        mail.select("Inbox")
         
-        typ, msg_data = mail.fetch(thread_id.encode(), '(RFC822)')
+        status, _ = mail.select(mailbox)
+        if status != 'OK':
+            mail.select(mailbox.upper())
+            
+        typ, msg_data = mail.uid('fetch', thread_id, '(RFC822)')
         
         results = []
         for response_part in msg_data:
@@ -183,7 +214,7 @@ def fetch_imap_thread(account, thread_id):
                     "toEmail": to_header,
                     "sentAt": date_str,
                     "body": body,
-                    "account": account["name"]
+                    "account": account["imap_user"]
                 })
                 
         mail.close()
@@ -265,6 +296,7 @@ async def get_realtime_messages(
     path: str = "Inbox",
     page: int = 0,
     pageSize: int = 20,
+    accountId: Optional[str] = None,
     supabase=Depends(get_supabase)
 ):
-    return await list_onebox_emails(limit=pageSize, offset=page*pageSize, inbox=path, supabase=supabase)
+    return await list_onebox_emails(limit=pageSize, offset=page*pageSize, inbox=path, accountId=accountId, supabase=supabase)

@@ -117,10 +117,17 @@ class MongoDBStoreManager:
     """
 
     def __init__(self):
-        self.client = AsyncIOMotorClient(MONGODB_URI, tlsCAFile=certifi.where(), serverSelectionTimeoutMS=5000)
-        self.db = self.client.get_database("shopify_rag")
-        self.stores_collection = self.db["stores"]
-        self.products_collection = self.db["products"]
+        if not MONGODB_URI or "://" not in MONGODB_URI:
+            logger.warning("⚠️ MONGODB_URI not set or invalid. MongoDB features will be disabled.")
+            self.client = None
+            self.db = None
+            self.stores_collection = None
+            self.products_collection = None
+        else:
+            self.client = AsyncIOMotorClient(MONGODB_URI, tlsCAFile=certifi.where(), serverSelectionTimeoutMS=5000)
+            self.db = self.client.get_database("shopify_rag")
+            self.stores_collection = self.db["stores"]
+            self.products_collection = self.db["products"]
         
         # Simple cache to prevent continuous DB queries for config
         # Key: store_id, Value: store_doc
@@ -140,6 +147,8 @@ class MongoDBStoreManager:
 
     async def verify_store(self, store_id: str, api_key: str) -> bool:
         """Verify a store's API key. Caches the config doc on success."""
+        if not self.stores_collection:
+            return False
         store_doc = await self.stores_collection.find_one({"_id": store_id})
         if not store_doc:
             store_doc = await self.stores_collection.find_one({"username": store_id})
@@ -162,7 +171,7 @@ class MongoDBStoreManager:
         Weights product_name higher than full_context for relevance.
         Idempotent — MongoDB ignores if already exists.
         """
-        if self._indexes_ensured:
+        if self._indexes_ensured or not self.products_collection:
             return
         try:
             await self.products_collection.create_index(
@@ -195,6 +204,8 @@ class MongoDBStoreManager:
         """
         limit = limit or MAX_PRODUCT_MATCHES
         await self.ensure_indexes()
+        if not self.products_collection:
+            return []
 
         # ── Primary: $text search (fast, uses the Lucene-style index) ─────
         try:
@@ -249,6 +260,8 @@ class MongoDBStoreManager:
         """
         # 1. Validation
         if store_id not in self._config_cache:
+            if not self.stores_collection:
+                return None
             store_doc = await self.stores_collection.find_one({"_id": store_id})
             if not store_doc:
                 return None

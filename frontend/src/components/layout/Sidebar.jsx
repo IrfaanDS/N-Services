@@ -52,17 +52,11 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
                 onClick={onToggle}
                 title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-                <div className={`w-9 h-9 min-w-[36px] rounded-lg flex items-center justify-center ${
-                    isB2B
-                        ? 'bg-gradient-to-br from-sky-500 to-indigo-600'
-                        : 'bg-gradient-to-br from-accent-400 to-primary-700'
-                }`}>
+                <div className="w-9 h-9 min-w-[36px] rounded-lg flex items-center justify-center bg-black">
                     <Zap className="w-5 h-5 text-white" />
                 </div>
                 {!collapsed && (
-                    <span className={`text-xl font-bold whitespace-nowrap ${
-                        isB2B ? 'text-sky-700' : 'text-primary-700'
-                    }`}>
+                    <span className="text-xl font-bold whitespace-nowrap text-black">
                         LeadFlow
                     </span>
                 )}
@@ -73,7 +67,7 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
                 <button
                     onClick={() => navigate('/')}
                     className={`flex items-center gap-2 w-full px-3 py-2 rounded-xl text-sm font-medium 
-                        text-gray-500 hover:text-gray-700 hover:bg-surface-50 transition-all duration-200
+                        text-gray-500 hover:text-black hover:bg-black/5 transition-all duration-200
                         ${collapsed ? 'justify-center' : ''}`}
                     title="Back to Services"
                 >
@@ -83,12 +77,8 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
 
                 {/* Mode badge */}
                 {!collapsed && (
-                    <div className={`mx-3 mt-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-center ${
-                        isB2B
-                            ? 'bg-sky-50 text-sky-700 border border-sky-200'
-                            : 'bg-primary-50 text-primary-700 border border-primary-200'
-                    }`}>
-                        {isB2B ? '🚀 B2B Services' : '🔍 SEO Services'}
+                    <div className="mx-3 mt-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-center bg-black/5 text-black border border-black/10">
+                        {isB2B ? 'B2B Services' : 'SEO Services'}
                     </div>
                 )}
             </div>
@@ -110,8 +100,8 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
                                         transition-all duration-200
                                         ${collapsed ? 'justify-center' : ''}
                                         ${isActive
-                                            ? (isB2B ? 'sidebar-active-b2b' : 'sidebar-active')
-                                            : 'text-gray-600 hover:bg-surface-50 hover:text-gray-900'
+                                            ? 'sidebar-active'
+                                            : 'text-gray-600 hover:bg-black/5 hover:text-black'
                                         }
                                     `}
                                 >
@@ -126,7 +116,7 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
 
             {/* ── Bottom nav ── */}
             <nav className="px-3 pb-6">
-                <ul className="space-y-1 border-t border-surface-200 pt-4">
+                <ul className="space-y-1 border-t border-black/10 pt-4">
                     {bottomItems.map(({ to, label, icon: Icon }) => {
                         const isActive = location.pathname === to
                         return (
@@ -139,8 +129,8 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
                                         transition-all duration-200
                                         ${collapsed ? 'justify-center' : ''}
                                         ${isActive
-                                            ? (isB2B ? 'sidebar-active-b2b' : 'sidebar-active')
-                                            : 'text-gray-600 hover:bg-surface-50 hover:text-gray-900'
+                                            ? 'sidebar-active'
+                                            : 'text-gray-600 hover:bg-black/5 hover:text-black'
                                         }
                                     `}
                                 >

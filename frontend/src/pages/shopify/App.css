@@ -61,7 +61,7 @@
   flex-direction: column;
   height: 100vh;
   margin: 0 auto;
-  background: var(--neutral-0);
+  background: transparent;
   position: relative;
 }
 
@@ -86,10 +86,9 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-md) var(--space-lg);
-  background: var(--neutral-0);
-  border-bottom: 2px solid var(--neutral-100);
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   z-index: 10;
-  box-shadow: 0 4px 20px -10px rgba(0, 0, 0, 0.05);
 }
 
 .header-left {
@@ -192,7 +191,7 @@
 .chat-area {
   flex: 1;
   overflow-y: auto;
-  background: linear-gradient(180deg, var(--neutral-50) 0%, #fff 100%);
+  background: transparent;
 }
 
 /* ── Welcome State ──────────────────────────────────────── */
@@ -423,8 +422,8 @@
 
 .input-bar {
   padding: var(--space-md) var(--space-lg);
-  background: var(--neutral-0);
-  border-top: 1px solid var(--neutral-100);
+  background: transparent;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .input-outer {

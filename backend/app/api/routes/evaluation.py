@@ -163,26 +163,28 @@ def _fetch_and_score(supabase, business_ids: list[str]) -> list[dict]:
     if not business_ids:
         return []
 
-    # Fetch businesses with contacts
+    # Fetch businesses with contacts from common schema
     biz_result = (
-        supabase.table("businesses")
-        .select("id, business_name, website_url, niche, city, country, "
-                "business_contacts(email, phone, linkedin, instagram, facebook)")
+        supabase.schema("common")
+        .table("businesses")
+        .select("id, name, website_url, niche, city, country, "
+                "contacts(email, phone, linkedin, instagram, facebook)")
         .in_("id", business_ids)
         .execute()
     )
     biz_map = {}
     for row in (biz_result.data or []):
-        contacts = row.pop("business_contacts", [])
+        contacts = row.pop("contacts", [])
         if isinstance(contacts, list):
             contact = contacts[0] if contacts else {}
         else:
             contact = contacts if contacts else {}
         biz_map[row["id"]] = {"business": row, "contact": contact}
 
-    # Fetch seo_audits
+    # Fetch audits
     audit_result = (
-        supabase.table("seo_audits")
+        supabase.schema("public")
+        .table("seo_audits")
         .select("*")
         .in_("business_id", business_ids)
         .execute()
@@ -276,7 +278,8 @@ async def evaluate_uploaded_csv(file: UploadFile = File(...), supabase=Depends(g
         urls = [r.get(url_key, "").strip() for r in rows if r.get(url_key, "").strip()]
         if urls:
             biz_result = (
-                supabase.table("businesses")
+                supabase.schema("common")
+                .table("businesses")
                 .select("id, website_url")
                 .execute()
             )

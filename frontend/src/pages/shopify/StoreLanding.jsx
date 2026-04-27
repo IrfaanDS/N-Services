@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { ShoppingBag } from 'lucide-react'
 const API_BASE = 'http://localhost:8000/api/shopify';
 import './StoreLanding.css'
 
@@ -97,7 +98,7 @@ export default function StoreLanding({ initialMode = 'onboard' }) {
     <div className="login-container">
       <div className="login-glass-panel">
         <div className="login-header">
-          <div className="login-icon">🛍️</div>
+          <div className="login-icon flex justify-center text-black mb-4"><ShoppingBag className="w-10 h-10" /></div>
           <h1 className="login-title">Agent Portal</h1>
           <p className="login-subtitle">Unlock your Shopify AI Assistant</p>
         </div>

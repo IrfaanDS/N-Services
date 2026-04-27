@@ -210,6 +210,9 @@ export default function LeadAcquisition() {
                             {selectedIds.size} selected
                         </span>
                     )}
+                    <button className="btn btn-outline text-xs py-1.5 px-3" onClick={() => {setNiche(''); setCity(''); setCountry(''); setSearchInput(''); setSearch('');}}>
+                        Clear All
+                    </button>
                     <button className="btn btn-outline text-xs py-1.5 px-3" onClick={handleExport} disabled={exporting || total === 0}>
                         {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
                         {isSomeSelected ? `Export ${selectedIds.size}` : 'Export CSV'}
@@ -304,6 +307,7 @@ export default function LeadAcquisition() {
                                 <th className="w-8">
                                     <input type="checkbox" className="rounded" checked={isAllSelected} onChange={toggleSelectAll} />
                                 </th>
+                                <th>Business Name</th>
                                 <th>Website</th>
                                 <th>Niche</th>
                                 <th>City</th>
@@ -322,7 +326,10 @@ export default function LeadAcquisition() {
                                         <input type="checkbox" className="rounded"
                                             checked={selectedIds.has(lead.id)} onChange={() => toggleSelect(lead.id)} />
                                     </td>
-                                    <td className="text-primary-700 whitespace-nowrap max-w-[200px] truncate">
+                                    <td className="font-bold text-gray-900 whitespace-nowrap max-w-[180px] truncate">
+                                        {lead.business_name || '—'}
+                                    </td>
+                                    <td className="text-primary-700 whitespace-nowrap max-w-[180px] truncate">
                                         {lead.website_url ? (
                                             <a href={lead.website_url} target="_blank" rel="noopener noreferrer" className="hover:underline">
                                                 {lead.website_url.replace(/^https?:\/\/(www\.)?/, '')}
