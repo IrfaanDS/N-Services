@@ -78,11 +78,12 @@ async def get_dashboard_stats(supabase=Depends(get_supabase)):
     
     return {
         "total_leads": total_leads,
-        "total_emails_sent": reach_stats.get("totalEmailSent", 0) if reach_stats else 0,
+        "total_emails_sent": reach_stats.get("leadsContacted", 0) if reach_stats else 0,
         "open_rate": float(reach_stats.get("openRate", 0)) if reach_stats else 0.0,
         "reply_rate": float(reach_stats.get("replyRate", 0)) if reach_stats else 0.0,
         "leads_contacted": reach_stats.get("leadsContacted", 0) if reach_stats else 0,
         "bounced": reach_stats.get("bounced", 0) if reach_stats else 0,
+
         "message": "Stats fetched successfully"
     }
 
@@ -118,25 +119,34 @@ async def get_seo_dashboard(supabase=Depends(get_supabase)):
 
     # 3. ReachInbox analytics (outreach funnel)
     reach_stats = await get_reachinbox_stats()
-    emails_sent = reach_stats.get("totalEmailSent", 0) if reach_stats else 0
+    emails_sent = reach_stats.get("leadsContacted", 0) if reach_stats else 0
     open_rate = float(reach_stats.get("openRate", 0)) if reach_stats else 0.0
     reply_rate = float(reach_stats.get("replyRate", 0)) if reach_stats else 0.0
     leads_contacted = reach_stats.get("leadsContacted", 0) if reach_stats else 0
     bounced = reach_stats.get("bounced", 0) if reach_stats else 0
 
-    # 4. Outreach email counts from outreach.emails
-    outreach_counts = {"sent": 0, "opened": 0, "replied": 0}
+
+    # 4. Outreach email counts from local campaign leads
+    outreach_counts = {
+        "sent": reach_stats.get("leadsContacted", 0) if reach_stats else 0,
+        "opened": reach_stats.get("open", 0) if reach_stats else 0,
+        "replied": reach_stats.get("reply", 0) if reach_stats else 0
+    }
+    
     try:
-        emails_res = supabase.schema("outreach").table("emails").select("email_sent,opened_at,replied_at").execute()
-        for row in (emails_res.data or []):
-            if row.get("email_sent"):
+        # Also include local campaign stats from outreach.b2b_campaign_leads
+        # (This catches SEO leads sent via the unified sending system)
+        local_res = supabase.schema("outreach").table("b2b_campaign_leads").select("sent_at,opened_at,replied_at").execute()
+        for row in (local_res.data or []):
+            if row.get("sent_at"):
                 outreach_counts["sent"] += 1
             if row.get("opened_at"):
                 outreach_counts["opened"] += 1
             if row.get("replied_at"):
                 outreach_counts["replied"] += 1
     except Exception as e:
-        logger.error(f"SEO outreach counts error: {e}")
+        logger.error(f"SEO local outreach counts error: {e}")
+
 
     # 5. Top niches
     niche_counts = {}
@@ -151,25 +161,44 @@ async def get_seo_dashboard(supabase=Depends(get_supabase)):
 
     top_niches = sorted(niche_counts.items(), key=lambda x: x[1], reverse=True)[:6]
 
-    # 6. Recent activity
+    # 6. Recent activity (combined)
     recent = []
     try:
+        # Leads
         recent_res = supabase.schema("common").table("businesses").select("name,created_at").order("created_at", desc=True).limit(5).execute()
         for row in (recent_res.data or []):
             recent.append({
-                "text": f"New lead discovered: {row.get('name', 'Unknown')}",
-                "time": row.get("created_at", "")
+                "text": f"New lead: {row.get('name', 'Unknown')}",
+                "time": row.get("created_at", ""),
+                "type": "lead"
             })
-    except:
-        pass
+        
+        # Replies
+        reply_res = supabase.schema("outreach").table("b2b_campaign_leads").select("target_email,replied_at").not_.is_("replied_at", "null").order("replied_at", desc=True).limit(3).execute()
+        for row in (reply_res.data or []):
+            recent.append({
+                "text": f"Reply received: {row['target_email']}",
+                "time": row["replied_at"],
+                "type": "reply",
+                "tier": "hot"
+            })
+            
+        # Sort by time
+        recent = sorted(recent, key=lambda x: x["time"], reverse=True)[:6]
+    except Exception as e:
+        logger.error(f"SEO activity error: {e}")
+
 
     return {
         "kpis": {
             "total_leads": total_leads,
-            "emails_sent": emails_sent,
+            "emails_sent": outreach_counts["sent"],
             "open_rate": round(open_rate, 1),
             "reply_rate": round(reply_rate, 1),
+            "total_replies": outreach_counts["replied"],
         },
+
+
         "tier_distribution": tier_counts,
         "outreach_funnel": outreach_counts,
         "top_niches": [{"name": n, "count": c} for n, c in top_niches],
@@ -257,18 +286,23 @@ async def get_b2b_dashboard():
             industry_rows = conn.execute(text(industry_sql)).mappings().all()
             top_industries = [{"name": r["industry"], "count": int(r["cnt"])} for r in industry_rows]
             
-            # Recent Activity
-            recent_sql = """
-                SELECT full_name, created_at 
-                FROM b2b.leads 
-                ORDER BY created_at DESC 
-                LIMIT 5
-            """
-            recent_rows = conn.execute(text(recent_sql)).mappings().all()
-            recent = [
-                {"text": f"Lead added: {r['full_name']}", "time": str(r["created_at"])}
-                for r in recent_rows
-            ]
+            # Recent Activity (Leads + Replies)
+            recent = []
+            try:
+                # Leads
+                recent_leads = conn.execute(text("SELECT full_name, created_at FROM b2b.leads ORDER BY created_at DESC LIMIT 5")).mappings().all()
+                for r in recent_leads:
+                    recent.append({"text": f"Lead added: {r['full_name']}", "time": str(r["created_at"]), "type": "lead"})
+                
+                # Replies
+                recent_replies = conn.execute(text("SELECT target_email, replied_at FROM outreach.b2b_campaign_leads WHERE replied_at IS NOT NULL ORDER BY replied_at DESC LIMIT 3")).mappings().all()
+                for r in recent_replies:
+                    recent.append({"text": f"Replied: {r['target_email']}", "time": str(r["replied_at"]), "type": "reply", "tier": "hot"})
+                
+                recent = sorted(recent, key=lambda x: x["time"], reverse=True)[:6]
+            except:
+                pass
+
             
         return {
             "kpis": {
@@ -366,12 +400,23 @@ async def get_shopify_dashboard():
 
         adoption_rate = round((assistants_created / total_leads * 100), 1) if total_leads > 0 else 0
 
+        # Outreach stats (from outreach.shopify_outreach if available)
+        outreach_stats = {"sent": 0, "replied": 0}
+        try:
+            outreach_rows = conn.execute(text("SELECT COUNT(*) as total, COUNT(*) FILTER (WHERE replied_at IS NOT NULL) as replied FROM outreach.shopify_outreach")).mappings().first()
+            if outreach_rows:
+                outreach_stats["sent"] = int(outreach_rows["total"])
+                outreach_stats["replied"] = int(outreach_rows["replied"])
+        except:
+            pass
+
         return {
             "kpis": {
                 "total_stores": total_leads,
                 "assistants_created": assistants_created,
                 "hot_leads": tier_counts.get("hot", 0),
                 "avg_score": avg_score,
+                "total_replies": outreach_stats["replied"]
             },
             "total_leads": total_leads,
             "tier_distribution": tier_counts,
@@ -381,9 +426,10 @@ async def get_shopify_dashboard():
                 "total": total_leads,
                 "rate": adoption_rate,
             },
-            "outreach": {},
+            "outreach": outreach_stats,
             "recent_activity": recent,
         }
+
     except Exception as e:
         logger.error(f"Shopify dashboard SQL error: {e}")
         return {

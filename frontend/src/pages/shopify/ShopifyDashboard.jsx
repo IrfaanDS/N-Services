@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Store, Bot, Flame, TrendingUp, BarChart3, Target, Activity, ArrowLeft } from 'lucide-react'
+import { Store, Bot, Flame, TrendingUp, BarChart3, Target, Activity, ArrowLeft, MessageCircle } from 'lucide-react'
+
 import { dashboardAPI } from '../../services/api'
 import KPICard from '../../components/charts/KPICard'
 import AnimatedBar from '../../components/charts/AnimatedBar'
@@ -100,8 +101,9 @@ export default function ShopifyDashboard() {
                 <KPICard value={kpis.total_stores} label="Stores Discovered" icon={Store} delay={0} />
                 <KPICard value={kpis.assistants_created} label="Assistants Live" icon={Bot} delay={100} />
                 <KPICard value={kpis.hot_leads} label="Hot Leads" icon={Flame} delay={200} />
-                <KPICard value={kpis.avg_score} label="Avg Lead Score" icon={TrendingUp} delay={300} />
+                <KPICard value={kpis.total_replies} label="Total Replies" icon={MessageCircle} delay={300} />
             </div>
+
 
             {/* Charts Row */}
             <div className="dashboard-charts">
@@ -174,11 +176,18 @@ export default function ShopifyDashboard() {
                 <div className="activity-feed-title">Recent Discoveries</div>
                 {recentActivity.length > 0 ? recentActivity.map((item, i) => (
                     <div key={i} className="activity-item">
-                        <div className="activity-dot" style={{ backgroundColor: tierColors[item.tier] || '#CCCCCC' }} />
-                        <span className="activity-text">{item.text}</span>
+                        <div 
+                            className="activity-dot" 
+                            style={{ backgroundColor: item.type === 'reply' ? '#10b981' : (tierColors[item.tier] || '#CCCCCC') }} 
+                        />
+                        <span className="activity-text">
+                            {item.type === 'reply' && <MessageCircle size={12} style={{ marginRight: '6px', color: '#10b981' }} />}
+                            {item.text}
+                        </span>
                         <span className="activity-time">{formatTime(item.time)}</span>
                     </div>
                 )) : (
+
                     <div className="activity-item">
                         <div className="activity-dot" style={{ backgroundColor: '#CCCCCC' }} />
                         <span className="activity-text" style={{ color: 'rgba(0,0,0,0.3)' }}>No recent discoveries</span>

@@ -23,10 +23,12 @@
         "business_id": "161bde20-7c3b-4fa4-acef-d9f1cba3fba1",
         "business_url": "https://github.com/IrfaanDS/N-Services",
         "target_email": "irfaanexe@gmail.com",
-        "subject": "Optimizing Your Software Services Website for Global Success",
-        "body": "Hi Irfaan,\n\nI came across your Software Services website on GitHub (https://github.com/IrfaanDS/N-Services) and noticed an opportunity to enhance your online presence. As a fellow global business, a strong online presence is crucial to attract new clients.\n\nI audited your site and found a few 'missed opportunities': your website lacks HTTPS security, a meta description, a clear title tag, and local schema markup. Additionally, I couldn't find any H1 tags and complete contact information. These issues may lead to lower search engine rankings and fewer conversions.\n\nWould you like to discuss how we can address these issues to improve your online visibility and ultimately drive more business to your doorstep?\n\nBest regards,",
-        "status": "sent",
-        "created_at": "2026-03-10T06:06:29.408149"
+        "subject": "Improving Your Global Software Services Online Presence",
+        "body": "Dear N-Services Owner,\n\nI came across your website (https://github.com/IrfaanDS/N-Services) and was impressed by your software services offerings. However, my analysis shows there are several missed opportunities for growth.\n\nSpecifically, I noticed your site is currently missing HTTPS (security risk), a title tag, proper H1 structure, and a meta description. Additionally, you're not utilizing local schema markup, which could impact your search engine rankings.\n\nI'd be happy to discuss strategies to address these issues, improving your online credibility, and expanding your global customer base. Let's connect if you're interested in exploring ways to take your online presence to the next level.\n\nBest regards,\n[Your Name]",
+        "status": "draft",
+        "created_at": "2026-04-28T03:52:23.509172",
+        "business_name": "IrfaanDS N-Services",
+        "lead_score": 67
     },
     {
         "business_id": "smoke-mirrors-barbershop-test",
@@ -572,24 +574,24 @@
         "business_name": "Cohere",
         "business_url": "cohere.com",
         "target_email": "hifsashafique04@gmail.com",
-        "subject": "Unlock Operational Efficiency with AI-Powered Route Optimization",
-        "body": "Hi [Recipient],\n\nI came across your research on applying NLP in logistics operations and thought we could discuss how our AI-powered route optimization software can help you streamline your delivery processes and reduce costs.\n\nAt GreenLogistics Solutions, our platform helps mid-sized delivery companies optimize routes, save on fuel, and lower their carbon footprint.\n\nLooking forward to exploring how we can support your efficiency goals.\n\nBest regards,\n[Your Name]",
+        "subject": "Boost Efficiency with AI-Powered Route Optimization",
+        "body": "Hi [Recipient First Name],\nI'm [GreenLogistics Solutions Representative] from GreenLogistics Solutions. As a Director of Engineering, I assume you're constantly seeking innovative ways to optimize operations.\nOur software leverages AI to automate route optimization, reducing fuel costs by 20%. Would you like to learn more about how this can impact your business?",
         "status": "draft",
-        "created_at": "2026-04-28T00:49:08.023819",
+        "created_at": "2026-04-28T04:01:32.066980",
         "type": "b2b",
         "persona": "Director, Engineering Fellow (NLP)",
         "sequences": [
             {
-                "subject": "Unlock Operational Efficiency with AI-Powered Route Optimization",
-                "body": "Hi [Recipient],\n\nI came across your research on applying NLP in logistics operations and thought we could discuss how our AI-powered route optimization software can help you streamline your delivery processes and reduce costs.\n\nAt GreenLogistics Solutions, our platform helps mid-sized delivery companies optimize routes, save on fuel, and lower their carbon footprint.\n\nLooking forward to exploring how we can support your efficiency goals.\n\nBest regards,\n[Your Name]"
+                "subject": "Boost Efficiency with AI-Powered Route Optimization",
+                "body": "Hi [Recipient First Name],\nI'm [GreenLogistics Solutions Representative] from GreenLogistics Solutions. As a Director of Engineering, I assume you're constantly seeking innovative ways to optimize operations.\nOur software leverages AI to automate route optimization, reducing fuel costs by 20%. Would you like to learn more about how this can impact your business?"
             },
             {
-                "subject": "Maximizing ROI in Logistics with AI-Powered Route Optimization",
-                "body": "Hi [Recipient],\n\nA quick follow-up on our previous conversation regarding AI-powered route optimization. I wanted to share a case study on how our software helped a similar company in the industry achieve a 20% reduction in fuel costs and increased overall efficiency.\n\nWould you be open to discussing how we can help you replicate these results?\n\nBest regards,\n[Your Name]"
+                "subject": "Drive ROI with Data-Driven Insights",
+                "body": "Hi [Recipient First Name],\nI wanted to follow up on the efficiency boost we discussed earlier. By providing actionable insights and data on fuel savings, our platform enables you to make informed decisions and achieve measurable results.\nSchedule a 15-minute call to see how our software can positively impact your bottom line."
             },
             {
-                "subject": "Exclusive Demo Invitation: AI-Powered Logistics Optimization",
-                "body": "Hi [Recipient],\n\nAs a Director, Engineering Fellow, you understand the importance of staying ahead in the logistics space. I'm inviting you to an exclusive demo of our AI-powered route optimization platform. We can discuss how our solution can help you drive business results and stay competitive.\n\nLet me know your availability, and I'll schedule the demo at your convenience.\n\nBest regards,\n[Your Name]"
+                "subject": "Exclusive Demo Invitation: Unlock Operational Excellence",
+                "body": "Hi [Recipient First Name],\nYou're one step closer to achieving operational excellence. I'm extending a personalized demo of our AI-powered route optimization platform, tailored to address your specific pain points.\nReserve your spot now to experience the tangible benefits of our software in action."
             }
         ],
         "persona_id": "bdee5993-69f1-4563-9290-66e5659dfdcb"
@@ -599,24 +601,24 @@
         "business_name": "Modulo Security Solutions",
         "business_url": "modulo.com.br",
         "target_email": "hifsashafique04@gmail.com",
-        "subject": "Unlock Hidden Savings in Logistics Operations",
-        "body": "We've worked with similar mid-sized delivery companies to achieve impressive results: 20% reduction in fuel costs and a lower carbon footprint. I'd like to discuss how AI-powered route optimization can benefit your organization. Let's schedule a call to explore further.",
+        "subject": "Optimize Your Delivery Operations with AI",
+        "body": "Hi [CEO's Name],\nWe help mid-sized delivery companies like yours reduce fuel costs by 20% and lower their carbon footprint. Our AI-powered route optimization and fleet management software brings tangible results. Want to learn more?\nBest, \n[Your Name]",
         "status": "draft",
-        "created_at": "2026-04-28T00:49:09.572173",
+        "created_at": "2026-04-28T04:01:33.527521",
         "type": "b2b",
         "persona": "CEO & CTO",
         "sequences": [
             {
-                "subject": "Unlock Hidden Savings in Logistics Operations",
-                "body": "We've worked with similar mid-sized delivery companies to achieve impressive results: 20% reduction in fuel costs and a lower carbon footprint. I'd like to discuss how AI-powered route optimization can benefit your organization. Let's schedule a call to explore further."
+                "subject": "Optimize Your Delivery Operations with AI",
+                "body": "Hi [CEO's Name],\nWe help mid-sized delivery companies like yours reduce fuel costs by 20% and lower their carbon footprint. Our AI-powered route optimization and fleet management software brings tangible results. Want to learn more?\nBest, \n[Your Name]"
             },
             {
-                "subject": "Streamlining Logistics with Data-Driven Insights",
-                "body": "Our platform automates manual tasks and enables real-time traffic analysis, freeing up your team to focus on growth. I'd be happy to provide a detailed demo and outline the steps towards a successful implementation. Would you be available for a 15-minute call next week?"
+                "subject": "Real Results from Our Customers",
+                "body": "Hi [CEO's Name],\nOur platform is driving tangible growth for companies in the industry. Increased efficiency and revenue are just the beginning. I'd be happy to discuss how GreenLogistics Solutions can help you achieve similar results. Let's chat this week?\nBest, \n[Your Name]"
             },
             {
-                "subject": "Calculating ROI for Your Logistics Transformation",
-                "body": "As you consider investing in logistics improvements, I'd like to walk you through a clear ROI calculation based on your specific operation. This will help you make an informed decision and ensure a strong business case for our solution. Let me know a good time to send over the calculation."
+                "subject": "Discover a Proven Solution",
+                "body": "Hi [CEO's Name],\nWe'd love the opportunity to demonstrate how our platform can address the pain points you're facing today. Schedule a personalized demo this week and take the first step towards optimizing your delivery operations.\nBest, \n[Your Name]"
             }
         ],
         "persona_id": "debc4c83-14d0-461c-bc40-279511973041"
@@ -627,23 +629,23 @@
         "business_url": "codearrest.com",
         "target_email": "hifsashafique04@gmail.com",
         "subject": "Unlock Operational Efficiency with AI-Powered Logistics",
-        "body": "Hi [Director of Software Development's Name],\n\nAs a seasoned software developer, you understand the importance of streamlining processes to drive business results. Our AI-powered route optimization and fleet management software can help you achieve this goal.\n\nWould love to discuss how our platform can help reduce manual processes and drive ROI. Schedule a call?",
+        "body": "Hi [Recipient Name], \n               As Director of Software Development, you understand the importance of streamlining logistics operations to maximize efficiency and revenue. Our AI-powered route optimization and fleet management software can help you achieve just that. Schedule a call with our team to learn more.",
         "status": "draft",
-        "created_at": "2026-04-28T00:49:11.761486",
+        "created_at": "2026-04-28T04:01:35.069666",
         "type": "b2b",
         "persona": "Director of Software Development",
         "sequences": [
             {
                 "subject": "Unlock Operational Efficiency with AI-Powered Logistics",
-                "body": "Hi [Director of Software Development's Name],\n\nAs a seasoned software developer, you understand the importance of streamlining processes to drive business results. Our AI-powered route optimization and fleet management software can help you achieve this goal.\n\nWould love to discuss how our platform can help reduce manual processes and drive ROI. Schedule a call?"
+                "body": "Hi [Recipient Name], \n               As Director of Software Development, you understand the importance of streamlining logistics operations to maximize efficiency and revenue. Our AI-powered route optimization and fleet management software can help you achieve just that. Schedule a call with our team to learn more."
             },
             {
-                "subject": "Efficient Dispatching for Your Delivery Company",
-                "body": "Hi [Director of Software Development's Name],\n\nWe've spoken about our AI-powered logistics platform, which can help reduce fuel costs by 20% and lower carbon footprint. Would you like to learn more about its benefits and see how it works in action? \nLet me know if you'd like to schedule a demo."
+                "subject": "Cut Costs and Carbon Footprint with Smart Dispatching",
+                "body": "Hi [Recipient Name], \n               You mentioned in our previous conversation that manual processes were consuming valuable time and resources. Our platform simplifies logistics operations, reducing fuel costs by 20% and carbon footprint through intelligent dispatching and real-time traffic analysis. Would you like a custom demo to see it in action?"
             },
             {
-                "subject": "See How Our Platform Can Boost Your Company's Efficiency",
-                "body": "Hi [Director of Software Development's Name],\n\nLast chance to take your delivery company's operational efficiency to the next level. Our AI-powered logistics platform has helped several companies like yours reduce costs and increase revenue.\n\nReady to take the next step? Simply reply or schedule a call with me."
+                "subject": "Proven ROI and Success Stories with Our Logistics Platform",
+                "body": "Hi [Recipient Name], \n               To ensure a clear return on investment, we'd like to share some success stories from our existing clients. Their average revenue growth rate and improved operational efficiency will give you a better understanding of our logistics platform's value. We look forward to discussing further and exploring how we can work together."
             }
         ],
         "persona_id": "318b8552-3382-4cd4-95a5-df327b2fdcfd"
@@ -653,24 +655,24 @@
         "business_name": "H2O.ai",
         "business_url": "h2o.ai",
         "target_email": "hifsashafique04@gmail.com",
-        "subject": "Optimizing Delivery Operations for Enhanced Efficiency",
-        "body": "As a leader in logistics, you're no doubt aware of the importance of efficient delivery operations. Our AI-powered route optimization platform can help you reduce fuel costs by up to 20% and lower your carbon footprint. Would you like to schedule a call to discuss how our platform can support your risk and technology goals?",
+        "subject": "Unlock 20% Fuel Savings with AI-Powered Route Optimization",
+        "body": "Hi [Recipient], \nAs a Senior Vice President of Risk & Technology, you understand the importance of operational efficiency in driving business results. Our AI-powered route optimization software can help you reduce fuel costs by 20% and lower your carbon footprint. I'd love to discuss how GreenLogistics Solutions can support your goals. Best regards, [Your Name]",
         "status": "draft",
-        "created_at": "2026-04-28T00:49:14.038938",
+        "created_at": "2026-04-28T04:01:36.402197",
         "type": "b2b",
         "persona": "Senior Vice President Risk & Technology",
         "sequences": [
             {
-                "subject": "Optimizing Delivery Operations for Enhanced Efficiency",
-                "body": "As a leader in logistics, you're no doubt aware of the importance of efficient delivery operations. Our AI-powered route optimization platform can help you reduce fuel costs by up to 20% and lower your carbon footprint. Would you like to schedule a call to discuss how our platform can support your risk and technology goals?"
+                "subject": "Unlock 20% Fuel Savings with AI-Powered Route Optimization",
+                "body": "Hi [Recipient], \nAs a Senior Vice President of Risk & Technology, you understand the importance of operational efficiency in driving business results. Our AI-powered route optimization software can help you reduce fuel costs by 20% and lower your carbon footprint. I'd love to discuss how GreenLogistics Solutions can support your goals. Best regards, [Your Name]"
             },
             {
-                "subject": "Streamlining Manual Processes for Greater ROI",
-                "body": "I wanted to follow up on our previous discussion regarding manual processes and their impact on your logistics efficiency. Our platform has successfully helped mid-sized delivery companies optimize their dispatching and reduce operational waste. Would you be open to a quick demo of our platform?"
+                "subject": "Streamline Your Delivery Operations with Our Expertise",
+                "body": "Hi [Recipient], \nI wanted to follow up on our previous conversation regarding our AI-powered route optimization software. Our platform can help automate manual processes, ensuring reliable service provider management and clear ROI tracking. Would you like a personalized demo to explore how GreenLogistics Solutions can transform your delivery operations?"
             },
             {
-                "subject": "Quantifying the Return on Investment of Route Optimization",
-                "body": "As a key decision-maker, it's essential to demonstrate clear ROI on any investment. I'd like to provide you with a case study of one of our successful clients, highlighting the significant cost savings and revenue gains they achieved through our platform. Please let me know if this is something that interests you."
+                "subject": "Join the Ranks of Delivery Leaders with Efficient Operations",
+                "body": "Hi [Recipient], \nOur customers, like [Customer Name], have seen a significant reduction in fuel costs and improved revenue through our AI-powered route optimization software. I'd be happy to share their success story and discuss how GreenLogistics Solutions can help your organization achieve similar results. Is there a good time to talk more about it?"
             }
         ],
         "persona_id": "73e07977-d2b6-4efd-b002-535ddc8ade7e"
@@ -680,24 +682,24 @@
         "business_name": "The Missing Link",
         "business_url": "themissinglink.com.au",
         "target_email": "hifsashafique04@gmail.com",
-        "subject": "Maximize Fleet Performance with Data-Driven Insights",
-        "body": "Hi [Name], As the Chief Information Security Officer, you're no stranger to optimizing operations. At GreenLogistics Solutions, we're transforming logistics with AI-powered route optimization and fleet management software. Our platform can help you reduce fuel costs by 20% while lowering your carbon footprint. Let's discuss how we can drive efficiency and revenue for your business.",
+        "subject": "Optimizing Logistics Operations through Technology",
+        "body": "Dear [CISO's Name], As a Chief Information Security Officer, you understand the importance of efficient operations. GreenLogistics Solutions can help. Our AI-powered platform optimizes delivery routes, reducing costs and environmental impact. Would you like to learn more?",
         "status": "draft",
-        "created_at": "2026-04-28T00:49:15.590795",
+        "created_at": "2026-04-28T04:01:37.788300",
         "type": "b2b",
         "persona": "Chief Information Security Officer",
         "sequences": [
             {
-                "subject": "Maximize Fleet Performance with Data-Driven Insights",
-                "body": "Hi [Name], As the Chief Information Security Officer, you're no stranger to optimizing operations. At GreenLogistics Solutions, we're transforming logistics with AI-powered route optimization and fleet management software. Our platform can help you reduce fuel costs by 20% while lowering your carbon footprint. Let's discuss how we can drive efficiency and revenue for your business."
+                "subject": "Optimizing Logistics Operations through Technology",
+                "body": "Dear [CISO's Name], As a Chief Information Security Officer, you understand the importance of efficient operations. GreenLogistics Solutions can help. Our AI-powered platform optimizes delivery routes, reducing costs and environmental impact. Would you like to learn more?"
             },
             {
-                "subject": "Efficiency Gains through AI-Powered Logistics",
-                "body": "Hi [Name], Hope you're doing well! I wanted to follow up on our previous discussion regarding optimizing logistics with AI. Our customers have seen significant improvements in operational efficiency, revenue, and carbon footprint reduction. Would you be open to a meeting to explore how we can support your goals?"
+                "subject": "Streamlining Logistics Operations: Key Benefits",
+                "body": "Hi [CISO's Name], Our platform has been proven to increase efficiency and revenue for mid-sized delivery companies. With GreenLogistics Solutions, you'll benefit from reduced fuel costs and a lower carbon footprint. Would you like to schedule a demo?"
             },
             {
-                "subject": "Unlock Clear ROI with GreenLogistics Solutions",
-                "body": "Hi [Name], As we discussed previously, we can help you streamline operations, reduce costs, and enhance your business results with our expertise in AI-powered logistics. I'd like to schedule a meeting to demonstrate the clear return on investment our clients have experienced with our platform. When are you available to discuss further?"
+                "subject": "Case Study: Realizing ROI with Our Logistics Platform",
+                "body": "Hi [CISO's Name], We've helped similar companies achieve significant returns on investment. Our case studies demonstrate the impact of our platform on operational efficiency. Would you like to discuss how GreenLogistics Solutions can benefit your business?"
             }
         ],
         "persona_id": "e958cbc0-4c44-4edc-93a7-ed5d8565778a"

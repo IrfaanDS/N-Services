@@ -147,8 +147,9 @@ class MongoDBStoreManager:
 
     async def verify_store(self, store_id: str, api_key: str) -> bool:
         """Verify a store's API key. Caches the config doc on success."""
-        if not self.stores_collection:
+        if self.stores_collection is None:
             return False
+
         store_doc = await self.stores_collection.find_one({"_id": store_id})
         if not store_doc:
             store_doc = await self.stores_collection.find_one({"username": store_id})
@@ -171,8 +172,9 @@ class MongoDBStoreManager:
         Weights product_name higher than full_context for relevance.
         Idempotent — MongoDB ignores if already exists.
         """
-        if self._indexes_ensured or not self.products_collection:
+        if self._indexes_ensured or self.products_collection is None:
             return
+
         try:
             await self.products_collection.create_index(
                 [
@@ -204,8 +206,9 @@ class MongoDBStoreManager:
         """
         limit = limit or MAX_PRODUCT_MATCHES
         await self.ensure_indexes()
-        if not self.products_collection:
+        if self.products_collection is None:
             return []
+
 
         # ── Primary: $text search (fast, uses the Lucene-style index) ─────
         try:
@@ -260,8 +263,9 @@ class MongoDBStoreManager:
         """
         # 1. Validation
         if store_id not in self._config_cache:
-            if not self.stores_collection:
+            if self.stores_collection is None:
                 return None
+
             store_doc = await self.stores_collection.find_one({"_id": store_id})
             if not store_doc:
                 return None

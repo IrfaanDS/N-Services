@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Users, Building2, UserCircle, Send, BarChart3, Target, Activity, Briefcase } from 'lucide-react'
+import { Users, Building2, UserCircle, Send, BarChart3, Target, Activity, Briefcase, MessageCircle } from 'lucide-react'
+
 import { dashboardAPI } from '../../services/api'
 import KPICard from '../../components/charts/KPICard'
 import AnimatedBar from '../../components/charts/AnimatedBar'
@@ -197,11 +198,18 @@ export default function B2BDashboard() {
                 <div className="activity-feed-title">Recent Activity</div>
                 {recentActivity.length > 0 ? recentActivity.map((item, i) => (
                     <div key={i} className="activity-item">
-                        <div className="activity-dot" style={{ backgroundColor: '#111111' }} />
-                        <span className="activity-text">{item.text}</span>
+                        <div 
+                            className="activity-dot" 
+                            style={{ backgroundColor: item.type === 'reply' ? '#10b981' : '#111111' }} 
+                        />
+                        <span className="activity-text">
+                            {item.type === 'reply' && <MessageCircle size={12} style={{ marginRight: '6px', color: '#10b981' }} />}
+                            {item.text}
+                        </span>
                         <span className="activity-time">{formatTime(item.time)}</span>
                     </div>
                 )) : (
+
                     <div className="activity-item">
                         <div className="activity-dot" style={{ backgroundColor: '#CCCCCC' }} />
                         <span className="activity-text" style={{ color: 'rgba(0,0,0,0.3)' }}>No recent activity — upload leads to get started</span>

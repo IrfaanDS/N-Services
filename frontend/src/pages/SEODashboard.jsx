@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Users, Mail, Target, TrendingUp, BarChart3, Activity } from 'lucide-react'
+import { Users, Mail, Target, TrendingUp, BarChart3, Activity, MessageCircle } from 'lucide-react'
+
 import { dashboardAPI } from '../services/api'
 import KPICard from '../components/charts/KPICard'
 import AnimatedBar from '../components/charts/AnimatedBar'
@@ -96,7 +97,9 @@ export default function SEODashboard() {
                 <KPICard value={kpis.emails_sent} label="Emails Sent" icon={Mail} delay={100} />
                 <KPICard value={kpis.open_rate} label="Open Rate" icon={Target} suffix="%" delay={200} />
                 <KPICard value={kpis.reply_rate} label="Reply Rate" icon={TrendingUp} suffix="%" delay={300} />
+                <KPICard value={kpis.total_replies} label="Total Replies" icon={MessageCircle} delay={400} />
             </div>
+
 
             {/* Charts Row */}
             <div className="dashboard-charts">
@@ -180,11 +183,18 @@ export default function SEODashboard() {
                 <div className="activity-feed-title">Recent Activity</div>
                 {recentActivity.length > 0 ? recentActivity.map((item, i) => (
                     <div key={i} className="activity-item">
-                        <div className="activity-dot" style={{ backgroundColor: '#111111' }} />
-                        <span className="activity-text">{item.text}</span>
+                        <div 
+                            className="activity-dot" 
+                            style={{ backgroundColor: item.type === 'reply' ? '#10b981' : (item.tier === 'hot' ? '#111111' : '#666666') }} 
+                        />
+                        <span className="activity-text">
+                            {item.type === 'reply' && <MessageCircle size={12} style={{ marginRight: '6px', color: '#10b981' }} />}
+                            {item.text}
+                        </span>
                         <span className="activity-time">{formatTime(item.time)}</span>
                     </div>
                 )) : (
+
                     <div className="activity-item">
                         <div className="activity-dot" style={{ backgroundColor: '#CCCCCC' }} />
                         <span className="activity-text" style={{ color: 'rgba(0,0,0,0.3)' }}>No recent activity</span>
