@@ -43,10 +43,10 @@
         "business_id": "2ffc0ec1-fbb9-48be-bb15-1a16729fe1f6",
         "business_url": "https://downtowndentist.com",
         "target_email": "info@downtowndentist.com",
-        "subject": "Improving Visibility for Your Downtown Houston Dental Practice",
-        "body": "Dear [Business Owner's Name],\n\nI came across your practice, Downtown Dentist, while researching top dentists in Houston and was impressed by your reputation. However, after reviewing your website (https://downtowndentist.com), I noticed a few missed opportunities to drive more growth.\n\nYour current SEO score sits at 30/100. I'd love to discuss potential issues such as a potential speed issue due to 112 active scripts, and an inconsistent H1 structure that seems to be affecting your online visibility.\n\nI'd be happy to provide guidance and explore ways to enhance your online presence and increase your reach in Downtown Houston. Would you be open to a brief consultation?\n\nBest regards,",
+        "subject": "Optimizing Downtown Houston Dental Care for Local Search Success",
+        "body": "Dear [Business Owner's Name],\n\nI came across Downtown Dentist in Downtown Houston and was impressed by the excellent services offered. However, reviewing your website at https://downtowndentist.com revealed some missed opportunities for growth. Your site scored 30/100 in our audit, indicating significant room for improvement.\n\nTwo areas caught our attention: a potential speed issue (112 scripts) might impact user experience and search engine rankings, and a non-optimized H1 structure (5 instances) could dilute the focus of your main page content. By addressing these challenges, you can enhance your online visibility and attract more patients.\n\nI'd be happy to discuss how we can help you overcome these issues and unlock your full potential. If you're interested, I'd be delighted to schedule a call to explore the possibilities further.\n\nBest regards,\n[Your Name]",
         "status": "draft",
-        "created_at": "2026-04-28T00:35:23.261908",
+        "created_at": "2026-04-29T15:56:47.242769",
         "business_name": null,
         "lead_score": 30
     },
@@ -725,5 +725,140 @@
         "status": "draft",
         "lead_score": 20,
         "created_at": "2026-04-28T01:39:44.806955"
+    },
+    {
+        "business_id": "44ebeac0-738f-49ec-994c-b8351d1c3eb8",
+        "business_name": "Cohere",
+        "business_url": "cohere.com",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Optimizing Business Operations with AI-Powered Solutions",
+        "body": "Hi [Name],\n          As a Director of Engineering Fellow in NLP, you understand the value of leveraging AI to drive business results. At Nexus Core, we've helped numerous clients modernize their systems and streamline operations. I'd love to discuss how our custom software development expertise can help you achieve your goals. Would you be open to a quick call next week?\n          Best regards, [Your Name]",
+        "status": "draft",
+        "created_at": "2026-04-29T16:22:07.504798",
+        "type": "b2b",
+        "persona": "Director, Engineering Fellow (NLP)",
+        "sequences": [
+            {
+                "subject": "Optimizing Business Operations with AI-Powered Solutions",
+                "body": "Hi [Name],\n          As a Director of Engineering Fellow in NLP, you understand the value of leveraging AI to drive business results. At Nexus Core, we've helped numerous clients modernize their systems and streamline operations. I'd love to discuss how our custom software development expertise can help you achieve your goals. Would you be open to a quick call next week?\n          Best regards, [Your Name]"
+            },
+            {
+                "subject": "Streamlining NLP Development with Our Expertise",
+                "body": "Hi [Name],\n          We spoke previously about optimizing business operations with AI-powered solutions. Our team specializes in developing custom software that integrates with existing NLP systems. If you're struggling to find reliable service providers, we'd like to propose a potential collaboration. Let me know if you'd like to schedule a time to discuss further.\n          Best regards, [Your Name]"
+            },
+            {
+                "subject": "Unlocking Clear ROI with Data-Driven Insights",
+                "body": "Hi [Name],\n          At Nexus Core, our focus is on delivering tangible results. By leveraging our IT consulting expertise, you can gain a deeper understanding of your operations and make data-driven decisions. We've recently helped a client increase efficiency and revenue by 25%. I'd be happy to provide more information on how we can help you achieve similar outcomes.\n          Best regards, [Your Name]"
+            }
+        ],
+        "persona_id": "bdee5993-69f1-4563-9290-66e5659dfdcb"
+    },
+    {
+        "business_id": "39f9c78e-e1d4-4a9f-99f2-d7b2caac64a1",
+        "business_name": "Modulo Security Solutions",
+        "business_url": "modulo.com.br",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Modernize Your Business Operations with Nexus Core",
+        "body": "Dear CEO & CTO, \n\n manual processes are costing you valuable time and revenue. Our custom software development and IT consulting services can transform your business operations and legacy systems, driving increased efficiency and revenue. Let's discuss how we can help. \n\n Best regards, Nexus Core Team",
+        "status": "draft",
+        "created_at": "2026-04-29T16:22:09.121719",
+        "type": "b2b",
+        "persona": "CEO & CTO",
+        "sequences": [
+            {
+                "subject": "Modernize Your Business Operations with Nexus Core",
+                "body": "Dear CEO & CTO, \n\n manual processes are costing you valuable time and revenue. Our custom software development and IT consulting services can transform your business operations and legacy systems, driving increased efficiency and revenue. Let's discuss how we can help. \n\n Best regards, Nexus Core Team"
+            },
+            {
+                "subject": "Unlock Clear ROI with Proven Results",
+                "body": "Dear CEO & CTO, \n\n you need a partner that can deliver tangible results. Our successful projects with similar companies demonstrate the potential for significant efficiency gains and revenue growth. Would you like to learn more about our approach and results? \n\n Best regards, Nexus Core Team"
+            },
+            {
+                "subject": "Streamline Your Operations with Nexus Core",
+                "body": "Dear CEO & CTO, \n\nwe can help you identify and eliminate time-consuming manual processes, ensuring a seamless and reliable experience for your customers and stakeholders. Our consultative approach is designed to meet your unique business needs. When are you available for a call? \n\n Best regards, Nexus Core Team"
+            }
+        ],
+        "persona_id": "debc4c83-14d0-461c-bc40-279511973041"
+    },
+    {
+        "business_id": "796d6301-a045-42a0-a04c-13904ac2f2a8",
+        "business_name": "CodeArrest Softwares Private Limited",
+        "business_url": "codearrest.com",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Streamline Your Software Development Process",
+        "body": "Dear [Director's Name],\n\nAs Director of Software Development, you're no stranger to optimizing your team's workflows. At Nexus Core, we've seen firsthand the challenges of manual processes holding businesses back. Our custom software solutions can help you achieve increased efficiency and revenue. I'd love to explore how we can assist.\n\nLet's schedule a call to discuss.\n\nBest,",
+        "status": "draft",
+        "created_at": "2026-04-29T16:22:10.656499",
+        "type": "b2b",
+        "persona": "Director of Software Development",
+        "sequences": [
+            {
+                "subject": "Streamline Your Software Development Process",
+                "body": "Dear [Director's Name],\n\nAs Director of Software Development, you're no stranger to optimizing your team's workflows. At Nexus Core, we've seen firsthand the challenges of manual processes holding businesses back. Our custom software solutions can help you achieve increased efficiency and revenue. I'd love to explore how we can assist.\n\nLet's schedule a call to discuss.\n\nBest,"
+            },
+            {
+                "subject": "Real ROI Cases in Software Development",
+                "body": "Hi [Director's Name],\n\nWe've worked with businesses just like yours to uncover hidden efficiency gains through our custom software. Our solutions have driven tangible ROI for our clients.\n\nWould you like to learn more about these success stories and how they can inform your own strategy?\n\nLooking forward to sharing our insights with you."
+            },
+            {
+                "subject": "Your Path to Software Development Excellence",
+                "body": "Hi [Director's Name],\n\nIt's time to take the next step towards elevating your software development capabilities. Nexus Core's custom solutions and IT consulting services can be tailored to address your needs.\n\nI'd be delighted to discuss how our approach can position your organization for long-term success.\n\nHope to connect soon."
+            }
+        ],
+        "persona_id": "318b8552-3382-4cd4-95a5-df327b2fdcfd"
+    },
+    {
+        "business_id": "d2e48754-be60-4456-8e7c-6e93f6c296f4",
+        "business_name": "H2O.ai",
+        "business_url": "h2o.ai",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Streamlining Risk & Technology Processes: Expert Guidance",
+        "body": "Hi [Name], As Senior Vice President of Risk & Technology, you understand the impact of inefficient processes on business outcomes. At Nexus Core, we help SVPs like you optimize legacy systems and modernize operations, driving revenue growth. Let's explore how.",
+        "status": "draft",
+        "created_at": "2026-04-29T16:22:12.207683",
+        "type": "b2b",
+        "persona": "Senior Vice President Risk & Technology",
+        "sequences": [
+            {
+                "subject": "Streamlining Risk & Technology Processes: Expert Guidance",
+                "body": "Hi [Name], As Senior Vice President of Risk & Technology, you understand the impact of inefficient processes on business outcomes. At Nexus Core, we help SVPs like you optimize legacy systems and modernize operations, driving revenue growth. Let's explore how."
+            },
+            {
+                "subject": "Proven Partnership for Efficient Risk Management",
+                "body": "Hi [Name], We wanted to follow up on our previous discussion. Nexus Core's custom software solutions have already delivered significant efficiencies for similar SVPs. We'd be happy to showcase our work and discuss potential ROI. When are you available for a call?"
+            },
+            {
+                "subject": "Unlock Operational Efficiency with a Results-Driven Approach",
+                "body": "Hi [Name], As you continue to seek solutions for your Risk & Technology teams, we'd like to offer a complimentary assessment of your processes. With this insight, you can make informed decisions and create a clear road map for improvement. Is now the right time to take the first step?"
+            }
+        ],
+        "persona_id": "73e07977-d2b6-4efd-b002-535ddc8ade7e"
+    },
+    {
+        "business_id": "c815811b-80b8-4173-a4b9-1b41b73be947",
+        "business_name": "The Missing Link",
+        "business_url": "themissinglink.com.au",
+        "target_email": "hifsashafique04@gmail.com",
+        "subject": "Maximizing Operational Efficiency with Proven Expertise",
+        "body": "As a seasoned Chief Information Security Officer, you understand the importance of streamlining business processes and optimizing IT infrastructure. At Nexus Core, our team of experts has successfully modernized operations for companies like yours, delivering increased efficiency and revenue growth. Learn how our custom software development and IT consulting services can address your unique challenges.",
+        "status": "draft",
+        "created_at": "2026-04-29T16:22:13.777194",
+        "type": "b2b",
+        "persona": "Chief Information Security Officer",
+        "sequences": [
+            {
+                "subject": "Maximizing Operational Efficiency with Proven Expertise",
+                "body": "As a seasoned Chief Information Security Officer, you understand the importance of streamlining business processes and optimizing IT infrastructure. At Nexus Core, our team of experts has successfully modernized operations for companies like yours, delivering increased efficiency and revenue growth. Learn how our custom software development and IT consulting services can address your unique challenges."
+            },
+            {
+                "subject": "Expert Insights to Inform Your Operational Efficiency Strategy",
+                "body": "Gain valuable insights into the common pain points of CISOs like yourself. Our recent industry report highlights the top areas of concern and presents data-driven solutions to mitigate risks. Access the report and discover how to break through manual process barriers and drive business results."
+            },
+            {
+                "subject": "Your Path to Efficient Operations and Clear ROI",
+                "body": "Let's discuss how Nexus Core's expertise can be tailored to meet your specific needs. Whether you're looking to revamp legacy systems or simply need guidance on navigating the complexities of modern business operations, we're here to support your success. Schedule a meeting with our team to explore opportunities for growth and efficiency."
+            }
+        ],
+        "persona_id": "e958cbc0-4c44-4edc-93a7-ed5d8565778a"
     }
 ]

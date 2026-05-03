@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom'
-import { Search, Users, ArrowRight, Zap, ShoppingBag } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Search, Users, ArrowRight, Zap, ShoppingBag, LogOut, User as UserIcon } from 'lucide-react'
+import { useAuth } from '../components/auth/AuthProvider'
 
 const services = [
     {
@@ -30,9 +31,38 @@ const services = [
 
 export default function ServiceSelector() {
     const navigate = useNavigate()
+    const { user, signOut } = useAuth()
 
     return (
         <div className="service-selector-page">
+            {/* Top Navigation */}
+            <div className="absolute top-0 left-0 right-0 p-6 flex justify-end items-center z-50">
+                {user ? (
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 text-sm text-black/60 font-medium">
+                            <UserIcon className="w-4 h-4" />
+                            {user.email}
+                        </div>
+                        <button 
+                            onClick={() => signOut()}
+                            className="btn btn-outline text-sm py-2 px-4 rounded-full flex items-center gap-2"
+                        >
+                            <LogOut className="w-4 h-4" />
+                            Log Out
+                        </button>
+                    </div>
+                ) : (
+                    <div className="flex items-center gap-3">
+                        <Link to="/login" className="text-sm font-semibold text-black hover:text-black/70 px-4 py-2 transition-colors">
+                            Sign In
+                        </Link>
+                        <Link to="/signup" className="text-sm font-semibold text-white bg-black hover:bg-black/80 px-5 py-2 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-black/10">
+                            Sign Up
+                        </Link>
+                    </div>
+                )}
+            </div>
+
             <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-12">
                 {/* Header */}
                 <div className="text-center mb-16 animate-fade-in">
