@@ -1,6 +1,6 @@
-# 🚀 LeadFlow SEO: Enterprise-Ready Lead & Outreach Engine
+# 🚀 N-Services: Enterprise-Ready Lead & Outreach Engine
 
-LeadFlow is a full-stack platform designed to automate the entire B2B outreach funnel—from discovery to campaign delivery. Specifically optimized for SEO agencies, it uses AI to audit local businesses and craft high-converting personalized emails.
+N-Services is a full-stack platform designed to automate the entire B2B outreach funnel—from discovery to campaign delivery. Specifically optimized for SEO agencies, it uses AI to audit local businesses and craft high-converting personalized emails.
 
 ---
 

@@ -7,14 +7,13 @@ import {
     Send,
     FileText,
     Settings,
-    Zap,
     Mail,
-    Users,
-    Sparkles,
-    ArrowLeft,
+    Bot,
     Upload,
-    ShoppingBag
+    Sparkles,
+    ArrowLeft
 } from 'lucide-react'
+import nServicesLogo from '../../assets/n-services-logo.png'
 
 const seoNavItems = [
     { to: '/seo/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -26,6 +25,7 @@ const seoNavItems = [
 ]
 
 const b2bNavItems = [
+    { to: '/b2b/agent', label: 'Agent Mode', icon: Bot },
     { to: '/b2b/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/b2b/leads', label: 'B2B Leads', icon: Upload },
     { to: '/b2b/evaluation', label: 'Lead Evaluation', icon: BarChart3 },
@@ -54,12 +54,13 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
                 onClick={onToggle}
                 title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-                <div className="w-9 h-9 min-w-[36px] rounded-lg flex items-center justify-center bg-black">
-                    <Zap className="w-5 h-5 text-white" />
+                <div className="w-9 h-9 min-w-[36px] flex items-center justify-center">
+                    <img src={nServicesLogo} alt="Logo" className="w-7 h-auto" />
                 </div>
                 {!collapsed && (
-                    <span className="text-xl font-bold whitespace-nowrap text-black">
-                        LeadFlow
+                    <span className="text-xl font-light whitespace-nowrap"
+                          style={{ color: '#061b31', letterSpacing: '-0.26px' }}>
+                        N-Services
                     </span>
                 )}
             </div>
@@ -67,10 +68,13 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
             {/* ── Back to Services ── */}
             <div className="px-3 mb-2">
                 <button
-                    onClick={() => navigate('/')}
-                    className={`flex items-center gap-2 w-full px-3 py-2 rounded-xl text-sm font-medium 
-                        text-gray-500 hover:text-black hover:bg-black/5 transition-all duration-200
+                    onClick={() => navigate('/dashboard')}
+                    className={`flex items-center gap-2 w-full px-3 py-2 rounded-md text-sm font-normal 
+                        transition-all duration-200
                         ${collapsed ? 'justify-center' : ''}`}
+                    style={{ color: '#64748d' }}
+                    onMouseEnter={e => { e.currentTarget.style.color = '#533afd'; e.currentTarget.style.background = 'rgba(83,58,253,0.04)' }}
+                    onMouseLeave={e => { e.currentTarget.style.color = '#64748d'; e.currentTarget.style.background = 'transparent' }}
                     title="Back to Services"
                 >
                     <ArrowLeft className="w-4 h-4 min-w-[16px]" />
@@ -79,7 +83,8 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
 
                 {/* Mode badge */}
                 {!collapsed && (
-                    <div className="mx-3 mt-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-center bg-black/5 text-black border border-black/10">
+                    <div className="mx-3 mt-2 px-3 py-1.5 rounded-md text-xs font-normal text-center"
+                         style={{ background: 'rgba(83,58,253,0.06)', color: '#533afd', border: '1px solid rgba(83,58,253,0.12)' }}>
                         {isB2B ? 'B2B Services' : 'SEO Services'}
                     </div>
                 )}
@@ -98,14 +103,17 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
                                     to={to}
                                     title={collapsed ? label : undefined}
                                     className={`
-                                        flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium
+                                        flex items-center gap-3 px-3 py-3 rounded-md text-sm
                                         transition-all duration-200
                                         ${collapsed ? 'justify-center' : ''}
                                         ${isActive
                                             ? 'sidebar-active'
-                                            : 'text-gray-600 hover:bg-black/5 hover:text-black'
+                                            : ''
                                         }
                                     `}
+                                    style={isActive ? { fontWeight: 400 } : { color: '#64748d', fontWeight: 300 }}
+                                    onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(83,58,253,0.04)'; e.currentTarget.style.color = '#533afd' } }}
+                                    onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#64748d' } }}
                                 >
                                     <Icon className="w-5 h-5 min-w-[20px]" />
                                     {!collapsed && <span className="whitespace-nowrap">{label}</span>}
@@ -118,7 +126,7 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
 
             {/* ── Bottom nav ── */}
             <nav className="px-3 pb-6">
-                <ul className="space-y-1 border-t border-black/10 pt-4">
+                <ul className="space-y-1 pt-4" style={{ borderTop: '1px solid #e5edf5' }}>
                     {bottomItems.map(({ to, label, icon: Icon }) => {
                         const isActive = location.pathname === to
                         return (
@@ -127,14 +135,17 @@ export default function Sidebar({ collapsed, onToggle, mode }) {
                                     to={to}
                                     title={collapsed ? label : undefined}
                                     className={`
-                                        flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium
+                                        flex items-center gap-3 px-3 py-3 rounded-md text-sm
                                         transition-all duration-200
                                         ${collapsed ? 'justify-center' : ''}
                                         ${isActive
                                             ? 'sidebar-active'
-                                            : 'text-gray-600 hover:bg-black/5 hover:text-black'
+                                            : ''
                                         }
                                     `}
+                                    style={isActive ? { fontWeight: 400 } : { color: '#64748d', fontWeight: 300 }}
+                                    onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(83,58,253,0.04)'; e.currentTarget.style.color = '#533afd' } }}
+                                    onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#64748d' } }}
                                 >
                                     <Icon className="w-5 h-5 min-w-[20px]" />
                                     {!collapsed && <span className="whitespace-nowrap">{label}</span>}

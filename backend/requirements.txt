@@ -40,3 +40,6 @@ pymongo>=4.9.0
 certifi>=2024.8.30
 sqlalchemy>=2.0.38
 psycopg2-binary>=2.9.9
+
+# ── Payments ──
+stripe==11.0.0

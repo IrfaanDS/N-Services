@@ -1,5 +1,5 @@
 """
-Startup script for the LeadFlow SEO backend.
+Startup script for the N-Services backend.
 Sets PYTHONPATH so the correct app module is loaded even when
 uvicorn spawns child processes for auto-reload.
 """

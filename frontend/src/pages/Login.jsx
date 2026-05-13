@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Zap, Mail, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react'
+import { ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../components/auth/AuthProvider'
+import nServicesLogo from '../assets/n-services-logo.png'
+import illustration from '../assets/landing/login-illustration.png'
 
 export default function Login() {
     const { signIn } = useAuth()
@@ -9,7 +11,6 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
-    const [rememberMe, setRememberMe] = useState(true)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
 
@@ -21,9 +22,7 @@ export default function Login() {
         try {
             const { error: loginError } = await signIn({ email, password })
             if (loginError) throw loginError
-            
-            // On success, redirect to service selector (home)
-            navigate('/')
+            navigate('/dashboard')
         } catch (err) {
             setError(err.message || 'Invalid email or password.')
         } finally {
@@ -32,108 +31,102 @@ export default function Login() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-            <div className="w-full max-w-md page-enter">
-                {/* ── Logo ── */}
-                <div className="flex items-center justify-center gap-3 mb-8">
-                    <div className="w-11 h-11 rounded-xl bg-black/5 border border-black/10 flex items-center justify-center">
-                        <Zap className="w-6 h-6 text-black" />
-                    </div>
-                    <span className="text-2xl font-bold text-gray-900">LeadFlow</span>
+        <div className="min-h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden"
+             style={{ fontFamily: '"Sohne", "Inter", sans-serif' }}>
+            {/* ── VISUAL SIDE (LEFT) ── */}
+            <div className="hidden md:flex flex-1 lp-mesh-bg items-center justify-center p-12 border-r lp-border-hairline">
+                <div className="max-w-md text-center flex flex-col items-center">
+                    <img
+                        src={illustration}
+                        alt="Smart client acquisition"
+                        className="w-full max-w-sm h-auto drop-shadow-sm mb-8"
+                    />
+                    <h2 className="text-[22px] lp-text-ink font-semibold tracking-tight"
+                        style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif' }}>
+                        Smart client acquisition, on autopilot.
+                    </h2>
                 </div>
+            </div>
 
-                {/* ── Login card ── */}
-                <div className="card bg-white/40 backdrop-blur-md border border-black/5 shadow-2xl shadow-black/5">
-                    <h2 className="text-xl font-bold text-gray-900 text-center mb-1">Welcome back</h2>
-                    <p className="text-sm text-gray-500 text-center mb-6">Sign in to your account</p>
+            {/* ── FORM SIDE (RIGHT) ── */}
+            <div className="flex-1 flex flex-col p-8 sm:p-12 lg:p-16">
+                <Link to="/welcome" className="flex items-center gap-2.5 mb-20">
+                    <img src={nServicesLogo} alt="N-Services" className="h-7 w-auto" />
+                    <span className="text-lg font-bold tracking-tight lp-text-ink"
+                          style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif' }}>N-Services</span>
+                </Link>
+
+                <div className="m-auto w-full max-w-sm">
+                    <h1 className="text-4xl font-bold lp-text-ink mb-2"
+                        style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif' }}>Welcome back</h1>
+                    <p className="text-[15px] lp-text-ink-mute mb-10 font-medium">
+                        Please enter your details
+                    </p>
 
                     {error && (
-                        <div className="mb-6 p-3 rounded-lg bg-red-50 border border-red-100 flex items-start gap-3 animate-fade-in">
-                            <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                            <p className="text-sm text-red-600">{error}</p>
+                        <div className="mb-6 p-4 flex items-start gap-3 rounded-lg lp-bg-ruby-95 border lp-border-ruby-90 animate-in fade-in slide-in-from-top-1">
+                            <AlertCircle className="w-5 h-5 shrink-0 lp-text-ruby-70" />
+                            <p className="text-sm lp-text-ruby-70">{error}</p>
                         </div>
                     )}
 
-                    <form onSubmit={handleLogin} className="space-y-4">
+                    <form onSubmit={handleLogin} className="space-y-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email address</label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    required
-                                    autoComplete="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="you@example.com"
-                                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg
-                             text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500/30 transition-all"
-                                />
-                            </div>
+                            <label className="block text-[13px] font-bold lp-text-ink mb-2 uppercase tracking-wider" htmlFor="email">
+                                Email address
+                            </label>
+                            <input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full h-12 px-4 text-base rounded-lg border lp-border-hairline lp-bg-canvas focus:outline-none focus:ring-1 focus:ring-primary/40 transition-all"
+                                required
+                            />
                         </div>
-
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                            <div className="flex items-center justify-between mb-2">
+                                <label className="text-[13px] font-bold lp-text-ink uppercase tracking-wider" htmlFor="password">
+                                    Password
+                                </label>
+                                <Link to="/forgot-password" size="sm" className="text-sm font-medium lp-text-ink hover:opacity-70 transition-opacity">
+                                    Forgot Password?
+                                </Link>
+                            </div>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                 <input
                                     id="password"
-                                    name="password"
                                     type={showPassword ? 'text' : 'password'}
-                                    required
-                                    autoComplete="current-password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
-                                    className="w-full pl-10 pr-10 py-2.5 bg-gray-50/50 border border-gray-200 rounded-lg
-                             text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500/30 transition-all"
+                                    className="w-full h-12 px-4 text-base rounded-lg border lp-border-hairline lp-bg-canvas focus:outline-none focus:ring-1 focus:ring-primary/40 transition-all"
+                                    required
+                                    minLength={6}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 lp-text-ink-mute hover:lp-text-ink transition-colors"
                                 >
                                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between text-sm">
-                            <label className="flex items-center gap-2 text-gray-600 cursor-pointer">
-                                <input 
-                                    type="checkbox" 
-                                    className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" 
-                                    checked={rememberMe}
-                                    onChange={(e) => setRememberMe(e.target.checked)}
-                                />
-                                Remember me
-                            </label>
-                            <Link to="/forgot-password" size="sm" className="text-primary-600 hover:text-primary-700 font-semibold transition-colors">
-                                Forgot password?
-                            </Link>
-                        </div>
-
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             disabled={loading}
-                            className="btn btn-primary w-full justify-center py-3 mt-2"
+                            className="lp-btn-pill lp-btn-primary w-full h-12 justify-center text-[15px] font-semibold mt-4"
                         >
                             {loading ? (
                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            ) : (
-                                <>
-                                    Sign In
-                                    <ArrowRight className="w-4 h-4" />
-                                </>
-                            )}
+                            ) : "Sign in"}
                         </button>
                     </form>
 
-                    <p className="text-sm text-gray-500 text-center mt-6">
+                    <p className="mt-8 text-[14px] lp-text-ink-mute text-center font-medium">
                         Don't have an account?{' '}
-                        <Link to="/signup" className="text-primary-600 hover:text-primary-700 font-semibold transition-colors">
+                        <Link to="/pricing" className="lp-text-primary hover:underline font-bold">
                             Sign up
                         </Link>
                     </p>

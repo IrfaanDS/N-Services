@@ -14,7 +14,7 @@ const api = axios.create({
 
 // ── Request interceptor: attach JWT token ──
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('leadflow_token')
+    const token = localStorage.getItem('nservices_token')
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
@@ -26,7 +26,7 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            localStorage.removeItem('leadflow_token')
+            localStorage.removeItem('nservices_token')
             window.location.href = '/login'
         }
         return Promise.reject(error)
@@ -130,6 +130,22 @@ export const b2bLeadsAPI = {
 export const b2bEmailsAPI = {
     generate: (data) => api.post('/b2b/emails/generate', data),
     buildPersonas: (leads) => api.post('/b2b/emails/build-personas', leads),
+}
+
+// ─── B2B Agent Mode ───
+export const b2bAgentAPI = {
+    run: (data) => {
+        const token = localStorage.getItem('nservices_token')
+        return fetch('/api/b2b/agent/run', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify(data),
+        })
+    },
+    interrupt: () => api.post('/b2b/agent/interrupt'),
 }
 
 export default api

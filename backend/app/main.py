@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import leads, evaluation, emails, sending, dashboard, auth, onebox, seo_assistant
-from app.api.routes import b2b_leads, b2b_emails
+from app.api.routes import b2b_leads, b2b_emails, b2b_agent
 from app.api.routes import shopify, shopify_leads
+from app.api.routes import stripe_routes
 
 from contextlib import asynccontextmanager
 
@@ -17,7 +18,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(
-    title="LeadFlow Platform API",
+    title="N-Services Platform API",
     description="Lead acquisition, evaluation, email generation & sending platform for SEO and B2B services",
     version="2.0.0",
     lifespan=lifespan,
@@ -34,6 +35,7 @@ app.add_middleware(
 
 # ── Register SEO route modules ──
 app.include_router(auth.router,       prefix="/api/auth",       tags=["Auth"])
+app.include_router(stripe_routes.router, prefix="/api",         tags=["Stripe"])
 app.include_router(leads.router,      prefix="/api/leads",      tags=["Lead Acquisition"])
 app.include_router(evaluation.router, prefix="/api/evaluate",   tags=["Lead Evaluation"])
 app.include_router(emails.router,     prefix="/api/emails",     tags=["Email Generation"])
@@ -45,6 +47,7 @@ app.include_router(seo_assistant.router,   prefix="/api/assistant",    tags=["SE
 # ── Register B2B route modules ──
 app.include_router(b2b_leads.router,  prefix="/api/b2b/leads",  tags=["B2B Lead Acquisition"])
 app.include_router(b2b_emails.router, prefix="/api/b2b/emails", tags=["B2B Email Generation"])
+app.include_router(b2b_agent.router, prefix="/api/b2b/agent", tags=["B2B Agent"])
 
 # ── Register Shopify RAG modules ──
 app.include_router(shopify.router, prefix="/api/shopify", tags=["Shopify AI"])
@@ -52,4 +55,4 @@ app.include_router(shopify.router, prefix="/api/shopify", tags=["Shopify AI"])
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "ok", "service": "leadflow-platform", "version": "2.0.0"}
+    return {"status": "ok", "service": "n-services-platform", "version": "2.0.0"}

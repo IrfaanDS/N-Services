@@ -10,6 +10,7 @@ import EmailSending from './pages/EmailSending'
 import Onebox from './pages/Onebox'
 import SEODashboard from './pages/SEODashboard'
 import Login from './pages/Login'
+import Pricing from './pages/Pricing'
 import SignUp from './pages/SignUp'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
@@ -20,6 +21,9 @@ import B2BLeadEvaluation from './pages/b2b/B2BLeadEvaluation'
 import B2BEmailGeneration from './pages/b2b/B2BEmailGeneration'
 import B2BOutreach from './pages/b2b/B2BOutreach'
 import B2BDashboard from './pages/b2b/B2BDashboard'
+import B2BAgentMode from './pages/b2b/B2BAgentMode'
+import LandingPage from './pages/LandingPage'
+import ContactPage from './pages/ContactPage'
 
 import ShopifyHomeSelection from './pages/shopify/HomeSelection'
 import ShopifyStoreLanding from './pages/shopify/StoreLanding'
@@ -77,6 +81,7 @@ function AppLayout({ mode }) {
                         </Routes>
                     ) : (
                         <Routes>
+                            <Route path="agent" element={<B2BAgentMode />} />
                             <Route path="dashboard" element={<B2BDashboard />} />
                             <Route path="leads" element={<B2BLeadAcquisition />} />
                             <Route path="evaluation" element={<B2BLeadEvaluation />} />
@@ -97,8 +102,12 @@ export default function App() {
     return (
         <AuthProvider>
             <Routes>
-                <Route path="/" element={<ProtectedRoute><ServiceSelector /></ProtectedRoute>} />
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/dashboard" element={<ProtectedRoute><ServiceSelector /></ProtectedRoute>} />
+                <Route path="/welcome" element={<LandingPage />} />
+                <Route path="/contact" element={<ContactPage />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/pricing" element={<Pricing />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
@@ -107,7 +116,6 @@ export default function App() {
                 <Route path="/b2b/*" element={<ProtectedRoute><AppLayout mode="b2b" /></ProtectedRoute>} />
                 
                 {/* Legacy: redirect old paths to /seo/ */}
-                <Route path="/dashboard" element={<Navigate to="/seo/dashboard" replace />} />
                 <Route path="/leads" element={<Navigate to="/seo/leads" replace />} />
                 <Route path="/evaluation" element={<Navigate to="/seo/evaluation" replace />} />
                 <Route path="/email-generation" element={<Navigate to="/seo/email-generation" replace />} />

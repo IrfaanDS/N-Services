@@ -1,0 +1,263 @@
+/* ═══════════════════════════════════════════════════════════
+   LANDING PAGE — SELF-CONTAINED STYLES
+   Scoped under .landing-page to avoid conflicts with
+   the main platform design system.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Custom Properties (scoped) ─── */
+.landing-page {
+  /* Brand palette */
+  --lp-primary: oklch(0.52 0.27 295);
+  --lp-primary-foreground: oklch(1 0 0);
+  --lp-primary-deep: oklch(0.42 0.24 295);
+  --lp-primary-soft: oklch(0.62 0.22 295);
+  --lp-primary-subdued: oklch(0.88 0.08 295);
+
+  /* Text */
+  --lp-ink: oklch(0.24 0.05 260);
+  --lp-ink-secondary: oklch(0.32 0.04 260);
+  --lp-ink-mute: oklch(0.55 0.03 260);
+
+  /* Surfaces */
+  --lp-canvas: oklch(1 0 0);
+  --lp-canvas-soft: oklch(0.98 0.005 250);
+  --lp-canvas-cream: oklch(0.94 0.04 80);
+  --lp-brand-dark: oklch(0.22 0.06 285);
+  --lp-ruby: oklch(0.6 0.24 10);
+  --lp-magenta: oklch(0.74 0.27 330);
+  --lp-hairline: oklch(0.92 0.01 250);
+
+  /* Shadows */
+  --lp-shadow-card: 0 1px 3px oklch(0.4 0.05 260 / 0.08);
+  --lp-shadow-float: 0 8px 24px oklch(0.4 0.05 260 / 0.1), 0 2px 6px oklch(0.4 0.05 260 / 0.05);
+
+  /* Gradient mesh */
+  --lp-gradient-mesh:
+    radial-gradient(ellipse 60% 80% at 10% 20%, oklch(0.94 0.04 80 / 0.9), transparent 60%),
+    radial-gradient(ellipse 50% 70% at 35% 30%, oklch(0.85 0.12 50 / 0.7), transparent 60%),
+    radial-gradient(ellipse 60% 80% at 60% 25%, oklch(0.78 0.18 320 / 0.6), transparent 60%),
+    radial-gradient(ellipse 55% 70% at 85% 30%, oklch(0.62 0.27 295 / 0.55), transparent 60%),
+    radial-gradient(ellipse 50% 60% at 100% 10%, oklch(0.7 0.24 10 / 0.5), transparent 60%),
+    linear-gradient(180deg, oklch(0.97 0.02 80) 0%, oklch(1 0 0) 100%);
+
+  /* Fonts */
+  --lp-font-sans: "Söhne", "Sohne", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --lp-font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", system-ui, sans-serif;
+
+  /* Root styling */
+  font-family: var(--lp-font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
+  color: var(--lp-ink);
+  background-color: var(--lp-canvas);
+}
+
+/* Reset h/p inside landing page */
+.landing-page h1,
+.landing-page h2,
+.landing-page h3,
+.landing-page h4,
+.landing-page h5,
+.landing-page h6 {
+  font-family: var(--lp-font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--lp-ink);
+}
+
+.landing-page h1 { font-size: 48px; line-height: 1.05; }
+.landing-page h2 { font-size: 32px; line-height: 1.15; }
+.landing-page h3 { font-size: 24px; line-height: 1.2; }
+
+.landing-page p {
+  color: var(--lp-ink-mute);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.landing-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY CLASSES
+   ═══════════════════════════════════════════════════════════ */
+
+.landing-page .lp-display-xxl {
+  font-family: var(--lp-font-display);
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.landing-page .lp-display-xl {
+  font-family: var(--lp-font-display);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.landing-page .lp-display-lg {
+  font-family: var(--lp-font-display);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.landing-page .lp-heading-lg {
+  font-family: var(--lp-font-display);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.landing-page .lp-tnum {
+  font-feature-settings: "tnum", "ss01";
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COLOR UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Text colors */
+.landing-page .lp-text-ink { color: var(--lp-ink); }
+.landing-page .lp-text-ink-secondary { color: var(--lp-ink-secondary); }
+.landing-page .lp-text-ink-mute { color: var(--lp-ink-mute); }
+.landing-page .lp-text-primary { color: var(--lp-primary); }
+.landing-page .lp-text-primary-deep { color: var(--lp-primary-deep); }
+.landing-page .lp-text-primary-soft { color: var(--lp-primary-soft); }
+.landing-page .lp-text-primary-foreground { color: var(--lp-primary-foreground); }
+.landing-page .lp-text-gradient {
+  background: linear-gradient(135deg, var(--lp-primary), var(--lp-magenta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+/* Background colors */
+.landing-page .lp-bg-canvas { background-color: var(--lp-canvas); }
+.landing-page .lp-bg-canvas-soft { background-color: var(--lp-canvas-soft); }
+.landing-page .lp-bg-canvas-cream { background-color: var(--lp-canvas-cream); }
+.landing-page .lp-bg-canvas-70 { background-color: oklch(1 0 0 / 0.7); }
+.landing-page .lp-bg-primary { background-color: var(--lp-primary); }
+.landing-page .lp-bg-primary-subdued { background-color: var(--lp-primary-subdued); }
+.landing-page .lp-bg-primary-soft { background-color: var(--lp-primary-soft); }
+.landing-page .lp-bg-primary-80 { background-color: oklch(0.52 0.27 295 / 0.8); }
+.landing-page .lp-bg-brand-dark { background-color: var(--lp-brand-dark); }
+.landing-page .lp-bg-ruby-70 { background-color: oklch(0.6 0.24 10 / 0.7); }
+.landing-page .lp-bg-white { background-color: white; }
+
+/* Border colors */
+.landing-page .lp-border-hairline { border-color: var(--lp-hairline); }
+.landing-page .lp-border-transparent { border-color: transparent; }
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENT CLASSES
+   ═══════════════════════════════════════════════════════════ */
+
+.landing-page .lp-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: var(--lp-primary-subdued);
+  color: var(--lp-primary-deep);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+}
+
+.landing-page .lp-btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.landing-page .lp-btn-primary {
+  background: var(--lp-primary);
+  color: var(--lp-primary-foreground);
+}
+
+.landing-page .lp-btn-primary:hover {
+  background: var(--lp-primary-deep);
+}
+
+.landing-page .lp-btn-secondary {
+  background: var(--lp-canvas);
+  color: var(--lp-primary);
+  border: 1px solid var(--lp-primary);
+}
+
+.landing-page .lp-btn-secondary:hover {
+  background: var(--lp-primary-subdued);
+}
+
+.landing-page .lp-mesh-bg {
+  background: var(--lp-gradient-mesh);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════ */
+
+.landing-page {
+  scroll-behavior: smooth;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .landing-page .lp-display-xxl {
+    font-size: 32px;
+  }
+  .landing-page .lp-display-xl {
+    font-size: 24px;
+  }
+  .landing-page .lp-display-lg {
+    font-size: 24px;
+  }
+  .landing-page .lp-heading-lg {
+    font-size: 20px;
+  }
+  .landing-page h1 { font-size: 32px; }
+  .landing-page h2 { font-size: 24px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MARQUEE
+   ═══════════════════════════════════════════════════════════ */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee-scroll 30s linear infinite;
+  width: max-content;
+}
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}

@@ -141,8 +141,8 @@ async def test_account(account_id: str, payload: TestEmailPayload = TestEmailPay
 
     recipient = payload.recipient or account["smtp_user"]
     msg = EmailMessage()
-    msg.set_content("This is a test email from LeadFlow SEO to verify your sending domain is working correctly.\n\nIf you see this, your SMTP credentials are set up properly!")
-    msg["Subject"] = "✅ LeadFlow SEO - Test Email"
+    msg.set_content("This is a test email from N-Services to verify your sending domain is working correctly.\n\nIf you see this, your SMTP credentials are set up properly!")
+    msg["Subject"] = "✅ N-Services - Test Email"
     msg["From"] = f"{account['name']} <{account['smtp_user']}>"
     msg["To"] = recipient
 

@@ -1,22 +1,21 @@
 /* ══════════════════════════════════════════════════════════════
-   Chart Components — Shared Styles
-   Monochrome minimalist aesthetic with bouncy animations
+   Chart Components — Stripe-Inspired Styles
+   Deep navy text, blue-tinted shadows, weight-300 typography
    ══════════════════════════════════════════════════════════════ */
 
 /* ── KPI Card ── */
 .kpi-card {
-    background: rgba(0, 0, 0, 0.02);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e5edf5;
+    border-radius: 6px;
     padding: 1.5rem;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s ease;
     cursor: default;
 }
 
 .kpi-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
-    border-color: rgba(0, 0, 0, 0.12);
+    box-shadow: rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px;
+    border-color: rgba(83, 58, 253, 0.15);
 }
 
 .kpi-card-header {
@@ -29,44 +28,45 @@
 .kpi-card-icon {
     width: 40px;
     height: 40px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.04);
+    border-radius: 6px;
+    background: rgba(83, 58, 253, 0.06);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #111111;
+    color: #533afd;
 }
 
 .kpi-trend {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.2rem 0.5rem;
-    border-radius: 20px;
+    font-size: 0.625rem;
+    font-weight: 300;
+    padding: 1px 6px;
+    border-radius: 4px;
 }
 
 .kpi-trend.up {
-    color: #166534;
-    background: rgba(22, 101, 52, 0.08);
+    color: #108c3d;
+    background: rgba(21, 190, 83, 0.2);
+    border: 1px solid rgba(21, 190, 83, 0.4);
 }
 
 .kpi-trend.down {
     color: #991b1b;
-    background: rgba(153, 27, 27, 0.08);
+    background: rgba(153, 27, 27, 0.1);
 }
 
 .kpi-card-value {
     font-size: 2rem;
-    font-weight: 800;
-    color: #111111;
+    font-weight: 300;
+    color: #061b31;
     line-height: 1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.64px;
 }
 
 .kpi-card-label {
-    font-size: 0.8rem;
-    color: rgba(0, 0, 0, 0.45);
+    font-size: 0.8125rem;
+    color: #64748d;
     margin-top: 0.4rem;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 
@@ -86,8 +86,8 @@
 .bar-label {
     width: 70px;
     font-size: 0.75rem;
-    font-weight: 600;
-    color: #111111;
+    font-weight: 400;
+    color: #061b31;
     text-align: right;
     flex-shrink: 0;
     text-transform: capitalize;
@@ -96,23 +96,23 @@
 .bar-track {
     flex: 1;
     height: 28px;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 8px;
+    background: #f6f9fc;
+    border-radius: 4px;
     overflow: hidden;
 }
 
 .bar-fill {
     height: 100%;
-    border-radius: 8px;
-    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 4px;
+    transition: width 1s ease-out;
     min-width: 2px;
 }
 
 .bar-value {
     width: 40px;
     font-size: 0.75rem;
-    font-weight: 700;
-    color: #111111;
+    font-weight: 400;
+    color: #061b31;
     flex-shrink: 0;
 }
 
@@ -134,7 +134,7 @@
 }
 
 .bar-grid-line {
-    border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
+    border-bottom: 1px dashed #e5edf5;
     position: relative;
 }
 
@@ -142,9 +142,9 @@
     position: absolute;
     left: -4px;
     bottom: 2px;
-    font-size: 0.6rem;
-    color: rgba(0, 0, 0, 0.3);
-    font-weight: 500;
+    font-size: 0.625rem;
+    color: #64748d;
+    font-weight: 300;
 }
 
 .bar-chart-bars {
@@ -174,15 +174,15 @@
 
 .bar-col-fill {
     width: 100%;
-    border-radius: 6px 6px 2px 2px;
-    transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 4px 4px 2px 2px;
+    transition: height 1s ease-out;
     min-height: 2px;
 }
 
 .bar-col-label {
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.625rem;
+    font-weight: 400;
+    color: #64748d;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -210,7 +210,7 @@
 
 .donut-hole {
     border-radius: 50%;
-    background: #F4F4F5;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -219,16 +219,17 @@
 
 .donut-center-label {
     font-size: 1.5rem;
-    font-weight: 800;
-    color: #111111;
+    font-weight: 300;
+    color: #061b31;
     line-height: 1;
+    letter-spacing: -0.26px;
 }
 
 .donut-center-sub {
-    font-size: 0.7rem;
-    color: rgba(0, 0, 0, 0.4);
+    font-size: 0.6875rem;
+    color: #64748d;
     margin-top: 2px;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .donut-legend {
@@ -251,16 +252,17 @@
 }
 
 .donut-legend-label {
-    font-size: 0.8rem;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: 0.8125rem;
+    color: #64748d;
     flex: 1;
     text-transform: capitalize;
+    font-weight: 300;
 }
 
 .donut-legend-value {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #111111;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #061b31;
 }
 
 
@@ -278,7 +280,7 @@
 }
 
 .progress-ring-circle {
-    transition: stroke-dashoffset 1.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: stroke-dashoffset 1.4s ease-out;
 }
 
 .progress-ring-label {
@@ -295,20 +297,21 @@
 
 .progress-ring-value {
     font-size: 1.25rem;
-    font-weight: 800;
-    color: #111111;
+    font-weight: 300;
+    color: #061b31;
+    letter-spacing: -0.22px;
 }
 
 .progress-ring-sub {
-    font-size: 0.65rem;
-    color: rgba(0, 0, 0, 0.4);
-    font-weight: 500;
+    font-size: 0.625rem;
+    color: #64748d;
+    font-weight: 400;
 }
 
 .progress-ring-title {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #64748d;
     text-align: center;
 }
 
@@ -329,16 +332,17 @@
 }
 
 .dashboard-header h1 {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #111111;
-    letter-spacing: -0.02em;
+    font-size: 2rem;
+    font-weight: 300;
+    color: #061b31;
+    letter-spacing: -0.64px;
 }
 
 .dashboard-header p {
     font-size: 0.875rem;
-    color: rgba(0, 0, 0, 0.45);
+    color: #64748d;
     margin-top: 0.25rem;
+    font-weight: 300;
 }
 
 .dashboard-kpis {
@@ -362,23 +366,22 @@
 }
 
 .chart-card {
-    background: rgba(0, 0, 0, 0.015);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e5edf5;
+    border-radius: 6px;
     padding: 1.5rem;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s ease;
 }
 
 .chart-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(23,23,23,0.08) 0px 15px 35px;
+    border-color: rgba(83, 58, 253, 0.15);
 }
 
 .chart-card-title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #111111;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #061b31;
     margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
@@ -386,21 +389,22 @@
 }
 
 .chart-card-title svg {
-    opacity: 0.4;
+    opacity: 0.5;
+    color: #533afd;
 }
 
 /* Activity Feed */
 .activity-feed {
-    background: rgba(0, 0, 0, 0.015);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e5edf5;
+    border-radius: 6px;
     padding: 1.5rem;
 }
 
 .activity-feed-title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #111111;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #061b31;
     margin-bottom: 1rem;
 }
 
@@ -409,7 +413,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.6rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid #e5edf5;
 }
 
 .activity-item:last-child {
@@ -425,14 +429,15 @@
 
 .activity-text {
     flex: 1;
-    font-size: 0.8rem;
-    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.8125rem;
+    color: #273951;
+    font-weight: 300;
 }
 
 .activity-time {
-    font-size: 0.7rem;
-    color: rgba(0, 0, 0, 0.3);
-    font-weight: 500;
+    font-size: 0.6875rem;
+    color: #64748d;
+    font-weight: 400;
     white-space: nowrap;
 }
 
@@ -448,15 +453,15 @@
 
 .dashboard-loading p {
     font-size: 0.875rem;
-    color: rgba(0, 0, 0, 0.4);
-    font-weight: 500;
+    color: #64748d;
+    font-weight: 300;
 }
 
 .dashboard-spinner {
     width: 36px;
     height: 36px;
-    border: 3px solid rgba(0, 0, 0, 0.08);
-    border-top-color: #111111;
+    border: 3px solid #e5edf5;
+    border-top-color: #533afd;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
@@ -485,16 +490,16 @@
 
 .funnel-bar {
     height: 32px;
-    border-radius: 8px;
-    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 4px;
+    transition: width 1s ease-out;
     display: flex;
     align-items: center;
     padding-left: 12px;
 }
 
 .funnel-bar-label {
-    font-size: 0.7rem;
-    font-weight: 700;
+    font-size: 0.6875rem;
+    font-weight: 400;
     color: white;
     white-space: nowrap;
 }
@@ -502,16 +507,16 @@
 .funnel-step-label {
     width: 70px;
     font-size: 0.75rem;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+    color: #64748d;
     text-align: right;
     flex-shrink: 0;
 }
 
 .funnel-step-value {
     width: 36px;
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: #111111;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #061b31;
     flex-shrink: 0;
 }

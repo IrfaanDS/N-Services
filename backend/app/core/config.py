@@ -34,6 +34,18 @@ class Settings(BaseSettings):
 
     # ── App ──
     DEBUG: bool = True
+    FRONTEND_URL: str = "http://localhost:5173"
+
+    # ── Stripe ──
+    STRIPE_SECRET_KEY: str = ""
+    STRIPE_PUBLISHABLE_KEY: str = ""
+    STRIPE_WEBHOOK_SECRET: str = ""
+
+    # ── Tier Prices (Sandbox IDs) ──
+    # These should be set in .env after creating them in Stripe dashboard
+    STRIPE_PRICE_BASIC: str = ""
+    STRIPE_PRICE_PRO: str = ""
+    STRIPE_PRICE_PREMIUM: str = ""
 
     model_config = {
         "env_file": ("../.env", ".env"),

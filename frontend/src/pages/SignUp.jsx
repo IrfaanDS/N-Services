@@ -1,11 +1,16 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Zap, Mail, Lock, User, ArrowRight, CheckCircle2, AlertCircle, Eye, EyeOff } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
+import { Mail, Lock, ArrowRight, CheckCircle2, AlertCircle, Eye, EyeOff, ArrowLeft } from 'lucide-react'
 import { useAuth } from '../components/auth/AuthProvider'
 import { supabase } from '../services/supabaseClient'
+import nServicesLogo from '../assets/n-services-logo.png'
 
 export default function SignUp() {
     const { signUp } = useAuth()
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+    const selectedTier = searchParams.get('plan') || 'basic'
+    
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -55,7 +60,6 @@ export default function SignUp() {
 
             if (checkError) {
                 console.error('Email check failed:', checkError)
-                // If the function doesn't exist, we should probably warn the user or log it clearly
             }
 
             if (exists === true) {
@@ -64,10 +68,43 @@ export default function SignUp() {
                 return
             }
 
-            // 2. Proceed with sign up if email is unique
-            const { error: signUpError } = await signUp({ email, password })
+            // 2. Proceed with sign up
+            const { data: authData, error: signUpError } = await signUp({ email, password })
             if (signUpError) throw signUpError
-            setSubmitted(true)
+
+            // 3. Create Stripe checkout session
+            const user_id = authData?.user?.id
+            
+            if (user_id) {
+                try {
+                    const response = await fetch('http://localhost:8000/api/stripe/create-checkout-session', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_id: user_id,
+                            email: email,
+                            tier: selectedTier
+                        })
+                    })
+                    const sessionData = await response.json()
+                    
+                    if (sessionData.url) {
+                        window.location.href = sessionData.url
+                        return
+                    } else {
+                        console.error('No checkout URL returned', sessionData)
+                        setSubmitted(true) // Fallback
+                    }
+                } catch (checkoutErr) {
+                    console.error('Checkout session error:', checkoutErr)
+                    setSubmitted(true) // Fallback to normal flow if stripe fails
+                }
+            } else {
+                setSubmitted(true)
+            }
+            
         } catch (err) {
             setError(err.message || 'An error occurred during sign up.')
         } finally {
@@ -98,20 +135,38 @@ export default function SignUp() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-            <div className="w-full max-w-md page-enter">
+        <div className="min-h-screen flex items-center justify-center p-4 py-12">
+            <div className="w-full max-w-md page-enter transition-all duration-500">
+                
                 {/* ── Logo ── */}
-                <div className="flex items-center justify-center gap-3 mb-8">
-                    <div className="w-11 h-11 rounded-xl bg-black/5 border border-black/10 flex items-center justify-center">
-                        <Zap className="w-6 h-6 text-black" />
-                    </div>
-                    <span className="text-2xl font-bold text-gray-900">LeadFlow</span>
-                </div>
+                <Link to="/welcome" className="flex items-center justify-center gap-3 mb-8">
+                    <img src={nServicesLogo} alt="N-Services" className="h-10 w-auto" />
+                    <span className="text-2xl font-bold text-gray-900">N-Services</span>
+                </Link>
 
-                {/* ── Sign Up card ── */}
                 <div className="card bg-white/40 backdrop-blur-md border border-black/5 shadow-2xl shadow-black/5">
-                    <h2 className="text-xl font-bold text-gray-900 text-center mb-1">Create an account</h2>
-                    <p className="text-sm text-gray-500 text-center mb-6">Join LeadFlow and boost your outreach</p>
+                    <div className="flex items-center mb-6">
+                        <Link 
+                            to="/pricing"
+                            className="p-2 -ml-2 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft className="w-5 h-5" />
+                        </Link>
+                        <h2 className="text-xl font-bold text-gray-900 ml-2">Create your account</h2>
+                    </div>
+                    
+                    <div className="mb-6 px-4 py-3 bg-primary-50 rounded-xl border border-primary-100 flex items-center justify-between">
+                        <div>
+                            <p className="text-xs text-primary-600 font-semibold uppercase tracking-wider mb-0.5">Selected Plan</p>
+                            <p className="text-sm font-medium text-gray-900 capitalize">{selectedTier} Tier</p>
+                        </div>
+                        <Link 
+                            to="/pricing"
+                            className="text-xs font-semibold text-primary-600 hover:text-primary-700"
+                        >
+                            Change
+                        </Link>
+                    </div>
 
                     {error && (
                         <div className="mb-6 p-3 rounded-lg bg-red-50 border border-red-100 flex items-start gap-3 animate-fade-in">
@@ -161,7 +216,6 @@ export default function SignUp() {
                                 </button>
                             </div>
                             
-                            {/* Password Requirements Checklist */}
                             <div className="mt-3 grid grid-cols-2 gap-2">
                                 <Requirement met={passwordRequirements.length} text="8+ characters" />
                                 <Requirement met={passwordRequirements.uppercase} text="Uppercase" />
@@ -203,7 +257,7 @@ export default function SignUp() {
                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             ) : (
                                 <>
-                                    Create Account
+                                    Continue to Payment
                                     <ArrowRight className="w-4 h-4" />
                                 </>
                             )}

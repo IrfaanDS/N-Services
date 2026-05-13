@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Zap, Mail, ArrowRight, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react'
 import { useAuth } from '../components/auth/AuthProvider'
+import nServicesLogo from '../assets/n-services-logo.png'
 
 export default function ForgotPassword() {
     const { resetPassword } = useAuth()
@@ -52,10 +53,8 @@ export default function ForgotPassword() {
             <div className="w-full max-w-md page-enter">
                 {/* ── Logo ── */}
                 <div className="flex items-center justify-center gap-3 mb-8">
-                    <div className="w-11 h-11 rounded-xl bg-black/5 border border-black/10 flex items-center justify-center">
-                        <Zap className="w-6 h-6 text-black" />
-                    </div>
-                    <span className="text-2xl font-bold text-gray-900">LeadFlow</span>
+                    <img src={nServicesLogo} alt="N-Services" className="h-10 w-auto" />
+                    <span className="text-2xl font-bold text-gray-900">N-Services</span>
                 </div>
 
                 {/* ── Card ── */}
