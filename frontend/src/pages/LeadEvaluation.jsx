@@ -2,15 +2,9 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
     Upload, Download, FileSpreadsheet, Loader2, AlertCircle,
-    TrendingUp, TrendingDown, BarChart3, ArrowRight, CheckCircle2, XCircle
+    TrendingUp, TrendingDown, BarChart3, ArrowRight, CheckCircle2, XCircle, Filter, ChevronDown, X
 } from 'lucide-react'
 import { evaluationAPI } from '../services/api'
-
-function getScoreColor(score) {
-    if (score >= 70) return 'text-red-600 bg-red-50'
-    if (score >= 40) return 'text-amber-600 bg-amber-50'
-    return 'text-emerald-600 bg-emerald-50'
-}
 
 function getPriorityBadge(priority) {
     const map = {
@@ -32,7 +26,8 @@ export default function LeadEvaluation() {
     const [error, setError] = useState(null)
     const [source, setSource] = useState(null) // 'acquisition' | 'upload' | null
     const [uploadedFileName, setUploadedFileName] = useState(null)
-    const [incomingLeads, setIncomingLeads] = useState(null) // leads from acquisition
+    const [priorityFilters, setPriorityFilters] = useState([])
+    const [isFilterOpen, setIsFilterOpen] = useState(false)
     const [selectedIds, setSelectedIds] = useState(new Set())
 
     // ── On mount: check if leads came from Lead Acquisition ──
@@ -42,7 +37,6 @@ export default function LeadEvaluation() {
             try {
                 const leads = JSON.parse(stored)
                 if (leads.length > 0) {
-                    setIncomingLeads(leads)
                     setSource('acquisition')
                     runEvaluation(leads)
                 }
@@ -107,6 +101,12 @@ export default function LeadEvaluation() {
         }
     }
 
+    // ── Filtering Logic ──
+    const filteredLeads = useMemo(() => {
+        if (priorityFilters.length === 0) return scoredLeads
+        return scoredLeads.filter(lead => priorityFilters.includes(lead.priority))
+    }, [scoredLeads, priorityFilters])
+
     // ── Selection Handlers ──
     function toggleSelect(id) {
         setSelectedIds(prev => {
@@ -118,21 +118,21 @@ export default function LeadEvaluation() {
     }
 
     function toggleSelectAll() {
-        if (selectedIds.size === scoredLeads.length && scoredLeads.length > 0) {
+        if (selectedIds.size === filteredLeads.length && filteredLeads.length > 0) {
             setSelectedIds(new Set())
         } else {
-            setSelectedIds(new Set(scoredLeads.map((lead, idx) => lead.business_id || idx)))
+            setSelectedIds(new Set(filteredLeads.map((lead, idx) => lead.business_id || idx)))
         }
     }
 
     const selectedLeads = useMemo(() => {
         if (selectedIds.size === 0) return []
-        return scoredLeads.filter((lead, idx) => selectedIds.has(lead.business_id || idx))
-    }, [scoredLeads, selectedIds])
+        return filteredLeads.filter((lead, idx) => selectedIds.has(lead.business_id || idx))
+    }, [filteredLeads, selectedIds])
 
     // ── Download scored CSV ──
     function handleDownload() {
-        const leadsToDownload = selectedLeads.length > 0 ? selectedLeads : scoredLeads
+        const leadsToDownload = selectedLeads.length > 0 ? selectedLeads : filteredLeads
         if (leadsToDownload.length === 0) return
         
         const headers = ['business_name', 'website_url', 'niche', 'city', 'country', 'email', 'phone', 'facebook', 'instagram', 'linkedin', 'lead_score', 'priority', 'reasoning']
@@ -144,23 +144,20 @@ export default function LeadEvaluation() {
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = selectedLeads.length > 0 ? 'selected_scored_leads.csv' : 'scored_leads.csv'
+        a.download = selectedLeads.length > 0 ? `selected_scored_leads.csv` : `scored_leads.csv`
         a.click()
         window.URL.revokeObjectURL(url)
     }
 
     // ── Proceed to Email Generation ──
     function handleProceedToEmail() {
-        const leadsToProceed = selectedLeads.length > 0 ? selectedLeads : scoredLeads
+        const leadsToProceed = selectedLeads.length > 0 ? selectedLeads : filteredLeads
         sessionStorage.setItem('scored_leads', JSON.stringify(leadsToProceed))
         navigate('/email-generation')
     }
 
     const hasResults = scoredLeads.length > 0
 
-    // ─────────────────────────────────────────
-    // RENDER
-    // ─────────────────────────────────────────
     return (
         <div className="page-enter">
             {/* ── Page header ── */}
@@ -178,15 +175,21 @@ export default function LeadEvaluation() {
                 {hasResults && (
                     <div className="flex items-center gap-3">
                         <span className="text-xs text-gray-500 mr-2">
-                            {selectedIds.size > 0 ? `${selectedIds.size} leads selected` : 'All leads will be used'}
+                            {selectedIds.size > 0 ? `${selectedIds.size} leads selected` : 'All filtered leads will be used'}
                         </span>
-                        <button className="btn btn-outline text-sm" onClick={handleDownload}>
-                            <Download className="w-4 h-4" />
-                            {selectedIds.size > 0 ? 'Download Selected' : 'Download Results'}
+                        <button 
+                            className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95 shadow-sm bg-white" 
+                            onClick={handleDownload}
+                        >
+                            <Download className="w-4 h-4 text-[#a004ec]" />
+                            <span>{selectedIds.size > 0 ? 'Download Selected' : 'Download Results'}</span>
                         </button>
-                        <button className="btn btn-accent text-sm" onClick={handleProceedToEmail}>
+                        <button 
+                            className="inline-flex items-center gap-2 px-4 py-2 border border-[#a004ec]/20 bg-[#a004ec]/5 rounded-lg text-sm font-bold text-[#a004ec] hover:bg-[#a004ec]/10 transition-all active:scale-95 shadow-sm" 
+                            onClick={handleProceedToEmail}
+                        >
                             <ArrowRight className="w-4 h-4" />
-                            {selectedIds.size > 0 ? 'Proceed with Selected' : 'Proceed to Email Generation'}
+                            <span>{selectedIds.size > 0 ? 'Proceed with Selected' : 'Proceed to Email Generation'}</span>
                         </button>
                     </div>
                 )}
@@ -194,15 +197,14 @@ export default function LeadEvaluation() {
 
             {/* ── Upload + Stats Row ── */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                {/* Upload card */}
                 <div
-                    className="card lg:col-span-2 flex flex-col items-center justify-center py-10 border-2 border-dashed border-surface-300 hover:border-primary-700/30 transition-colors cursor-pointer"
+                    className="card lg:col-span-2 flex flex-col items-center justify-center py-10 border-2 border-dashed border-surface-300 hover:border-[#a004ec]/30 transition-colors cursor-pointer"
                     onClick={() => fileInputRef.current?.click()}
                 >
                     <input ref={fileInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileUpload} />
                     {loading ? (
                         <>
-                            <Loader2 className="w-10 h-10 text-primary-700 animate-spin mb-3" />
+                            <Loader2 className="w-10 h-10 text-[#a004ec] animate-spin mb-3" />
                             <p className="text-sm font-medium text-gray-700">Evaluating leads...</p>
                         </>
                     ) : (
@@ -212,15 +214,17 @@ export default function LeadEvaluation() {
                             <p className="text-xs text-gray-400 mt-1">
                                 CSV must contain <code className="bg-gray-100 px-1 rounded">business_id</code> or <code className="bg-gray-100 px-1 rounded">website_url</code> column
                             </p>
-                            <button className="btn btn-outline mt-4 text-sm" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click() }}>
-                                <FileSpreadsheet className="w-4 h-4" />
-                                Choose File
+                            <button 
+                                className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95 shadow-sm bg-white mt-4" 
+                                onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click() }}
+                            >
+                                <FileSpreadsheet className="w-4 h-4 text-[#a004ec]" />
+                                <span>Choose File</span>
                             </button>
                         </>
                     )}
                 </div>
 
-                {/* Stats card */}
                 <div className="card">
                     <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Evaluation Summary</h3>
                     <div className="space-y-4">
@@ -244,7 +248,6 @@ export default function LeadEvaluation() {
                 </div>
             </div>
 
-            {/* ── Error message ── */}
             {error && (
                 <div className="flex items-center gap-3 p-4 mb-6 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
                     <AlertCircle className="w-5 h-5 flex-shrink-0" />
@@ -254,14 +257,46 @@ export default function LeadEvaluation() {
 
             {/* ── Results table ── */}
             <div className="card p-0 overflow-x-auto">
-                <div className="px-6 py-4 border-b border-surface-200 flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-gray-700">
-                        {hasResults ? `Scored Leads (${scoredLeads.length})` : 'Scored Leads'}
-                    </h3>
+                <div className="px-6 py-4 border-b border-surface-200 flex items-center justify-between flex-wrap gap-4">
+                    <div className="flex items-center gap-4">
+                        <h3 className="text-sm font-semibold text-gray-700 whitespace-nowrap">
+                            {hasResults ? `Scored Leads (${filteredLeads.length})` : 'Scored Leads'}
+                        </h3>
+                    </div>
+
                     {hasResults && (
-                        <div className="flex items-center gap-2 text-xs">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-200">High = Needs SEO help</span>
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Low = Already optimized</span>
+                        <div className="flex items-center gap-2 text-[10px]">
+                            <button 
+                                onClick={() => setPriorityFilters(prev => prev.includes('High') ? prev.filter(x => x !== 'High') : [...prev, 'High'])}
+                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full border font-bold uppercase tracking-wider transition-all active:scale-95 ${priorityFilters.includes('High') ? 'bg-red-600 text-white border-red-600 shadow-md' : 'bg-red-50 text-red-700 border-red-200 hover:border-red-400'}`}
+                            >
+                                {priorityFilters.includes('High') && <CheckCircle2 className="w-3 h-3" />}
+                                High Priority
+                            </button>
+                            <button 
+                                onClick={() => setPriorityFilters(prev => prev.includes('Medium') ? prev.filter(x => x !== 'Medium') : [...prev, 'Medium'])}
+                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full border font-bold uppercase tracking-wider transition-all active:scale-95 ${priorityFilters.includes('Medium') ? 'bg-amber-500 text-white border-amber-500 shadow-md' : 'bg-amber-50 text-amber-700 border-amber-200 hover:border-amber-400'}`}
+                            >
+                                {priorityFilters.includes('Medium') && <CheckCircle2 className="w-3 h-3" />}
+                                Medium Priority
+                            </button>
+                            <button 
+                                onClick={() => setPriorityFilters(prev => prev.includes('Low') ? prev.filter(x => x !== 'Low') : [...prev, 'Low'])}
+                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full border font-bold uppercase tracking-wider transition-all active:scale-95 ${priorityFilters.includes('Low') ? 'bg-emerald-600 text-white border-emerald-600 shadow-md' : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:border-emerald-400'}`}
+                            >
+                                {priorityFilters.includes('Low') && <CheckCircle2 className="w-3 h-3" />}
+                                Low Priority
+                            </button>
+                            
+                            {priorityFilters.length > 0 && (
+                                <button 
+                                    onClick={() => setPriorityFilters([])}
+                                    className="ml-2 px-2 py-1 text-gray-400 hover:text-red-500 transition-colors"
+                                    title="Clear Filters"
+                                >
+                                    <X className="w-4 h-4" />
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>
@@ -274,7 +309,7 @@ export default function LeadEvaluation() {
                     </div>
                 ) : loading ? (
                     <div className="flex items-center justify-center py-16">
-                        <Loader2 className="w-6 h-6 text-primary-700 animate-spin" />
+                        <Loader2 className="w-6 h-6 text-[#a004ec] animate-spin" />
                         <span className="ml-2 text-sm text-gray-500">Running evaluation...</span>
                     </div>
                 ) : (
@@ -284,8 +319,8 @@ export default function LeadEvaluation() {
                                 <th className="w-10">
                                     <input
                                         type="checkbox"
-                                        className="rounded border-gray-300 text-primary-700 focus:ring-primary-700"
-                                        checked={selectedIds.size === scoredLeads.length && scoredLeads.length > 0}
+                                        className="rounded border-gray-300 text-[#a004ec] focus:ring-[#a004ec]"
+                                        checked={selectedIds.size === filteredLeads.length && filteredLeads.length > 0}
                                         onChange={toggleSelectAll}
                                     />
                                 </th>
@@ -294,26 +329,25 @@ export default function LeadEvaluation() {
                                 <th>City</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Lead Score</th>
                                 <th>Priority</th>
                                 <th>Reasoning</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {scoredLeads.map((lead, idx) => {
+                            {filteredLeads.map((lead, idx) => {
                                 const leadId = lead.business_id || idx
                                 const isSelected = selectedIds.has(leadId)
                                 return (
-                                    <tr key={leadId} className={isSelected ? 'bg-primary-50/30' : ''}>
+                                    <tr key={leadId} className={isSelected ? 'bg-[#a004ec]/5' : ''}>
                                         <td>
                                             <input
                                                 type="checkbox"
-                                                className="rounded border-gray-300 text-primary-700 focus:ring-primary-700"
+                                                className="rounded border-gray-300 text-[#a004ec] focus:ring-[#a004ec]"
                                                 checked={isSelected}
                                                 onChange={() => toggleSelect(leadId)}
                                             />
                                         </td>
-                                        <td className="text-primary-700 whitespace-nowrap max-w-[180px] truncate">
+                                        <td className="text-[#a004ec] whitespace-nowrap max-w-[180px] truncate font-medium">
                                             {lead.website_url ? (
                                                 <a href={lead.website_url.startsWith('http') ? lead.website_url : `https://${lead.website_url}`}
                                                     target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -321,17 +355,12 @@ export default function LeadEvaluation() {
                                                 </a>
                                             ) : '—'}
                                         </td>
-                                        <td>{lead.niche ? <span className="tag text-xs">{lead.niche}</span> : '—'}</td>
+                                        <td>{lead.niche ? <span className="tag text-xs font-bold uppercase tracking-wider">{lead.niche}</span> : '—'}</td>
                                         <td className="whitespace-nowrap">{lead.city || '—'}</td>
                                         <td className="text-gray-500 whitespace-nowrap max-w-[150px] truncate">{lead.email || '—'}</td>
                                         <td className="text-gray-500 whitespace-nowrap">{lead.phone || '—'}</td>
                                         <td>
-                                            <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold ${getScoreColor(lead.lead_score)}`}>
-                                                {lead.lead_score}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getPriorityBadge(lead.priority)}`}>
+                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${getPriorityBadge(lead.priority)}`}>
                                                 {lead.priority}
                                             </span>
                                         </td>

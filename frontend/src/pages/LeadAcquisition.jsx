@@ -210,16 +210,27 @@ export default function LeadAcquisition() {
                             {selectedIds.size} selected
                         </span>
                     )}
-                    <button className="btn btn-outline text-xs py-1.5 px-3" onClick={() => {setNiche(''); setCity(''); setCountry(''); setSearchInput(''); setSearch('');}}>
+                    <button 
+                        className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-xs font-semibold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95 shadow-sm bg-white" 
+                        onClick={() => {setNiche(''); setCity(''); setCountry(''); setSearchInput(''); setSearch('');}}
+                    >
                         Clear All
                     </button>
-                    <button className="btn btn-outline text-xs py-1.5 px-3" onClick={handleExport} disabled={exporting || total === 0}>
-                        {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-                        {isSomeSelected ? `Export ${selectedIds.size}` : 'Export CSV'}
+                    <button 
+                        className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm bg-white" 
+                        onClick={handleExport} 
+                        disabled={exporting || total === 0}
+                    >
+                        {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5 text-[#a004ec]" />}
+                        <span>{isSomeSelected ? `Export ${selectedIds.size}` : 'Export CSV'}</span>
                     </button>
-                    <button className="btn btn-accent text-xs py-1.5 px-3" onClick={handleMoveToAudit} disabled={total === 0}>
+                    <button 
+                        className="inline-flex items-center gap-2 px-4 py-2 border border-[#a004ec]/20 bg-[#a004ec]/5 rounded-lg text-xs font-bold text-[#a004ec] hover:bg-[#a004ec]/10 transition-all active:scale-95 disabled:opacity-50 shadow-sm" 
+                        onClick={handleMoveToAudit} 
+                        disabled={total === 0}
+                    >
                         <ClipboardCheck className="w-3.5 h-3.5" />
-                        {isSomeSelected ? `Audit ${selectedIds.size}` : 'Move to Audit'}
+                        <span>{isSomeSelected ? `Audit ${selectedIds.size}` : 'Move to Audit'}</span>
                     </button>
                 </div>
             </div>
@@ -307,7 +318,6 @@ export default function LeadAcquisition() {
                                 <th className="w-8">
                                     <input type="checkbox" className="rounded" checked={isAllSelected} onChange={toggleSelectAll} />
                                 </th>
-                                <th>Business Name</th>
                                 <th>Website</th>
                                 <th>Niche</th>
                                 <th>City</th>
@@ -326,9 +336,7 @@ export default function LeadAcquisition() {
                                         <input type="checkbox" className="rounded"
                                             checked={selectedIds.has(lead.id)} onChange={() => toggleSelect(lead.id)} />
                                     </td>
-                                    <td className="font-bold text-gray-900 whitespace-nowrap max-w-[180px] truncate">
-                                        {lead.business_name || '—'}
-                                    </td>
+
                                     <td className="text-primary-700 whitespace-nowrap max-w-[180px] truncate">
                                         {lead.website_url ? (
                                             <a href={lead.website_url} target="_blank" rel="noopener noreferrer" className="hover:underline">

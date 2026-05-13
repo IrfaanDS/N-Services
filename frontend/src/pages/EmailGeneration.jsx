@@ -21,6 +21,7 @@ export default function EmailGeneration() {
     const [error, setError] = useState(null)
     const [previewEmail, setPreviewEmail] = useState(null)
     const [selectedIds, setSelectedIds] = useState([])
+    const [stopGeneration, setStopGeneration] = useState(false)
 
     useEffect(() => {
         const stored = sessionStorage.getItem('scored_leads')
@@ -48,12 +49,20 @@ export default function EmailGeneration() {
 
         setLoading(true)
         setError(null)
+        setStopGeneration(false)
+        sessionStorage.removeItem('stop_generation')
 
         let currentLeads = leads.map(l => (l.status === 'pending' ? { ...l, status: 'queued' } : l))
         setLeads(currentLeads)
 
         try {
             for (const lead of pendingLeads) {
+                // Check if user clicked stop
+                if (sessionStorage.getItem('stop_generation') === 'true') {
+                    console.log("Stopping email generation loop...")
+                    break
+                }
+
                 // Set current lead as processing
                 currentLeads = currentLeads.map(l =>
                     l.business_id === lead.business_id ? { ...l, status: 'processing' } : l
@@ -102,7 +111,14 @@ export default function EmailGeneration() {
             }
         } finally {
             setLoading(false)
+            setStopGeneration(false)
+            sessionStorage.removeItem('stop_generation')
         }
+    }
+
+    const handleStop = () => {
+        sessionStorage.setItem('stop_generation', 'true')
+        setStopGeneration(true)
     }
 
     const handleMoveToSending = async () => {
@@ -209,10 +225,25 @@ export default function EmailGeneration() {
                         <Download className="w-4 h-4" />
                         Export All
                     </button>
-                    <button className="btn btn-accent" onClick={handleGenerate} disabled={pendingCount === 0 || loading}>
-                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-                        {loading ? 'Generating...' : 'Generate Emails'}
-                    </button>
+                    {loading ? (
+                        <button 
+                            className="inline-flex items-center gap-2 px-4 py-2 border border-red-200 bg-red-50 rounded-lg text-sm font-bold text-red-600 hover:bg-red-100 transition-all active:scale-95 shadow-sm"
+                            onClick={handleStop}
+                            disabled={stopGeneration}
+                        >
+                            {stopGeneration ? <Loader2 className="w-4 h-4 animate-spin" /> : <X className="w-4 h-4" />}
+                            {stopGeneration ? 'Stopping...' : 'Stop Generation'}
+                        </button>
+                    ) : (
+                        <button 
+                            className="inline-flex items-center gap-2 px-4 py-2 border border-[#a004ec]/20 bg-[#a004ec]/5 rounded-lg text-sm font-bold text-[#a004ec] hover:bg-[#a004ec]/10 transition-all active:scale-95 shadow-sm"
+                            onClick={handleGenerate} 
+                            disabled={pendingCount === 0}
+                        >
+                            <Sparkles className="w-4 h-4" />
+                            Generate Emails
+                        </button>
+                    )}
                 </div>
             </div>
 

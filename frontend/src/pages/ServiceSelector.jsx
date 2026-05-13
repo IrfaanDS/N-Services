@@ -54,9 +54,10 @@ export default function ServiceSelector() {
     return (
         <div className="service-selector-page min-h-screen relative overflow-hidden bg-white">
             {/* ── Background Hue ── */}
-            <div className="absolute inset-0 pointer-events-none opacity-40">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full blur-[120px]" style={{ background: 'rgba(249, 115, 22, 0.08)' }} />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full blur-[120px]" style={{ background: 'rgba(139, 92, 246, 0.08)' }} />
+            <div className="absolute inset-0 pointer-events-none opacity-50">
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[140px]" style={{ background: 'rgba(160, 4, 236, 0.12)' }} />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full blur-[140px]" style={{ background: 'rgba(160, 4, 236, 0.1)' }} />
+                <div className="absolute top-[30%] right-[10%] w-[30%] h-[30%] rounded-full blur-[120px]" style={{ background: 'rgba(234, 34, 97, 0.05)' }} />
             </div>
 
             {/* Top Navigation */}
@@ -74,9 +75,9 @@ export default function ServiceSelector() {
                                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                                 className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all overflow-hidden relative
                                     ${showProfileMenu ? 'shadow-lg' : 'lp-border-hairline bg-white hover:shadow-md'}`}
-                                style={showProfileMenu ? { borderColor: '#f97316' } : {}}
+                                style={showProfileMenu ? { borderColor: '#a004ec' } : {}}
                             >
-                                <UserIcon className="w-5 h-5 transition-colors" style={{ color: showProfileMenu ? '#f97316' : 'var(--lp-ink)' }} />
+                                <UserIcon className="w-5 h-5 transition-colors" style={{ color: showProfileMenu ? '#a004ec' : 'var(--lp-ink)' }} />
                             </button>
                         </div>
 
@@ -94,7 +95,7 @@ export default function ServiceSelector() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white border lp-border-hairline">
-                                        <Shield className="w-3.5 h-3.5" style={{ color: '#f97316' }} />
+                                        <Shield className="w-3.5 h-3.5" style={{ color: '#a004ec' }} />
                                         <span className="text-xs font-bold lp-text-ink">Standard Subscription</span>
                                     </div>
                                 </div>
@@ -129,7 +130,7 @@ export default function ServiceSelector() {
                 {/* Header */}
                 <div className="text-center mb-12 animate-fade-in max-w-2xl">
                     <h1 className="lp-display-xl lp-text-ink mb-6">
-                        Select your <span className="lp-text-primary" style={{ color: '#f97316' }}>domain</span>
+                        Select your <span className="lp-text-primary" style={{ color: '#a004ec' }}>domain</span>
                     </h1>
                     <p className="lp-body-lg lp-text-ink-mute">
                         Access our specialized AI engines designed to automate acquisition and expand your service business reach.
@@ -149,7 +150,7 @@ export default function ServiceSelector() {
                             >
                                 {/* Icon */}
                                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110"
-                                    style={{ background: 'rgba(249, 115, 22, 0.05)', border: '1px solid rgba(249, 115, 22, 0.2)', color: '#f97316' }}>
+                                    style={{ background: 'rgba(160, 4, 236, 0.05)', border: '1px solid rgba(160, 4, 236, 0.2)', color: '#a004ec' }}>
                                     <Icon className="w-6 h-6" />
                                 </div>
 
@@ -164,8 +165,8 @@ export default function ServiceSelector() {
                                 <ul className="space-y-2 mb-8 mt-auto">
                                     {service.points.map((p) => (
                                         <li key={p} className="flex items-center gap-3 text-sm lp-text-ink-secondary">
-                                            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(249, 115, 22, 0.08)' }}>
-                                                <Check className="w-3 h-3" style={{ color: '#f97316' }} />
+                                            <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(160, 4, 236, 0.08)' }}>
+                                                <Check className="w-3 h-3" style={{ color: '#a004ec' }} />
                                             </div>
                                             {p}
                                         </li>
@@ -173,7 +174,7 @@ export default function ServiceSelector() {
                                 </ul>
 
                                 <div className="flex items-center gap-2 text-sm font-bold mt-auto pt-6 border-t lp-border-hairline transition-all duration-300"
-                                    style={{ color: '#f97316' }}>
+                                    style={{ color: '#a004ec' }}>
                                     Launch Engine
                                     <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
                                 </div>

@@ -9,11 +9,11 @@
 /* ─── CSS Custom Properties ─── */
 :root {
   /* Brand & Accent */
-  --lp-primary: #533afd;
-  --lp-primary-deep: #4434d4;
-  --lp-primary-press: #2e2b8c;
-  --lp-primary-soft: #665efd;
-  --lp-primary-bg-subdued: #b9b9f9;
+  --lp-primary: #a004ec;
+  --lp-primary-deep: #8a03ca;
+  --lp-primary-press: #6e02a1;
+  --lp-primary-soft: #b637f5;
+  --lp-primary-bg-subdued: #e9d5ff;
   --lp-brand-dark: #1c1e54;
   --lp-ruby: #ea2261;
   --lp-magenta: #f96bee;
