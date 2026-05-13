@@ -41,5 +41,10 @@ certifi>=2024.8.30
 sqlalchemy>=2.0.38
 psycopg2-binary>=2.9.9
 
+# ── Agent Framework ──
+langgraph>=0.4.0
+langchain-core>=0.3.0
+langchain-groq>=0.3.0
+
 # ── Payments ──
 stripe==11.0.0

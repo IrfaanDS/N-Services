@@ -1,21 +1,20 @@
 """
-SEO Assistant Routes (RAG-Powered Agent)
+SEO Assistant Routes (LangGraph Agent)
 ────────────────────────────────────────
 Chat endpoint for the SEO expert assistant.
-Uses ChromaDB + Gemini agentic tool-calling with conversation history.
+Now powered by a LangGraph ReAct agent with tool-calling via Groq Llama.
+
+The endpoint contract is UNCHANGED so the frontend doesn't need modifications:
+  POST /api/assistant/ask   → { session_id, question } → { answer, session_id }
+  POST /api/assistant/clear → { session_id }           → { status, message }
+  GET  /api/assistant/health                           → { status, ... }
 """
 import logging
-from typing import Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from app.services.rag import generate_answer
-
 router = APIRouter()
 logger = logging.getLogger(__name__)
-
-# In-memory session storage
-conversation_history: dict[str, list] = {}
 
 
 class AskPayload(BaseModel):
@@ -31,7 +30,8 @@ class ClearPayload(BaseModel):
 async def ask_seo_assistant(payload: AskPayload):
     """
     Ask the SEO expert agent a question or provide a URL for audit.
-    Maintains per-session conversation history.
+    Delegates to the LangGraph SEO Agent which reasons, calls tools,
+    and produces a synthesized response.
     """
     session_id = payload.session_id
     question = payload.question.strip()
@@ -39,35 +39,39 @@ async def ask_seo_assistant(payload: AskPayload):
     if not question:
         raise HTTPException(status_code=400, detail="Question cannot be empty")
 
-    # Get or initialize session history
-    current_history = conversation_history.get(session_id, [])
-
     try:
-        answer = generate_answer(question, history=current_history)
+        from app.agents.seo_agent import get_seo_agent
+        agent = get_seo_agent()
+        result = agent.invoke(session_id, question)
     except Exception as e:
-        logger.exception(f"RAG generate_answer failed: {e}")
+        logger.exception(f"SEO Agent failed: {e}")
         raise HTTPException(status_code=500, detail=f"Assistant error: {str(e)}")
 
-    # Update history
-    current_history.append({"question": question, "answer": answer})
-    conversation_history[session_id] = current_history
-
-    return {"answer": answer, "session_id": session_id}
+    return {"answer": result["response"], "session_id": result["session_id"]}
 
 
 @router.post("/clear")
 async def clear_session(payload: ClearPayload):
     """Clear conversation history for a session."""
-    conversation_history.pop(payload.session_id, None)
+    try:
+        from app.agents.seo_agent import get_seo_agent
+        agent = get_seo_agent()
+        agent.clear_session(payload.session_id)
+    except Exception:
+        pass  # If agent isn't initialized yet, nothing to clear
     return {"status": "success", "message": "Session cleared"}
 
 
 @router.get("/health")
 async def assistant_health():
-    """Check if the RAG service is loaded."""
-    from app.services.rag import gemini_client, collection
+    """Check if the agent and RAG service are loaded."""
+    from app.services.rag import collection
+    from app.agents.memory import get_memory_store
+
+    memory = get_memory_store()
     return {
         "status": "ok",
-        "gemini_configured": gemini_client is not None,
+        "agent": "langgraph_seo",
         "knowledge_base_chunks": collection.count(),
+        "active_sessions": memory.active_sessions,
     }

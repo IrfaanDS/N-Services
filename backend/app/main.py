@@ -4,6 +4,7 @@ from app.api.routes import leads, evaluation, emails, sending, dashboard, auth, 
 from app.api.routes import b2b_leads, b2b_emails, b2b_agent
 from app.api.routes import shopify, shopify_leads
 from app.api.routes import stripe_routes
+from app.api.routes import agent as agent_routes
 
 from contextlib import asynccontextmanager
 
@@ -51,6 +52,9 @@ app.include_router(b2b_agent.router, prefix="/api/b2b/agent", tags=["B2B Agent"]
 
 # ── Register Shopify RAG modules ──
 app.include_router(shopify.router, prefix="/api/shopify", tags=["Shopify AI"])
+
+# ── Register Domain Agent routes ──
+app.include_router(agent_routes.router, prefix="/api/agent", tags=["Domain Agents"])
 
 
 @app.get("/api/health")
